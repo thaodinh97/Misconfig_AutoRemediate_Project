@@ -7,3 +7,11 @@ terraform {
     }
   }
 }
+
+provider "aws" {
+  region = var.aws_region
+}
+
+# Dùng data source để lấy account ID hiện tại
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
