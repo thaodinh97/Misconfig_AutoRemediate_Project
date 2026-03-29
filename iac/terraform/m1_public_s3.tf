@@ -6,7 +6,7 @@
 # --- 1a. S3 Bucket với ACL public-read (sai cấu hình ACL) ---
 resource "aws_s3_bucket" "m1_public_bucket" {
   bucket        = "${var.project_prefix}-m1-public-bucket-${random_id.suffix.hex}"
-  force_destroy = false
+  force_destroy = true
 
   tags = {
     Scenario = "M1-PublicS3"
@@ -25,10 +25,10 @@ resource "aws_s3_bucket_ownership_controls" "m1_ownership" {
 resource "aws_s3_bucket_public_access_block" "m1_public_access" {
   bucket = aws_s3_bucket.m1_public_bucket.id
 
-  block_public_acls       = false   #  Không chặn public ACL
-  block_public_policy     = false   #  Không chặn public policy
-  ignore_public_acls      = false   #  Không bỏ qua public ACL
-  restrict_public_buckets = false   #  Không giới hạn public bucket
+  block_public_acls       = false #  Không chặn public ACL
+  block_public_policy     = false #  Không chặn public policy
+  ignore_public_acls      = false #  Không bỏ qua public ACL
+  restrict_public_buckets = false #  Không giới hạn public bucket
 }
 
 resource "aws_s3_bucket_acl" "m1_public_acl" {
@@ -72,7 +72,7 @@ resource "aws_s3_bucket_policy" "m1_public_policy" {
       {
         Sid       = "AllowPublicRead"
         Effect    = "Allow"
-        Principal = "*"                          #  Bất kỳ ai
+        Principal = "*" #  Bất kỳ ai
         Action    = "s3:GetObject"
         Resource  = "${aws_s3_bucket.m1_policy_public_bucket.arn}/*"
       }
