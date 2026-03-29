@@ -6,7 +6,7 @@
 # --- 1a. S3 Bucket với ACL public-read (sai cấu hình ACL) ---
 resource "aws_s3_bucket" "m1_public_bucket" {
   bucket        = "${var.project_prefix}-m1-public-bucket-${random_id.suffix.hex}"
-  force_destroy = false
+  force_destroy = true
 
   tags = {
     Scenario = "M1-PublicS3"
