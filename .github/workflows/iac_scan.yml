@@ -54,7 +54,7 @@ jobs:
       - name: Run Checkov
         id: checkov
         run: |
-          checkov -d ./iac/terraform --output json --output-file checkov-report.json \
+          checkov -d . --output json --output-file checkov-report.json \
           --skip-framework dockerfile || true
 
       - name: Upload Checkov report
@@ -74,9 +74,9 @@ jobs:
 
       - uses: aquasecurity/tfsec-action@v1.0.0
         with:
-          working_directory: ./iac/terraform
+          working_directory: .
           format: json
-          out: tfsec-report.json
+          additional_args: --out tfsec-report.json
 
       - name: Upload report tfsec
         uses: actions/upload-artifact@v4
