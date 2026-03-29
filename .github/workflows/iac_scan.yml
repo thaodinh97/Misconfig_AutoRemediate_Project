@@ -1,0 +1,71 @@
+name: IaC Scan
+on:
+  pull_request:
+    paths:
+      - 'iac/terraform/**'
+      - '.github/workflows/iac_scan.yml'
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'iac/terraform/**'
+
+jobs:
+  tf-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up tf
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive ./iac/terraform
+
+      - name: Terraform Validate
+        run: terraform validate ./iac/terraform
+
+  checkov-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Checkov
+        run: pip install checkov
+
+      - name: Run Checkov
+        id: checkov
+        run: |
+          checkov -d ./iac/terraform --output json --output-file checkov-report.json \
+          --skip-framework dockerfile || true
+
+      - name: Upload Checkov report
+        uses: actions/upload-artifact@v3
+        with:
+          name: checkov-report
+          path: checkov-report.json
+
+  tfsec-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aquasecurity/tfsec-action@v1.0.0
+        with:
+          working_directory: ./iac/terraform
+          format: json
+          out: tfsec-report.json
+
+      - name: Upload report tfsec
+        uses: actions/upload-artifact@v3
+        with:
+          name: tfsec-report
+          path: tfsec-report.json
+
