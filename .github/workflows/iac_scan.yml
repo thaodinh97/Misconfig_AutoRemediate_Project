@@ -58,7 +58,7 @@ jobs:
           --skip-framework dockerfile || true
 
       - name: Upload Checkov report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: checkov-report
           path: checkov-report.json
@@ -79,7 +79,7 @@ jobs:
           out: tfsec-report.json
 
       - name: Upload report tfsec
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: tfsec-report
           path: tfsec-report.json
