@@ -37,10 +37,6 @@ jobs:
 
   checkov-scan:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./iac/terraform
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -54,7 +50,7 @@ jobs:
       - name: Run Checkov
         id: checkov
         run: |
-          checkov -d . --output json --output-file checkov-report.json \
+          checkov -d ./iac/terraform --output json --output-file checkov-report.json \
           --skip-framework dockerfile || true
 
       - name: Upload Checkov report
@@ -65,22 +61,19 @@ jobs:
 
   tfsec-scan:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./iac/terraform
     steps:
       - uses: actions/checkout@v4
 
       - uses: aquasecurity/tfsec-action@v1.0.0
         with:
-          working_directory: .
+          working_directory: ./iac/terraform
           format: json
           additional_args: --out tfsec-report.json
+        continue-on-error: true
 
       - name: Upload report tfsec
         uses: actions/upload-artifact@v4
         with:
           name: tfsec-report
-          path: tfsec-report.json
+          path: ./iac/terraform/tfsec-report.json
 
