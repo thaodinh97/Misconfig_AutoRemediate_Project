@@ -59,6 +59,30 @@ jobs:
           name: checkov-report
           path: checkov-report.json
 
+      - name: Comment PR with findings
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('checkov-report.json', 'utf8'));
+            const failed = report.check_type.results.failed_checks || [];
+            
+            if (failed.length > 0) {
+              const comment = `## Checkov Findings\n\n` +
+                `**Failed Checks: ${failed.length}**\n\n` +
+                failed.slice(0, 10).map(c => 
+                  `- ${c.check_id}: ${c.check_name} (${c.resource})`
+                ).join('\n');
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }
+
   tfsec-scan:
     runs-on: ubuntu-latest
     steps:
