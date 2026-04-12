@@ -6,7 +6,7 @@ google-cloud-storage==2.10.0
 
 # Scanners
 scoutsuite==5.14.0
-checkov==1.1476.0
+checkov==3.2.517
 
 # Automation
 ansible==2.10.17
