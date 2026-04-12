@@ -9,10 +9,10 @@ scoutsuite==5.14.0
 checkov==3.2.517
 
 # Automation
-ansible==13.5.0
+ansible==2.15.5
 c7n==0.9.50
 
 # Data processing
 pyyaml==6.0.3
 jsonschema==4.17.3
-pandas==1.5.3
+pandas>=2.1.0
