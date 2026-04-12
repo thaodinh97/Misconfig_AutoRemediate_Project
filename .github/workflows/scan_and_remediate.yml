@@ -47,11 +47,26 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TDINH }}
           aws-region: us-east-1
 
-      - name: Install dependencies
+      - name: Install Core Dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          
+          pip install boto3==1.42.59 azure-mgmt-security==1.0.0 pandas==2.1.1 pyyaml==6.0.1
+
+      - name: Run ScoutSuite
+        run: |
+          pip install scoutsuite==5.14.0
+          python -m src.scanners.runner --scoutsuite --output-dir ./scan_results
+          pip uninstall -y scoutsuite  
+
+      - name: Run Checkov
+        run: |
+          pip install checkov==3.2.517
+          checkov -d ./iac/terraform --output json > ./scan_results/checkov_report.json
+          pip uninstall -y checkov
+
+      - name: Run Cloud Custodian (c7n)
+        run: |
+          pip install c7n==0.9.50
+
       - name: Run scanners
         env:
           AWS_REGION: us-east-1
