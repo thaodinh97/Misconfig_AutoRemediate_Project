@@ -1,7 +1,9 @@
 name: Scan and remediate misconfiguration
 on:
-  schedule:
-    - cron: '0 2 * * *'
+  push:
+    paths:
+      - main
+      - feat/scan_and_triage
   workflow_dispatch:
     inputs:
       enable_remediation:
@@ -33,7 +35,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-to-assume: ${{ secrets.AWS_ROLE_TDINH }}
           aws-region: us-east-1
 
       - name: Install dependencies
