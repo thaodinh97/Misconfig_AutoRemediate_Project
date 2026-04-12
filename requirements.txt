@@ -5,7 +5,7 @@ azure-mgmt-security==2.0.0
 google-cloud-storage==2.10.0
 
 # Scanners
-scoutsuite==7.1.2
+scoutsuite==5.14.0
 checkov==1.1476.0
 
 # Automation
