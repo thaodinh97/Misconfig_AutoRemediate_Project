@@ -1,9 +1,12 @@
 name: Scan and remediate misconfiguration
 on:
   push:
-    paths:
+    branches:
       - main
       - feat/scan_and_triage
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       enable_remediation:
