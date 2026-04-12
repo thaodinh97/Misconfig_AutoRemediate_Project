@@ -1,5 +1,5 @@
 # Core dependencies
-boto3==1.28.64
+boto3==1.35.49
 azure-mgmt-security==1.0.0
 google-cloud-storage==2.10.0
 
