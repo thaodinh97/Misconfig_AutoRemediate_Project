@@ -1,17 +1,18 @@
 # Core dependencies
 boto3==1.26.137
+azure-identity==1.13.0
 azure-mgmt-security==2.0.0
 google-cloud-storage==2.10.0
 
 # Scanners
-scoutsuite==5.14.0
-checkov==3.2.517
+scoutsuite==7.1.2
+checkov==1.1476.0
 
 # Automation
-ansible==2.6.14
-c7n==0.9.50
+ansible==2.10.17
+c7n==0.9.34
 
 # Data processing
-pyyaml==6.0.3
+pyyaml==6.0
 jsonschema==4.17.3
-pandas>=2.1.0
+pandas==1.5.3
