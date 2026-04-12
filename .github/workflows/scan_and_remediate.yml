@@ -17,6 +17,9 @@ jobs:
   scan:
     runs-on: ubuntu-latest
     environment: THAODINH_DEV
+    permissions:
+      id-token: write
+      contents: read
     services:
       elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
@@ -37,7 +40,7 @@ jobs:
         uses: actions/setup-python@v4
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_TDINH }}
           aws-region: us-east-1
