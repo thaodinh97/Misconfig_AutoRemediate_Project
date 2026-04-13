@@ -71,6 +71,23 @@ class NormalizedFinding(BaseModel):
     class Config:
         use_enum_values = True
 
+class ScanResult(BaseModel):
+    """Result of a scanner execution"""
+    
+    scan_id: str = Field(..., description="Unique scan identifier")
+    scanner_name: str = Field(..., description="Name of the scanner")
+    provider: str = Field(..., description="Cloud provider")
+    start_time: datetime = Field(..., description="Scan start time")
+    end_time: datetime = Field(..., description="Scan end time")
+    status: str = Field(..., description="Scan status (success or failed)")
+    findings_count: int = Field(..., description="Number of findings")
+    findings: List[NormalizedFinding] = Field(default_factory=list, description="List of findings")
+    error_message: Optional[str] = Field(None, description="Error message if scan failed")
+    raw_output: Optional[List[Dict[str, Any]]] = Field(None, description="Raw scanner output")
+    
+    class Config:
+        use_enum_values = True
+
 class TriageDecision(BaseModel):
     """Triage decision for a finding"""
     
