@@ -10,6 +10,7 @@ on:
     branches:
       - main
       - develop
+      - feat/scan_and_triage
     paths:
       - 'iac/terraform/**'
 
