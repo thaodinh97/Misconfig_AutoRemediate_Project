@@ -62,7 +62,8 @@ jobs:
 
       - name: Install Scanners
         run: |
-          pip install checkov==3.2.517 --no-deps
+          pip install scoutsuite==5.14.0
+          pip install checkov==3.2.517 
 
       - name: Run scanners
         env:
@@ -72,8 +73,11 @@ jobs:
           TERRAFORM_DIR: ./iac/terraform
         run: |
           python -m src.scanners.runner \
+            --scoutsuite \
             --checkov \
+            --cloudsploit \
             --output-dir ./scan_results
+
 
       - name: Upload scan results
         uses: actions/upload-artifact@v4
