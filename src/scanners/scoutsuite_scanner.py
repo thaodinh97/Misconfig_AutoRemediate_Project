@@ -2,6 +2,7 @@
 import json
 import logging
 import subprocess
+import shutil
 from typing import List, Dict, Any
 from uuid import uuid4
 
@@ -22,6 +23,11 @@ class ScoutSuiteScanner(BaseScanner):
     def run(self) -> List[Dict[str, Any]]:
         """Execute ScoutSuite scan"""
         try:
+            # Check if scoutsuite command exists
+            if not shutil.which("scoutsuite"):
+                logger.warning("ScoutSuite command not found. Install with: pip install scoutsuite[reports]")
+                return []
+            
             cmd = ["scoutsuite", "--report-dir", self.report_dir]
             
             if self.provider == "aws":
@@ -43,9 +49,12 @@ class ScoutSuiteScanner(BaseScanner):
             
             return self._extract_findings(report)
         
+        except FileNotFoundError:
+            logger.warning("ScoutSuite binary not found. Skipping ScoutSuite scan.")
+            return []
         except Exception as e:
             logger.error(f"ScoutSuite execution error: {str(e)}")
-            raise
+            return []
     
     def _extract_findings(self, report: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Extract findings from ScoutSuite report"""

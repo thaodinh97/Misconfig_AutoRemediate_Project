@@ -44,8 +44,9 @@ class CheckovScanner(BaseScanner):
         """Extract findings from Checkov report"""
         findings = []
         
-        for check in report.get('check_type', {}).get('results', {}).get('failed_checks', []):
-            findings.append(check)
+        # Checkov output has check_type key with failed_checks, passed_checks
+        for check_type in report.get('results', {}).get('failed_checks', []):
+            findings.append(check_type)
         
         return findings
     
