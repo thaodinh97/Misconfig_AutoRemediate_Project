@@ -15,3 +15,4 @@ c7n==0.9.50
 pyyaml==6.0.1
 jsonschema==4.17.3
 pandas==2.1.1
+python-dotenv==1.0.1
