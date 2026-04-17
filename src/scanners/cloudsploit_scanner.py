@@ -30,7 +30,6 @@ class CloudsploitScanner(BaseScanner):
         if cloudsploit_path:
             return cloudsploit_path
         
-        # Try npx (requires Node.js to be installed)
         npx_path = shutil.which("npx")
         if npx_path:
             logger.info("Using npx to run CloudSploit")
@@ -46,12 +45,12 @@ class CloudsploitScanner(BaseScanner):
                 logger.warning("CloudSploit not available, skipping scan")
                 return []
             
+            result_file = f"/tmp/cloudsploit-result-{self.scan_id}.json"
+            
             if cloudsploit_cmd == "npx":
-                cmd = ["npx", "cloudsploit", "scan", "--console", "none", "--json"]
+                cmd = ["npx", "cloudsploit", "scan", "--console", "none", "--json", result_file]
             else:
-                cmd = [cloudsploit_cmd, "scan", "--console", "none", "--json"]
-
-            logger.info(f"Running CloudSploit command: {' '.join(cmd)}")
+                cmd = [cloudsploit_cmd, "scan", "--console", "none", "--json", result_file]
 
             logger.info(f"Running CloudSploit command: {' '.join(cmd)}")
 
@@ -67,18 +66,17 @@ class CloudsploitScanner(BaseScanner):
                 return []
 
             try:
-                report = json.loads(result.stdout)
-            except json.JSONDecodeError:
-                logger.error("Invalid JSON output from CloudSploit")
-                logger.error(f"CloudSploit stdout: {result.stdout}")
-                logger.error(f"CloudSploit stderr: {result.stderr}")
-                if result.stderr:
-                    try:
-                        report = json.loads(result.stderr)
-                        return self._extract_findings(report)
-                    except json.JSONDecodeError:
-                        pass
+                with open(result_file, 'r') as f:
+                    report = json.load(f)
+            except FileNotFoundError:
+                logger.error(f"CloudSploit result file not found: {result_file}")
                 return []
+            except json.JSONDecodeError:
+                logger.error("Invalid JSON format in CloudSploit result file")
+                return []
+            finally:
+                if os.path.exists(result_file):
+                    os.remove(result_file)
 
             return self._extract_findings(report)
 

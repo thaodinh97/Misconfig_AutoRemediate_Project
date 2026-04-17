@@ -34,10 +34,11 @@ class ScoutSuiteScanner(BaseScanner):
         """Execute ScoutSuite scan"""
         try:
             scoutsuite_cmd = self._get_scoutsuite_command()
+            
             if isinstance(scoutsuite_cmd, list):
-                cmd = scoutsuite_cmd + ["--report-dir", self.report_dir]
+                cmd = scoutsuite_cmd + [self.provider, "--report-dir", self.report_dir]
             else:
-                cmd = [scoutsuite_cmd, "--report-dir", self.report_dir]
+                cmd = [scoutsuite_cmd, self.provider, "--report-dir", self.report_dir]
             
             if self.provider == "aws":
                 cmd.extend(["--profile", self.profile, "--regions", self.region])
