@@ -3,6 +3,7 @@ import json
 import logging
 import subprocess
 import shutil
+import sys
 from typing import List, Dict, Any
 from uuid import uuid4
 
@@ -20,20 +21,28 @@ class ScoutSuiteScanner(BaseScanner):
         self.profile = profile or "default"
         self.report_dir = f"/tmp/scout-{self.scan_id}"
     
+    def _get_scoutsuite_command(self):
+        """Find ScoutSuite executable path or fallback to python -m scoutsuite"""
+        scoutsuite_path = shutil.which("scoutsuite")
+        if scoutsuite_path:
+            return scoutsuite_path
+
+        logger.info("ScoutSuite binary not found on PATH, falling back to python -m scoutsuite")
+        return [sys.executable, "-m", "scoutsuite"]
+    
     def run(self) -> List[Dict[str, Any]]:
         """Execute ScoutSuite scan"""
         try:
-            # Check if scoutsuite command exists
-            if not shutil.which("scoutsuite"):
-                logger.warning("ScoutSuite command not found. Install with: pip install scoutsuite[reports]")
-                return []
-            
-            cmd = ["scoutsuite", "--report-dir", self.report_dir]
+            scoutsuite_cmd = self._get_scoutsuite_command()
+            if isinstance(scoutsuite_cmd, list):
+                cmd = scoutsuite_cmd + ["--report-dir", self.report_dir]
+            else:
+                cmd = [scoutsuite_cmd, "--report-dir", self.report_dir]
             
             if self.provider == "aws":
                 cmd.extend(["--profile", self.profile, "--regions", self.region])
             elif self.provider == "azure":
-                cmd.append("--cli")  
+                cmd.append("--cli")
             
             logger.info(f"Running ScoutSuite command: {' '.join(cmd)}")
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)

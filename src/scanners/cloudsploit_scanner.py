@@ -70,6 +70,14 @@ class CloudsploitScanner(BaseScanner):
                 report = json.loads(result.stdout)
             except json.JSONDecodeError:
                 logger.error("Invalid JSON output from CloudSploit")
+                logger.error(f"CloudSploit stdout: {result.stdout}")
+                logger.error(f"CloudSploit stderr: {result.stderr}")
+                if result.stderr:
+                    try:
+                        report = json.loads(result.stderr)
+                        return self._extract_findings(report)
+                    except json.JSONDecodeError:
+                        pass
                 return []
 
             return self._extract_findings(report)
