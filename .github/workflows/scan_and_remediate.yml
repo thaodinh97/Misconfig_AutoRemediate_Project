@@ -64,11 +64,14 @@ jobs:
           node-version: '18'
 
       - name: Install CloudSploit
-        run: npm install -g cloudsploit
+        run: |
+          npm install -g cloudsploit
+          echo "PATH=$(npm root -g)/.bin:$PATH" >> $GITHUB_ENV
+          which cloudsploit || echo "CloudSploit not in PATH, will use npx"
 
       - name: Install Scanners
         run: |
-          pip install scoutsuite[reports]
+          pip install "scoutsuite[reports]==5.14.0"
           pip install checkov==3.2.517 
 
       - name: Run scanners

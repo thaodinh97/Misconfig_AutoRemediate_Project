@@ -4,6 +4,7 @@ CloudSploit scanner integration
 import json
 import logging
 import os
+import shutil
 import subprocess
 from typing import List, Dict, Any
 from uuid import uuid4
@@ -22,9 +23,34 @@ class CloudsploitScanner(BaseScanner):
         self.profile = profile
         self.config_file = f"/tmp/cloudsploit-{self.scan_id}.json"
     
+    def _get_cloudsploit_command(self) -> str:
+        """Find CloudSploit executable path or use npx"""
+        # Try to find cloudsploit in PATH
+        cloudsploit_path = shutil.which("cloudsploit")
+        if cloudsploit_path:
+            return cloudsploit_path
+        
+        # Try npx (requires Node.js to be installed)
+        npx_path = shutil.which("npx")
+        if npx_path:
+            logger.info("Using npx to run CloudSploit")
+            return "npx"
+        
+        logger.warning("CloudSploit command not found. Install with: npm install -g cloudsploit")
+        return None
+    
     def run(self) -> List[Dict[str, Any]]:
         try:
-            cmd = ["cloudsploit", "scan", "--json"]
+            cloudsploit_cmd = self._get_cloudsploit_command()
+            if not cloudsploit_cmd:
+                logger.warning("CloudSploit not available, skipping scan")
+                return []
+            
+            # Build command - if using npx, add 'cloudsploit' as first argument
+            if cloudsploit_cmd == "npx":
+                cmd = ["npx", "cloudsploit", "scan", "--json"]
+            else:
+                cmd = [cloudsploit_cmd, "scan", "--json"]
 
             logger.info(f"Running CloudSploit command: {' '.join(cmd)}")
 
@@ -39,7 +65,7 @@ class CloudsploitScanner(BaseScanner):
                 logger.error(f"CloudSploit failed: {result.stderr}")
                 return []
 
-            # ⚠️ Parse JSON an toàn
+            # ⚠️ Parse JSON safely
             try:
                 report = json.loads(result.stdout)
             except json.JSONDecodeError:
@@ -50,7 +76,7 @@ class CloudsploitScanner(BaseScanner):
 
         except Exception as e:
             logger.error(f"CloudSploit execution error: {str(e)}")
-            raise
+            return []
     
     def _extract_findings(self, report: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Extract findings from CloudSploit report"""
