@@ -11,7 +11,7 @@ class TriageEngine:
         self.high_risk_resources = self.config.get('high_risk_resources', ['prod', 'production'])
 
     def triage_finding(self, finding: NormalizedFinding) -> TriageDecision:
-        is_auto = self.is_auto_remediate(finding)
+        is_auto = self._is_auto_remediate(finding)
 
         if is_auto:
             recommendation = "auto_remediate"
@@ -46,7 +46,7 @@ class TriageEngine:
             try:
                 decision = self.triage_finding(finding=finding)
                 decisions.append(decision)
-            except:
+            except Exception as e:
                 logger.error(f"Error triaging finding {finding.finding_id}: {str(e)}")
         return decisions
     
