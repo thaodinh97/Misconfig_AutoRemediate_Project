@@ -3,6 +3,7 @@ CloudSploit scanner integration
 """
 import json
 import logging
+import os
 import subprocess
 from typing import List, Dict, Any
 from uuid import uuid4
@@ -24,15 +25,22 @@ class CloudsploitScanner(BaseScanner):
     def run(self) -> List[Dict[str, Any]]:
         """Execute CloudSploit scan"""
         try:
+            with open(self.config_file, "w") as f:
+                json.dump({}, f)
+
+            aws_dir = os.path.expanduser("~/.aws")
+
             cmd = [
-                "docker", "run", "-it",
+                "docker", "run", "--rm",
                 "-e", f"AWS_PROFILE={self.profile}",
                 "-v", f"{self.config_file}:/app/config.json",
-                "-v", f"$HOME/.aws:/root/.aws",
                 "cloudsploit/scanner",
                 "--config", "/app/config.json",
                 "--output", "json",
             ]
+
+            if os.path.isdir(aws_dir):
+                cmd[5:5] = ["-v", f"{aws_dir}:/root/.aws:ro"]
             
             logger.info(f"Running CloudSploit command")
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)

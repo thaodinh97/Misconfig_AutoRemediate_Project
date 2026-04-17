@@ -118,7 +118,7 @@ class ScannerRunner:
         # Save findings
         findings_file = self.output_dir / "findings.json"
         findings_data = [
-            json.loads(finding.json()) for finding in self.all_findings
+            finding.model_dump(mode="json") for finding in self.all_findings
         ]
 
         with open(findings_file, 'w') as f:
@@ -128,7 +128,7 @@ class ScannerRunner:
         # Save scan results
         results_file = self.output_dir / "scan_results.json"
         results_data = [
-            json.loads(result.json()) for result in self.scan_results
+            result.model_dump(mode="json") for result in self.scan_results
         ]
 
         with open(results_file, 'w') as f:

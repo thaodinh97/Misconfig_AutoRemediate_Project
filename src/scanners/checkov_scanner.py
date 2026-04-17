@@ -42,24 +42,37 @@ class CheckovScanner(BaseScanner):
 
     def _extract_findings(self, report: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Extract findings from Checkov report"""
-        findings = []
+        # findings = []
         
-        # Checkov output has check_type key with failed_checks, passed_checks
-        for check_type in report.get('results', {}).get('failed_checks', []):
-            findings.append(check_type)
+        # # Checkov output has check_type key with failed_checks, passed_checks
+        # for check_type in report.get('results', {}).get('failed_checks', []):
+        #     findings.append(check_type)
         
-        return findings
+        # return findings
+        failed_checks = report.get("results", {}).get("failed_checks")
+        if failed_checks is None:
+            failed_checks = report.get("check_type", {}).get("results", {}).get("failed_checks", [])
+
+        return failed_checks or []
+
     
     def normalize_findings(self, raw_findings: List[Dict[str, Any]]) -> List[NormalizedFinding]:
         normalized = []
         
         for raw in raw_findings:
             try:
-                check_id = raw.get('check_id', 'UNKNOWN')
-                check_name = raw.get('check_name', 'Unknown check')
+                check_id = str(raw.get('check_id') or 'UNKNOWN')
+                check_name = str(raw.get('check_name') or 'Unknown check')
+
                 
-                resource_id = raw.get('resource', '')
-                file_path = raw.get('file_path', '')
+                description = raw.get("description")
+                if not isinstance(description, str) or not description.strip():
+                    description = check_name
+
+                resource_id = str(raw.get('resource') or '')
+                file_path = str(raw.get('file_path') or '')
+                guideline = raw.get('guideline')
+                guideline_text = str(guideline) if guideline is not None else ''
                 
                 finding = NormalizedFinding(
                     finding_id=str(uuid4()),
@@ -68,16 +81,16 @@ class CheckovScanner(BaseScanner):
                     provider=self.provider,
                     severity=self.map_severity(raw.get('check_result', {}).get('result', 'FAILED')),
                     title=check_name,
-                    description=raw.get('description', ''),
+                    description=description,
                     resource_type='terraform_resource',
                     resource_id=resource_id,
                     remediation_available=True,
                     remediation_type="pr",
-                    cis_controls=[raw.get('guideline', '')],
+                     cis_controls=[guideline_text] if guideline_text else [],
                     metadata={
                         'file_path': file_path,
                         'check_id': check_id,
-                        'guideline': raw.get('guideline', ''),
+                        'guideline': guideline_text,
                     }
                 )
                 normalized.append(finding)
