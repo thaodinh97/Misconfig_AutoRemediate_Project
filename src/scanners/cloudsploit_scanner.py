@@ -23,34 +23,34 @@ class CloudsploitScanner(BaseScanner):
         self.config_file = f"/tmp/cloudsploit-{self.scan_id}.json"
     
     def run(self) -> List[Dict[str, Any]]:
-    try:
-        cmd = ["cloudsploit", "scan", "--json"]
-
-        logger.info(f"Running CloudSploit command: {' '.join(cmd)}")
-
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=600
-        )
-
-        if result.returncode != 0:
-            logger.error(f"CloudSploit failed: {result.stderr}")
-            return []
-
-        # ⚠️ Parse JSON an toàn
         try:
-            report = json.loads(result.stdout)
-        except json.JSONDecodeError:
-            logger.error("Invalid JSON output from CloudSploit")
-            return []
+            cmd = ["cloudsploit", "scan", "--json"]
 
-        return self._extract_findings(report)
+            logger.info(f"Running CloudSploit command: {' '.join(cmd)}")
 
-    except Exception as e:
-        logger.error(f"CloudSploit execution error: {str(e)}")
-        raise
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=600
+            )
+
+            if result.returncode != 0:
+                logger.error(f"CloudSploit failed: {result.stderr}")
+                return []
+
+            # ⚠️ Parse JSON an toàn
+            try:
+                report = json.loads(result.stdout)
+            except json.JSONDecodeError:
+                logger.error("Invalid JSON output from CloudSploit")
+                return []
+
+            return self._extract_findings(report)
+
+        except Exception as e:
+            logger.error(f"CloudSploit execution error: {str(e)}")
+            raise
     
     def _extract_findings(self, report: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Extract findings from CloudSploit report"""
