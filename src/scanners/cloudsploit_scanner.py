@@ -46,11 +46,12 @@ class CloudsploitScanner(BaseScanner):
                 logger.warning("CloudSploit not available, skipping scan")
                 return []
             
-            # Build command - if using npx, add 'cloudsploit' as first argument
             if cloudsploit_cmd == "npx":
-                cmd = ["npx", "cloudsploit", "scan", "--json"]
+                cmd = ["npx", "cloudsploit", "scan", "--console", "none", "--json"]
             else:
-                cmd = [cloudsploit_cmd, "scan", "--json"]
+                cmd = [cloudsploit_cmd, "scan", "--console", "none", "--json"]
+
+            logger.info(f"Running CloudSploit command: {' '.join(cmd)}")
 
             logger.info(f"Running CloudSploit command: {' '.join(cmd)}")
 
@@ -65,7 +66,6 @@ class CloudsploitScanner(BaseScanner):
                 logger.error(f"CloudSploit failed: {result.stderr}")
                 return []
 
-            # ⚠️ Parse JSON safely
             try:
                 report = json.loads(result.stdout)
             except json.JSONDecodeError:

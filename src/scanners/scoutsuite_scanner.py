@@ -23,12 +23,12 @@ class ScoutSuiteScanner(BaseScanner):
     
     def _get_scoutsuite_command(self):
         """Find ScoutSuite executable path or fallback to python -m scoutsuite"""
-        scoutsuite_path = shutil.which("scoutsuite")
+        scoutsuite_path = shutil.which("scout")
         if scoutsuite_path:
             return scoutsuite_path
 
         logger.info("ScoutSuite binary not found on PATH, falling back to python -m scoutsuite")
-        return [sys.executable, "-m", "scoutsuite"]
+        return [sys.executable, "-m", "ScoutSuite"]
     
     def run(self) -> List[Dict[str, Any]]:
         """Execute ScoutSuite scan"""
