@@ -58,11 +58,17 @@ jobs:
                    python-dotenv==1.0.1 \
                    python-dateutil>=2.8.2
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
 
+      - name: Install CloudSploit
+        run: npm install -g cloudsploit
 
       - name: Install Scanners
         run: |
-          pip install scoutsuite==5.14.0
+          pip install "scoutsuite[reports]==5.14.0"
           pip install checkov==3.2.517 
 
       - name: Run scanners

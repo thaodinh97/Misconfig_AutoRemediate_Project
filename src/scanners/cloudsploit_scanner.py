@@ -30,14 +30,16 @@ class CloudsploitScanner(BaseScanner):
 
             aws_dir = os.path.expanduser("~/.aws")
 
-            cmd = [
-                "docker", "run", "--rm",
-                "-e", f"AWS_PROFILE={self.profile}",
-                "-v", f"{self.config_file}:/app/config.json",
-                "cloudsploit/scanner",
-                "--config", "/app/config.json",
-                "--output", "json",
-            ]
+            # cmd = [
+            #     "docker", "run", "--rm",
+            #     "-e", f"AWS_PROFILE={self.profile}",
+            #     "-v", f"{self.config_file}:/app/config.json",
+            #     "cloudsploit/scanner",
+            #     "--config", "/app/config.json",
+            #     "--output", "json",
+            # ]
+
+            cmd = ["cloudsploit", "scan", "--json"]
 
             if os.path.isdir(aws_dir):
                 cmd[5:5] = ["-v", f"{aws_dir}:/root/.aws:ro"]
