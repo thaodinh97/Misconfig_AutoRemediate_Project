@@ -68,7 +68,7 @@ jobs:
 
       - name: Install Scanners
         run: |
-          pip install "scoutsuite[reports]==5.14.0"
+          pip install scoutsuite[reports]
           pip install checkov==3.2.517 
 
       - name: Run scanners

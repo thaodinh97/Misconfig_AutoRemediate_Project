@@ -23,41 +23,34 @@ class CloudsploitScanner(BaseScanner):
         self.config_file = f"/tmp/cloudsploit-{self.scan_id}.json"
     
     def run(self) -> List[Dict[str, Any]]:
-        """Execute CloudSploit scan"""
+    try:
+        cmd = ["cloudsploit", "scan", "--json"]
+
+        logger.info(f"Running CloudSploit command: {' '.join(cmd)}")
+
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            timeout=600
+        )
+
+        if result.returncode != 0:
+            logger.error(f"CloudSploit failed: {result.stderr}")
+            return []
+
+        # ⚠️ Parse JSON an toàn
         try:
-            with open(self.config_file, "w") as f:
-                json.dump({}, f)
+            report = json.loads(result.stdout)
+        except json.JSONDecodeError:
+            logger.error("Invalid JSON output from CloudSploit")
+            return []
 
-            aws_dir = os.path.expanduser("~/.aws")
+        return self._extract_findings(report)
 
-            # cmd = [
-            #     "docker", "run", "--rm",
-            #     "-e", f"AWS_PROFILE={self.profile}",
-            #     "-v", f"{self.config_file}:/app/config.json",
-            #     "cloudsploit/scanner",
-            #     "--config", "/app/config.json",
-            #     "--output", "json",
-            # ]
-
-            cmd = ["cloudsploit", "scan", "--json"]
-
-            if os.path.isdir(aws_dir):
-                cmd[5:5] = ["-v", f"{aws_dir}:/root/.aws:ro"]
-            
-            logger.info(f"Running CloudSploit command")
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
-            
-            if result.returncode != 0:
-                logger.error(f"CloudSploit failed: {result.stderr}")
-                return []
-            
-            output = result.stdout
-            report = json.loads(output)
-            return self._extract_findings(report)
-        
-        except Exception as e:
-            logger.error(f"CloudSploit execution error: {str(e)}")
-            raise
+    except Exception as e:
+        logger.error(f"CloudSploit execution error: {str(e)}")
+        raise
     
     def _extract_findings(self, report: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Extract findings from CloudSploit report"""
