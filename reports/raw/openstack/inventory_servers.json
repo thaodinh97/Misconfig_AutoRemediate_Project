@@ -1,0 +1,53 @@
+[
+  {
+    "ID": "0b18fb26-8f3b-411c-8888-9fa77046927d",
+    "Name": "vm-from-snap",
+    "Status": "SHUTOFF",
+    "Networks": {
+      "my-net": [
+        "10.0.1.242"
+      ]
+    },
+    "Image": "N/A (booted from volume)",
+    "Flavor": "m1.small.u22.04"
+  },
+  {
+    "ID": "bd44fe6d-0f27-4ffb-b218-b9cd002f3466",
+    "Name": "vmC",
+    "Status": "SHUTOFF",
+    "Networks": {
+      "my-net": [
+        "10.0.2.181",
+        "172.24.4.151"
+      ]
+    },
+    "Image": "Ubuntu-22.04",
+    "Flavor": "m1.small.u22.04"
+  },
+  {
+    "ID": "9b976334-374f-4a5c-b8ee-988fa7b453a5",
+    "Name": "vmB",
+    "Status": "SHUTOFF",
+    "Networks": {
+      "my-net": [
+        "10.0.1.161",
+        "172.24.4.187"
+      ]
+    },
+    "Image": "Ubuntu-22.04",
+    "Flavor": "m1.small.u22.04"
+  },
+  {
+    "ID": "36cfcc78-ffbe-4b96-8600-af410ae82bc9",
+    "Name": "vmA",
+    "Status": "SHUTOFF",
+    "Networks": {
+      "my-net": [
+        "10.0.1.54",
+        "172.24.4.183"
+      ]
+    },
+    "Image": "Ubuntu-22.04",
+    "Flavor": "m1.small.u22.04"
+  }
+]

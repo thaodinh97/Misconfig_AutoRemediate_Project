@@ -5,5 +5,4 @@ crash.log
 
 terraform.tfvars
 *.tfvars
-
-.idea/
+aws/

@@ -1,0 +1,58 @@
+[
+  {
+    "ID": "02b1bea6-9f82-4ee1-8315-b47dac9e3609",
+    "Name": "allow-ssh-ping",
+    "Description": "allow-ssh-ping",
+    "Project": "7862ff917ef84351a7c339afe0137bcb",
+    "Tags": [],
+    "Shared": false
+  },
+  {
+    "ID": "5d84d6f6-8168-497b-85c4-cc62185dda4a",
+    "Name": "allow-ssh-ping",
+    "Description": "allow-ssh-ping",
+    "Project": "d1574efa7e404a37b81e7177e89699e0",
+    "Tags": [],
+    "Shared": false
+  },
+  {
+    "ID": "6499242b-c64b-4fcb-8972-44c25c6cdd04",
+    "Name": "default",
+    "Description": "Default security group",
+    "Project": "f28428fbe9e74d5f9a997b98af8982f0",
+    "Tags": [],
+    "Shared": false
+  },
+  {
+    "ID": "b7b11980-5505-435d-ac4f-35f28be7f819",
+    "Name": "allow-ssh-ping",
+    "Description": "allow-ssh-ping",
+    "Project": "f28428fbe9e74d5f9a997b98af8982f0",
+    "Tags": [],
+    "Shared": false
+  },
+  {
+    "ID": "c5be3131-3ecf-4512-bbe6-7a4fd754cab2",
+    "Name": "default",
+    "Description": "Default security group",
+    "Project": "7862ff917ef84351a7c339afe0137bcb",
+    "Tags": [],
+    "Shared": false
+  },
+  {
+    "ID": "c83e455b-6bb1-4ae1-b45b-856ad866a5b9",
+    "Name": "default",
+    "Description": "Default security group",
+    "Project": "3370cc2f244a4bbfa894c5eea197f553",
+    "Tags": [],
+    "Shared": false
+  },
+  {
+    "ID": "dc786e65-04fb-48ea-ba76-16234a1b4f97",
+    "Name": "default",
+    "Description": "Default security group",
+    "Project": "d1574efa7e404a37b81e7177e89699e0",
+    "Tags": [],
+    "Shared": false
+  }
+]
