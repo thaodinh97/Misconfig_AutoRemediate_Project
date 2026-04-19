@@ -53,11 +53,24 @@ class ScoutSuiteScanner(BaseScanner):
             if result.returncode != 0:
                 logger.error(f"ScoutSuite failed: {result.stderr}")
                 return []
+
+            import glob
+            js_files = glob.glob(f"{self.report_dir}/scoutsuite-results/scoutsuite_results_*.js")
+
+            if not js_files:
+                logger.error("No ScoutSuite report file found")
+                return []
             
-            # Read the generated report
-            report_file = f"{self.report_dir}/scoutsuite-report.json"
-            with open(report_file, 'r') as f:
+            with open(js_files[0], 'r') as f:
                 report = json.load(f)
+
+            json_start = content.find('{')
+            if json_start == -1:
+                logger.error("Could not find JSON object in ScoutSuite JS file")
+                return []
+                
+            json_str = content[json_start:]
+            report = json.loads(json_str)
             
             return self._extract_findings(report)
         

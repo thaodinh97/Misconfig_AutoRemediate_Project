@@ -63,12 +63,20 @@ class CloudsploitScanner(BaseScanner):
                 logger.error(f"CloudSploit failed: {result.stderr}")
                 return []
 
+            stdout = result.stdout
             try:
-                report = json.loads(result.stdout)
-                return self._extract_findings(report)
-            except json.JSONDecodeError:
-                logger.error(f"Invalid JSON format in CloudSploit stdout")
-                logger.debug(f"Stdout snippet: {result.stdout[:200]}") 
+                start_idx = stdout.index("[")
+                end_idx = stdout.rindex("]") + 1
+
+                if start_idx == -1 or end_idx != -1:
+                    json_str = stdout[start_idx:end_idx]
+                    report = json.loads(json_str)
+                    return self._extract_findings(report)
+                else:
+                    raise ValueError("No JSON array bounds [ ... ] found in output")
+            except:
+                logger.error(f"Invalid JSON format in CloudSploit stdout: {e}")
+                logger.error(f"Stdout snippet: {stdout[:500]}") 
                 return []
 
         except Exception as e:
