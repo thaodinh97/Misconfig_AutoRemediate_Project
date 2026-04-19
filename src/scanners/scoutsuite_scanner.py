@@ -41,7 +41,9 @@ class ScoutSuiteScanner(BaseScanner):
                 cmd = [scoutsuite_cmd, self.provider, "--report-dir", self.report_dir]
             
             if self.provider == "aws":
-                cmd.extend(["--profile", self.profile, "--regions", self.region])
+                cmd.extend(["--regions", self.region])
+                if self.profile and self.profile != "default":
+                    cmd.extend(["--profile", self.profile])
             elif self.provider == "azure":
                 cmd.append("--cli")
             

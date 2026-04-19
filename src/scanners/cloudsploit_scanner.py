@@ -45,12 +45,10 @@ class CloudsploitScanner(BaseScanner):
                 logger.warning("CloudSploit not available, skipping scan")
                 return []
             
-            result_file = f"/tmp/cloudsploit-result-{self.scan_id}.json"
-            
             if cloudsploit_cmd == "npx":
-                cmd = ["npx", "cloudsploit", "scan", "--console", "none", "--json", result_file]
+                cmd = ["npx", "cloudsploit", "scan", "--console", "none", "--json"]
             else:
-                cmd = [cloudsploit_cmd, "scan", "--console", "none", "--json", result_file]
+                cmd = [cloudsploit_cmd, "scan", "--console", "none", "--json"]
 
             logger.info(f"Running CloudSploit command: {' '.join(cmd)}")
 
@@ -66,19 +64,12 @@ class CloudsploitScanner(BaseScanner):
                 return []
 
             try:
-                with open(result_file, 'r') as f:
-                    report = json.load(f)
-            except FileNotFoundError:
-                logger.error(f"CloudSploit result file not found: {result_file}")
-                return []
+                report = json.loads(result.stdout)
+                return self._extract_findings(report)
             except json.JSONDecodeError:
-                logger.error("Invalid JSON format in CloudSploit result file")
+                logger.error(f"Invalid JSON format in CloudSploit stdout")
+                logger.debug(f"Stdout snippet: {result.stdout[:200]}") 
                 return []
-            finally:
-                if os.path.exists(result_file):
-                    os.remove(result_file)
-
-            return self._extract_findings(report)
 
         except Exception as e:
             logger.error(f"CloudSploit execution error: {str(e)}")
