@@ -84,7 +84,6 @@ jobs:
           python -m src.scanners.runner \
             --scoutsuite \
             --checkov \
-            --cloudsploit \
             --output-dir ./scan_results
 
 

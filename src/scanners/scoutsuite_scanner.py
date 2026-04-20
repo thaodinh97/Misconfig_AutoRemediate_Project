@@ -61,15 +61,19 @@ class ScoutSuiteScanner(BaseScanner):
                 logger.error("No ScoutSuite report file found")
                 return []
             
-            with open(js_files[0], 'r') as f:
-                report = json.load(f)
+            with open(js_files[0], 'r', encoding='utf-8') as f:
+                content = f.read()
 
-            json_start = content.find('{')
-            if json_start == -1:
-                logger.error("Could not find JSON object in ScoutSuite JS file")
-                return []
+            if '=' in content:
+                json_str = content.split('=', 1)[1].strip().rstrip('; \n')
+            else:
+                json_str = content
+
                 
-            json_str = content[json_start:]
+            json_start = json_str.find('{')
+            if json_start != -1:
+                json_str = json_str[json_start:]
+            
             report = json.loads(json_str)
             
             return self._extract_findings(report)
@@ -85,9 +89,27 @@ class ScoutSuiteScanner(BaseScanner):
         """Extract findings from ScoutSuite report"""
         findings = []
         
-        if 'services' in report:
-            for service, service_data in report['services'].items():
-                findings.extend(self._process_service(service, service_data))
+        if 'services' not in report:
+            return findings
+
+        for service, service_data in report['services'].items():
+            if not isinstance(service_data, dict) or 'findings' not in service_data:
+                continue
+            
+            for finding_key, finding_data in service_data['findings'].items():
+                items = finding_data.get('items', [])
+                if not isinstance(items, list):
+                    items = [items] if items else []
+                
+                for item in items:
+                    findings.append({
+                        'service': service,
+                        'finding_type': finding_key,
+                        'issue': {
+                            **finding_data,
+                            'item': item
+                        },
+                    })
         
         return findings
     
@@ -138,11 +160,11 @@ class ScoutSuiteScanner(BaseScanner):
     @staticmethod
     def _get_severity(raw_finding: Dict) -> SeverityLevel:
         """Map ScoutSuite severity to normalized level"""
-        issue_level = raw_finding.get('issue', {}).get('level', 2)
-        # ScoutSuite: 1=critical, 2=high, 3=medium
+        issue = raw_finding.get('issue', {})
+        issue_level = issue.get('level', 'warning')
         level_map = {
-            1: SeverityLevel.CRITICAL,
-            2: SeverityLevel.HIGH,
-            3: SeverityLevel.MEDIUM,
+            'danger': SeverityLevel.CRITICAL,
+            'warning': SeverityLevel.HIGH,
+            'info': SeverityLevel.MEDIUM,
         }
         return level_map.get(issue_level, SeverityLevel.MEDIUM)

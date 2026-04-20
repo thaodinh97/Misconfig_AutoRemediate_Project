@@ -3,9 +3,10 @@ CloudSploit scanner integration
 """
 import json
 import logging
-import os
 import shutil
 import subprocess
+import tempfile
+from pathlib import Path
 from typing import List, Dict, Any
 from uuid import uuid4
 
@@ -21,11 +22,9 @@ class CloudsploitScanner(BaseScanner):
     def __init__(self, profile: str = "default", region: str = "us-east-1"):
         super().__init__("aws", region)
         self.profile = profile
-        self.config_file = f"/tmp/cloudsploit-{self.scan_id}.json"
     
     def _get_cloudsploit_command(self) -> str:
         """Find CloudSploit executable path or use npx"""
-        # Try to find cloudsploit in PATH
         cloudsploit_path = shutil.which("cloudsploit")
         if cloudsploit_path:
             return cloudsploit_path
@@ -39,16 +38,32 @@ class CloudsploitScanner(BaseScanner):
         return None
     
     def run(self) -> List[Dict[str, Any]]:
+        json_output_file = None
         try:
             cloudsploit_cmd = self._get_cloudsploit_command()
             if not cloudsploit_cmd:
                 logger.warning("CloudSploit not available, skipping scan")
                 return []
-            
+
+            # Tạo file tạm
+            with tempfile.NamedTemporaryFile(suffix=".json", delete=False) as tmp:
+                json_output_file = tmp.name
+
+            # === SỬA CUỐI CÙNG: Dùng space-separated + thêm --cloud aws ===
             if cloudsploit_cmd == "npx":
-                cmd = ["npx", "cloudsploit", "scan", "--console", "none", "--json"]
+                cmd = [
+                    "npx", "cloudsploit", "scan",
+                    "--cloud", "aws",           # ← quan trọng
+                    "--console", "none",
+                    "--json", json_output_file  # ← space, KHÔNG dùng =
+                ]
             else:
-                cmd = [cloudsploit_cmd, "scan", "--console", "none", "--json"]
+                cmd = [
+                    cloudsploit_cmd, "scan",
+                    "--cloud", "aws",
+                    "--console", "none",
+                    "--json", json_output_file
+                ]
 
             logger.info(f"Running CloudSploit command: {' '.join(cmd)}")
 
@@ -63,25 +78,37 @@ class CloudsploitScanner(BaseScanner):
                 logger.error(f"CloudSploit failed: {result.stderr}")
                 return []
 
-            stdout = result.stdout
-            try:
-                start_idx = stdout.index("[")
-                end_idx = stdout.rindex("]") + 1
-
-                if start_idx == -1 or end_idx != -1:
-                    json_str = stdout[start_idx:end_idx]
-                    report = json.loads(json_str)
-                    return self._extract_findings(report)
-                else:
-                    raise ValueError("No JSON array bounds [ ... ] found in output")
-            except:
-                logger.error(f"Invalid JSON format in CloudSploit stdout: {e}")
-                logger.error(f"Stdout snippet: {stdout[:500]}") 
+            # Kiểm tra file JSON có được tạo không
+            json_path = Path(json_output_file)
+            if not json_path.exists() or json_path.stat().st_size == 0:
+                logger.error("CloudSploit did not generate JSON output file")
+                logger.error(f"Stdout: {result.stdout[-800:]}")   # in phần cuối stdout
+                logger.error(f"Stderr: {result.stderr[-500:]}")
                 return []
+
+            # Đọc JSON
+            try:
+                with open(json_output_file, 'r', encoding='utf-8') as f:
+                    report = json.load(f)
+                logger.info(f"CloudSploit report loaded successfully ({len(report)} plugins)")
+            except json.JSONDecodeError as e:
+                logger.error(f"Invalid JSON in CloudSploit output: {e}")
+                with open(json_output_file, 'r', encoding='utf-8') as f:
+                    logger.error(f"File preview: {f.read(400)}")
+                return []
+            except Exception as e:
+                logger.error(f"Failed to load CloudSploit JSON file: {e}")
+                return []
+
+            return self._extract_findings(report)
 
         except Exception as e:
             logger.error(f"CloudSploit execution error: {str(e)}")
             return []
+        finally:
+            # Xóa file tạm
+            if json_output_file:
+                Path(json_output_file).unlink(missing_ok=True)
     
     def _extract_findings(self, report: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Extract findings from CloudSploit report"""
@@ -109,7 +136,6 @@ class CloudsploitScanner(BaseScanner):
                 result = raw.get('result', {})
                 plugin = raw.get('plugin', 'unknown')
                 
-                # CloudSploit result format: {status: 'FAIL', message: '...', region: '...'}
                 if result.get('status') != 'FAIL':
                     continue
                 
