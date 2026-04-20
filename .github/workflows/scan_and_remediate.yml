@@ -1,0 +1,122 @@
+name: Scan and remediate misconfiguration
+on:
+  push:
+    branches:
+      - main
+      - feat/scan_and_triage
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      enable_remediation:
+        description: "Enable auto-remediation"
+        required: false
+        default: 'false'
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    environment: THAODINH_DEV
+    permissions:
+      id-token: write
+      contents: read
+    services:
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+        env:
+          discovery.type: single-node
+          xpack.security.enabled: 'false'
+        options: >-
+          --health-cmd "curl -s http://localhost:9200 >/dev/null || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 9200:9200
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TDINH }}
+          aws-region: us-east-1
+
+      - name: Install Base Dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install boto3==1.42.59 \
+                   azure-mgmt-security==1.0.0 \
+                   pandas==2.1.1 \
+                   pyyaml==6.0.1 \
+                   pydantic==2.4.2 \
+                   python-dotenv==1.0.1 \
+                   python-dateutil>=2.8.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install CloudSploit
+        run: |
+          npm install -g cloudsploit
+          echo "PATH=$(npm root -g)/.bin:$PATH" >> $GITHUB_ENV
+          which cloudsploit || echo "CloudSploit not in PATH, will use npx"
+
+      - name: Install Scanners
+        run: |
+          pip install "scoutsuite[reports]==5.14.0"
+          pip install checkov==3.2.517 
+
+      - name: Run scanners
+        env:
+          AWS_REGION: us-east-1
+          ELASTICSEARCH_HOST: localhost
+          ELASTICSEARCH_PORT: 9200
+          TERRAFORM_DIR: ./iac/terraform
+        run: |
+          python -m src.scanners.runner \
+            --scoutsuite \
+            --checkov \
+            --output-dir ./scan_results
+
+
+      - name: Upload scan results
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-results
+          path: |
+            scan_results/
+            triage_results/
+
+      - name: Triage findings
+        run: |
+          python -m src.triage.engine \
+            --input ./scan_results/findings.json \
+            --output ./triage_results/decisions.json
+
+      - name: Create findings summary
+        run: |
+          python -c "
+          import json
+          with open('./scan_results/findings.json') as f:
+              findings = json.load(f)
+          summary = {
+              'total': len(findings),
+              'by_severity': {},
+          }
+          for f in findings:
+              sev = f.get('severity', 'UNKNOWN')
+              summary['by_severity'][sev] = summary['by_severity'].get(sev, 0) + 1
+          print('## Misconfig Scan Summary')
+          print(f'Total findings: {summary[\"total\"]}')
+          for severity, count in summary['by_severity'].items():
+              print(f'- {severity}: {count}')
+          " >> $GITHUB_STEP_SUMMARY
+          

@@ -1,6 +1,8 @@
 name: IaC Scan
 on:
   pull_request:
+    branches:
+      - main
     paths:
       - 'iac/terraform/**'
       - '.github/workflows/iac_scan.yml'

@@ -6,4 +6,13 @@ crash.log
 terraform.tfvars
 *.tfvars
 
+__pycache__/
+*.pyc
+
+scan_results/
+
+=2.8.2
+
+venv/
+
 .idea/
