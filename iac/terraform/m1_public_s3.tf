@@ -14,6 +14,7 @@ resource "aws_s3_bucket" "m1_public_bucket" {
   }
 }
 
+
 resource "aws_s3_bucket_ownership_controls" "m1_ownership" {
   bucket = aws_s3_bucket.m1_public_bucket.id
   rule {

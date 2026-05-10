@@ -1,17 +1,17 @@
 .terraform/
-  *.tfstate
-  *.tfstate.*
-  crash.log
+*.tfstate
+*.tfstate.*
+crash.log
 
-  terraform.tfvars
-  *.tfvars
-  aws/
+terraform.tfvars
+*.tfvars
+aws/
 
-  __pycache__/
-  *.pyc
+__pycache__/
+*.pyc
 
-  scan_results/
+scan_results/
 
-  venv/
+venv/
 
-  .idea/
+.idea/
