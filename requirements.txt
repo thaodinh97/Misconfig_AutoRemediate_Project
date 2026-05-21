@@ -1,18 +1,10 @@
-# Core dependencies
-boto3==1.35.49
-azure-mgmt-security==1.0.0
-google-cloud-storage==2.10.0
-
-# Scanners
-scoutsuite==5.14.0
-checkov==3.2.517
-
-# Automation
-ansible-core==2.15.5
-c7n==0.9.50
+# Core application runtime
 
 # Data processing
 pyyaml==6.0.1
 jsonschema==4.17.3
-pandas==2.1.1
 python-dotenv==1.0.1
+pydantic==2.4.2
+
+# SIEM
+elasticsearch==8.13.2

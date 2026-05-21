@@ -57,7 +57,7 @@ class TriageEngine:
         if self._severity_level(finding.severity) > self._severity_level(self.auto_remediate_threshold):
             return False
         
-        environment = finding.metadata.get('environment', 'unknown').lower
+        environment = str(finding.metadata.get('environment', 'unknown')).lower()
         if any(risk in environment for risk in self.high_risk_resources):
             return False
         

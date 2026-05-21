@@ -1,0 +1,118 @@
+[
+  {
+    "event_id": "2c09fff5-b842-557c-ad84-7d749724e506",
+    "finding_id": "66a0c03a-eadf-57be-bb1a-961c63c8be4a",
+    "finding_code": "OPENSTACK_SWIFT_PUBLIC_READ",
+    "provider": "openstack",
+    "resource_id": "threat-demo-m1-public-container",
+    "action_kind": "runtime_remediation",
+    "recommendation": "manual_review",
+    "status": "SUCCESS",
+    "started_at": "2026-05-20T16:17:44Z",
+    "completed_at": "2026-05-20T16:17:44Z",
+    "duration_seconds": 0.0,
+    "manual_approval": true,
+    "dry_run": true,
+    "pipeline_source": "openstack-runtime-demo",
+    "branch": "feat/normalize",
+    "commit_sha": "450ea09",
+    "command": [
+      "openstack container set --read-acl  threat-demo-m1-public-container"
+    ],
+    "patch_path": null,
+    "pr_artifact_dir": null,
+    "notes": "Simulated successful remediation for demo flow.",
+    "metadata": {
+      "target": "threat-demo-m1-public-container"
+    }
+  },
+  {
+    "event_id": "abf1def7-4759-5776-8a49-41d99a2ed244",
+    "finding_id": "db2a6e33-a4e5-5267-8863-ca54c21b553b",
+    "finding_code": "OPENSTACK_SG_WIDE_OPEN",
+    "provider": "openstack",
+    "resource_id": "sg-123",
+    "action_kind": "runtime_remediation",
+    "recommendation": "manual_review",
+    "status": "SUCCESS",
+    "started_at": "2026-05-20T16:17:44Z",
+    "completed_at": "2026-05-20T16:17:44Z",
+    "duration_seconds": 0.0,
+    "manual_approval": true,
+    "dry_run": true,
+    "pipeline_source": "openstack-runtime-demo",
+    "branch": "feat/normalize",
+    "commit_sha": "450ea09",
+    "command": [
+      "openstack security group rule delete <wide-open-rule-id>"
+    ],
+    "patch_path": null,
+    "pr_artifact_dir": null,
+    "notes": "Simulated successful remediation for demo flow.",
+    "metadata": {
+      "resource_id": "sg-123",
+      "resource_name": "threat-demo-m2-wide-open-sg",
+      "port_range": "22:22",
+      "remote_ip": "0.0.0.0/0"
+    }
+  },
+  {
+    "event_id": "63213521-6e1b-5145-98e2-cbd530a66646",
+    "finding_id": "db2a6e33-a4e5-5267-8863-ca54c21b553b",
+    "finding_code": "OPENSTACK_SG_WIDE_OPEN",
+    "provider": "openstack",
+    "resource_id": "sg-123",
+    "action_kind": "runtime_remediation",
+    "recommendation": "manual_review",
+    "status": "SUCCESS",
+    "started_at": "2026-05-20T16:17:44Z",
+    "completed_at": "2026-05-20T16:17:44Z",
+    "duration_seconds": 0.0,
+    "manual_approval": true,
+    "dry_run": true,
+    "pipeline_source": "openstack-runtime-demo",
+    "branch": "feat/normalize",
+    "commit_sha": "450ea09",
+    "command": [
+      "openstack security group rule delete <wide-open-rule-id>"
+    ],
+    "patch_path": null,
+    "pr_artifact_dir": null,
+    "notes": "Simulated successful remediation for demo flow.",
+    "metadata": {
+      "resource_id": "sg-123",
+      "resource_name": "threat-demo-m2-wide-open-sg",
+      "port_range": "any",
+      "remote_ip": "0.0.0.0/0"
+    }
+  },
+  {
+    "event_id": "674c42c0-63c8-5fe1-b8bd-42418bfe5ee9",
+    "finding_id": "e1e68d8d-bded-5648-9c6a-22ab58c5531c",
+    "finding_code": "OPENSTACK_PROJECT_ADMIN_ASSIGNMENT",
+    "provider": "openstack",
+    "resource_id": "threat-demo-m3-overpriv-project:threat-demo-m3-overpriv-user:admin",
+    "action_kind": "runtime_remediation",
+    "recommendation": "manual_review",
+    "status": "SUCCESS",
+    "started_at": "2026-05-20T16:17:44Z",
+    "completed_at": "2026-05-20T16:17:44Z",
+    "duration_seconds": 0.0,
+    "manual_approval": true,
+    "dry_run": true,
+    "pipeline_source": "openstack-runtime-demo",
+    "branch": "feat/normalize",
+    "commit_sha": "450ea09",
+    "command": [
+      "openstack role remove --project threat-demo-m3-overpriv-project --user threat-demo-m3-overpriv-user admin"
+    ],
+    "patch_path": null,
+    "pr_artifact_dir": null,
+    "notes": "Simulated successful remediation for demo flow.",
+    "metadata": {
+      "project": "threat-demo-m3-overpriv-project",
+      "role": "admin",
+      "user": "threat-demo-m3-overpriv-user"
+    }
+  }
+]

@@ -11,7 +11,9 @@ __pycache__/
 *.pyc
 
 scan_results/
+triage_results/
 
 venv/
+.venv/
 
 .idea/

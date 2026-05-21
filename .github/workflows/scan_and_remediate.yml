@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - feat/normalize
       - feat/scan_and_triage
   pull_request:
     branches:
@@ -50,13 +51,19 @@ jobs:
       - name: Install Base Dependencies
         run: |
           python -m pip install --upgrade pip setuptools wheel
-          pip install boto3==1.42.59 \
-                   azure-mgmt-security==1.0.0 \
-                   pandas==2.1.1 \
-                   pyyaml==6.0.1 \
-                   pydantic==2.4.2 \
-                   python-dotenv==1.0.1 \
-                   python-dateutil>=2.8.2
+          pip install -r requirements.txt
+
+      - name: Install Checkov
+        run: |
+          python -m venv /tmp/checkov-venv
+          /tmp/checkov-venv/bin/pip install --upgrade pip
+          /tmp/checkov-venv/bin/pip install -r requirements-checkov.txt
+
+      - name: Install ScoutSuite
+        run: |
+          python -m venv /tmp/scoutsuite-venv
+          /tmp/scoutsuite-venv/bin/pip install --upgrade pip
+          /tmp/scoutsuite-venv/bin/pip install -r requirements-scoutsuite.txt
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -69,18 +76,15 @@ jobs:
           echo "PATH=$(npm root -g)/.bin:$PATH" >> $GITHUB_ENV
           which cloudsploit || echo "CloudSploit not in PATH, will use npx"
 
-      - name: Install Scanners
-        run: |
-          pip install "scoutsuite[reports]==5.14.0"
-          pip install checkov==3.2.517 
-
       - name: Run scanners
         env:
           AWS_REGION: us-east-1
           ELASTICSEARCH_HOST: localhost
           ELASTICSEARCH_PORT: 9200
+          ELASTICSEARCH_SCHEME: http
           TERRAFORM_DIR: ./iac/terraform
         run: |
+          export PATH="/tmp/checkov-venv/bin:/tmp/scoutsuite-venv/bin:$PATH"
           python -m src.scanners.runner \
             --scoutsuite \
             --checkov \
@@ -100,6 +104,19 @@ jobs:
           python -m src.triage.engine \
             --input ./scan_results/findings.json \
             --output ./triage_results/decisions.json
+
+      - name: Publish findings and triage to Elasticsearch
+        env:
+          ELASTICSEARCH_HOST: localhost
+          ELASTICSEARCH_PORT: 9200
+          ELASTICSEARCH_SCHEME: http
+        run: |
+          python -m src.siem.publisher \
+            --findings ./scan_results/findings.json \
+            --decisions ./triage_results/decisions.json \
+            --pipeline-source github-actions \
+            --branch "${GITHUB_REF_NAME}" \
+            --commit-sha "${GITHUB_SHA}"
 
       - name: Create findings summary
         run: |

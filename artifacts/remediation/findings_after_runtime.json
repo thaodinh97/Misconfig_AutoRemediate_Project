@@ -1,0 +1,90 @@
+[
+  {
+    "finding_id": "66a0c03a-eadf-57be-bb1a-961c63c8be4a",
+    "finding_code": "OPENSTACK_SWIFT_PUBLIC_READ",
+    "scanner": "openstack_custom",
+    "provider": "openstack",
+    "severity": "HIGH",
+    "title": "OpenStack Swift container allows public read",
+    "description": "Container threat-demo-m1-public-container exposes public read/listing ACLs via `.r:*,.rlistings`.",
+    "resource_type": "swift_container",
+    "resource_id": "threat-demo-m1-public-container",
+    "resource_name": "threat-demo-m1-public-container",
+    "region": null,
+    "cis_controls": [],
+    "risk_category": "misconfiguration",
+    "remediation_available": true,
+    "remediation_type": "ansible",
+    "detected_at": "2026-05-10T14:59:41.405811",
+    "last_seen_at": "2026-05-20T16:17:44Z",
+    "remediated_at": "2026-05-20T16:17:44Z",
+    "status": "REMEDIATED",
+    "remediation_status": "SUCCESS",
+    "metadata": {
+      "read_acl": ".r:*,.rlistings"
+    },
+    "tags": {
+      "provider": "openstack"
+    }
+  },
+  {
+    "finding_id": "db2a6e33-a4e5-5267-8863-ca54c21b553b",
+    "finding_code": "OPENSTACK_SG_WIDE_OPEN",
+    "scanner": "openstack_custom",
+    "provider": "openstack",
+    "severity": "HIGH",
+    "title": "OpenStack security group allows inbound access from anywhere",
+    "description": "Security group threat-demo-m2-wide-open-sg exposes protocol `any` on `any` to `0.0.0.0/0`.",
+    "resource_type": "security_group",
+    "resource_id": "sg-123",
+    "resource_name": "threat-demo-m2-wide-open-sg",
+    "region": null,
+    "cis_controls": [],
+    "risk_category": "misconfiguration",
+    "remediation_available": true,
+    "remediation_type": "ansible",
+    "detected_at": "2026-05-10T14:59:41.406730",
+    "last_seen_at": "2026-05-20T16:17:44Z",
+    "remediated_at": "2026-05-20T16:17:44Z",
+    "status": "REMEDIATED",
+    "remediation_status": "SUCCESS",
+    "metadata": {
+      "direction": "ingress",
+      "remote_ip": "0.0.0.0/0",
+      "protocol": "any",
+      "port_range": "any"
+    },
+    "tags": {
+      "provider": "openstack"
+    }
+  },
+  {
+    "finding_id": "e1e68d8d-bded-5648-9c6a-22ab58c5531c",
+    "finding_code": "OPENSTACK_PROJECT_ADMIN_ASSIGNMENT",
+    "scanner": "openstack_custom",
+    "provider": "openstack",
+    "severity": "CRITICAL",
+    "title": "OpenStack user has admin role on project",
+    "description": "User threat-demo-m3-overpriv-user is assigned role `admin` on project threat-demo-m3-overpriv-project.",
+    "resource_type": "role_assignment",
+    "resource_id": "threat-demo-m3-overpriv-project:threat-demo-m3-overpriv-user:admin",
+    "resource_name": "threat-demo-m3-overpriv-user",
+    "region": null,
+    "cis_controls": [],
+    "risk_category": "misconfiguration",
+    "remediation_available": true,
+    "remediation_type": "ansible",
+    "detected_at": "2026-05-10T14:59:41.406768",
+    "last_seen_at": "2026-05-20T16:17:44Z",
+    "remediated_at": "2026-05-20T16:17:44Z",
+    "status": "REMEDIATED",
+    "remediation_status": "SUCCESS",
+    "metadata": {
+      "role": "admin",
+      "project": "threat-demo-m3-overpriv-project"
+    },
+    "tags": {
+      "provider": "openstack"
+    }
+  }
+]

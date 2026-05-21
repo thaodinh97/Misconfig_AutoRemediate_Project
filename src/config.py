@@ -23,6 +23,7 @@ class Config:
     # Elasticsearch/SIEM
     ELASTICSEARCH_HOST = os.getenv("ELASTICSEARCH_HOST", "localhost")
     ELASTICSEARCH_PORT = int(os.getenv("ELASTICSEARCH_PORT", 9200))
+    ELASTICSEARCH_SCHEME = os.getenv("ELASTICSEARCH_SCHEME", "http")
     ELASTICSEARCH_USER = os.getenv("ELASTICSEARCH_USER", "elastic")
     ELASTICSEARCH_PASSWORD = os.getenv("ELASTICSEARCH_PASSWORD", "")
     ELASTICSEARCH_INDEX_PREFIX = os.getenv("ELASTICSEARCH_INDEX_PREFIX", "misconfig")

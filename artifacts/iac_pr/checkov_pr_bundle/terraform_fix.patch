@@ -1,0 +1,148 @@
+--- a/iac/terraform/variables.tf
++++ b/iac/terraform/variables.tf
+@@ -18,3 +18,9 @@
+ resource "random_id" "suffix" {
+   byte_length = 4
+ }
++
++variable "admin_cidr_blocks" {
++  description = "Approved administrative CIDR blocks for management access"
++  type        = list(string)
++  default     = ["10.0.0.0/24"]
++}
+--- a/iac/terraform/m1_public_s3.tf
++++ b/iac/terraform/m1_public_s3.tf
+@@ -26,10 +26,10 @@
+ resource "aws_s3_bucket_public_access_block" "m1_public_access" {
+   bucket = aws_s3_bucket.m1_public_bucket.id
+ 
+-  block_public_acls       = false   #  Không chặn public ACL
+-  block_public_policy     = false   #  Không chặn public policy
+-  ignore_public_acls      = false   #  Không bỏ qua public ACL
+-  restrict_public_buckets = false   #  Không giới hạn public bucket
++  block_public_acls       = true   #  Không chặn public ACL
++  block_public_policy     = true   #  Không chặn public policy
++  ignore_public_acls      = true   #  Không bỏ qua public ACL
++  restrict_public_buckets = true   #  Không giới hạn public bucket
+ }
+ 
+ resource "aws_s3_bucket_acl" "m1_public_acl" {
+@@ -39,7 +39,7 @@
+   ]
+ 
+   bucket = aws_s3_bucket.m1_public_bucket.id
+-  acl    = "public-read" #  Ai cũng có thể đọc
++  acl    = "private" #  Ai cũng có thể đọc
+ }
+ 
+ # --- 1b. S3 Bucket với Bucket Policy cho phép truy cập ẩn danh ---
+@@ -56,30 +56,13 @@
+ resource "aws_s3_bucket_public_access_block" "m1_policy_public_access" {
+   bucket = aws_s3_bucket.m1_policy_public_bucket.id
+ 
+-  block_public_acls       = false
+-  block_public_policy     = false
+-  ignore_public_acls      = false
+-  restrict_public_buckets = false
++  block_public_acls       = true
++  block_public_policy     = true
++  ignore_public_acls      = true
++  restrict_public_buckets = true
+ }
+ 
+ #  MISCONFIGURATION: Bucket policy cho phép Principal = "*"
+-resource "aws_s3_bucket_policy" "m1_public_policy" {
+-  depends_on = [aws_s3_bucket_public_access_block.m1_policy_public_access]
+-  bucket     = aws_s3_bucket.m1_policy_public_bucket.id
+-
+-  policy = jsonencode({
+-    Version = "2012-10-17"
+-    Statement = [
+-      {
+-        Sid       = "AllowPublicRead"
+-        Effect    = "Allow"
+-        Principal = "*"                          #  Bất kỳ ai
+-        Action    = "s3:GetObject"
+-        Resource  = "${aws_s3_bucket.m1_policy_public_bucket.arn}/*"
+-      }
+-    ]
+-  })
+-}
+ 
+ # Upload file mẫu chứa "dữ liệu nhạy cảm"
+ resource "aws_s3_object" "m1_sensitive_file" {
+--- a/iac/terraform/m2_wide_open_sg.tf
++++ b/iac/terraform/m2_wide_open_sg.tf
+@@ -39,7 +39,7 @@
+     from_port   = 22
+     to_port     = 22
+     protocol    = "tcp"
+-    cidr_blocks = ["0.0.0.0/0"] #  Toàn bộ IPv4
++    cidr_blocks = var.admin_cidr_blocks #  Chỉ cho phép quản trị từ CIDR tin cậy
+   }
+ 
+   #  RDP mở cho toàn bộ internet
+@@ -48,16 +48,7 @@
+     from_port   = 3389
+     to_port     = 3389
+     protocol    = "tcp"
+-    cidr_blocks = ["0.0.0.0/0"] #  Toàn bộ IPv4
+-  }
+-
+-  #  Mở ALL traffic inbound
+-  ingress {
+-    description = "All traffic from anywhere"
+-    from_port   = 0
+-    to_port     = 0
+-    protocol    = "-1"
+-    cidr_blocks = ["0.0.0.0/0"] #  Tất cả port, tất cả protocol
++    cidr_blocks = var.admin_cidr_blocks #  Chỉ cho phép quản trị từ CIDR tin cậy
+   }
+ 
+   egress {
+--- a/iac/terraform/m4_unencrypted_storage.tf
++++ b/iac/terraform/m4_unencrypted_storage.tf
+@@ -7,7 +7,7 @@
+ resource "aws_ebs_volume" "m4_unencrypted_volume" {
+   availability_zone = "${var.aws_region}a"
+   size              = 10
+-  encrypted         = false #  MISCONFIGURATION: Không mã hóa
++  encrypted         = true #  MISCONFIGURATION: Không mã hóa
+ 
+   tags = {
+     Name     = "${var.project_prefix}-m4-unencrypted-ebs"
+@@ -39,6 +39,16 @@
+   }
+ }
+ 
++resource "aws_s3_bucket_server_side_encryption_configuration" "m4_bucket_sse" {
++  bucket = aws_s3_bucket.m4_unencrypted_bucket.id
++
++  rule {
++    apply_server_side_encryption_by_default {
++      sse_algorithm = "AES256"
++    }
++  }
++}
++
+ # Không cấu hình server_side_encryption_configuration → dữ liệu lưu plaintext
+ # (Trong thực tế AWS có default encryption, nhưng đây là demo misconfiguration)
+ 
+@@ -53,7 +63,7 @@
+     password = "SuperSecretP@ss123!" #  Password hardcoded
+     database = "production"
+   })
+-  #  Không có server_side_encryption → lưu plaintext
++  server_side_encryption = "AES256"
+ 
+   tags = {
+     Classification = "CONFIDENTIAL"
+@@ -88,7 +98,7 @@
+   instance_class = "db.t3.micro"
+ 
+   allocated_storage = 20
+-  storage_encrypted = false #  MISCONFIGURATION: RDS không mã hóa
++  storage_encrypted = true #  MISCONFIGURATION: RDS không mã hóa
+ 
+   db_name  = "mydb"
+   username = "admin"

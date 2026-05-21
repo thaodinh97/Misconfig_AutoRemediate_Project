@@ -1,0 +1,24 @@
+{
+  "kibana_url": "http://localhost:5601",
+  "dashboards": [
+    {
+      "title": "Hybrid Misconfiguration Detection Overview",
+      "id": "9ecc27d0-4c8f-11f1-ad2f-f9c2ff1b510b",
+      "url": "http://localhost:5601/app/dashboards#/view/9ecc27d0-4c8f-11f1-ad2f-f9c2ff1b510b",
+      "updated_at": "2026-05-20T15:32:08.291Z"
+    },
+    {
+      "title": "Triage and Remediation Readiness",
+      "id": "de604fce-a5c0-565b-a2c3-127350b0e727",
+      "url": "http://localhost:5601/app/dashboards#/view/de604fce-a5c0-565b-a2c3-127350b0e727",
+      "updated_at": "2026-05-20T15:40:50.532Z"
+    },
+    {
+      "title": "Compliance Evidence and Investigation Queue",
+      "id": "efa53aba-2b01-551e-a579-726064c83d52",
+      "url": "http://localhost:5601/app/dashboards#/view/efa53aba-2b01-551e-a579-726064c83d52",
+      "updated_at": "2026-05-20T15:46:30.708Z"
+    }
+  ],
+  "export_file": "artifacts/kibana/misconfig_dashboards.ndjson"
+}

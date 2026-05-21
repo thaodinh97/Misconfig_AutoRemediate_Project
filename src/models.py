@@ -98,3 +98,56 @@ class TriageDecision(BaseModel):
     metadata: Dict[str, Any] = Field(default_factory=dict)
     
     created_at: datetime = Field(default_factory=datetime.utcnow)
+
+
+class RemediationEvent(BaseModel):
+    """Audit record for a remediation attempt or IaC PR preparation."""
+
+    event_id: str
+    finding_id: str
+    finding_code: str
+    provider: str
+    resource_id: str
+    action_kind: str  # runtime_remediation, iac_pr_prepare
+    recommendation: str
+    status: RemediationStatus
+    started_at: datetime = Field(default_factory=datetime.utcnow)
+    completed_at: Optional[datetime] = None
+    duration_seconds: Optional[float] = None
+    manual_approval: bool = False
+    dry_run: bool = False
+    pipeline_source: str = "manual"
+    branch: str = ""
+    commit_sha: str = ""
+    command: Optional[List[str]] = None
+    patch_path: Optional[str] = None
+    pr_artifact_dir: Optional[str] = None
+    notes: Optional[str] = None
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+
+    class Config:
+        use_enum_values = True
+
+
+class MetricSnapshot(BaseModel):
+    """Point-in-time KPI snapshot for dashboards and reports."""
+
+    metric_id: str
+    generated_at: datetime = Field(default_factory=datetime.utcnow)
+    pipeline_source: str = "manual"
+    branch: str = ""
+    commit_sha: str = ""
+    total_findings: int = 0
+    total_decisions: int = 0
+    auto_remediate_candidates: int = 0
+    remediation_attempts: int = 0
+    remediation_successes: int = 0
+    remediation_failures: int = 0
+    remediation_rate: float = 0.0
+    mttr_seconds: Optional[float] = None
+    open_findings_before: int = 0
+    open_findings_after: int = 0
+    cis_findings_before: int = 0
+    cis_findings_after: int = 0
+    cis_reduction_rate: Optional[float] = None
+    metadata: Dict[str, Any] = Field(default_factory=dict)

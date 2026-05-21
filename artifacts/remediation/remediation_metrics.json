@@ -1,0 +1,29 @@
+{
+  "metric_id": "295cd726-87d9-5159-a081-e6a027838208",
+  "generated_at": "2026-05-20T16:17:43Z",
+  "pipeline_source": "capstone-demo",
+  "branch": "feat/normalize",
+  "commit_sha": "450ea09",
+  "total_findings": 91,
+  "total_decisions": 91,
+  "auto_remediate_candidates": 0,
+  "remediation_attempts": 4,
+  "remediation_successes": 4,
+  "remediation_failures": 0,
+  "remediation_rate": 1.0,
+  "mttr_seconds": 868482.0,
+  "open_findings_before": 91,
+  "open_findings_after": 87,
+  "cis_findings_before": 87,
+  "cis_findings_after": 87,
+  "cis_reduction_rate": 0.0,
+  "metadata": {
+    "iac_pr_prepared_count": 56,
+    "runtime_pending_count": 0,
+    "runtime_success_finding_ids": [
+      "66a0c03a-eadf-57be-bb1a-961c63c8be4a",
+      "db2a6e33-a4e5-5267-8863-ca54c21b553b",
+      "e1e68d8d-bded-5648-9c6a-22ab58c5531c"
+    ]
+  }
+}

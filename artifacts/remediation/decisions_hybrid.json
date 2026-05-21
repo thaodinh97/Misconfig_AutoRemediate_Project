@@ -1,0 +1,1094 @@
+[
+  {
+    "finding_id": "8daf7d63-8743-42b3-b1e9-18d5ff7a574c",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket_public_access_block.m1_public_access); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642088"
+  },
+  {
+    "finding_id": "84ed421c-2f07-42c6-9f90-ae1f4b8fe4ac",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket_public_access_block.m1_public_access); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642103"
+  },
+  {
+    "finding_id": "f154f21f-d1fc-4d1d-96c0-83797a0ce608",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket_public_access_block.m1_public_access); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642110"
+  },
+  {
+    "finding_id": "dc192e28-b69d-45ee-a934-ef75052ee9e2",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket_public_access_block.m1_public_access); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642115"
+  },
+  {
+    "finding_id": "265ce79b-f0a2-4833-80ac-170c1fcaf674",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket_public_access_block.m1_policy_public_access); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642120"
+  },
+  {
+    "finding_id": "3306ab11-dd3d-46fc-bddb-5f23e1f6b627",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket_public_access_block.m1_policy_public_access); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642125"
+  },
+  {
+    "finding_id": "df6f8b6a-c13e-4994-acdf-dbfd96aaf900",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket_public_access_block.m1_policy_public_access); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642129"
+  },
+  {
+    "finding_id": "4f83d9a6-3102-41b4-9e5d-428ba82c1586",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket_public_access_block.m1_policy_public_access); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642133"
+  },
+  {
+    "finding_id": "824a7a4e-8df9-4c82-9245-63b6fe880b31",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket_policy.m1_public_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642137"
+  },
+  {
+    "finding_id": "54632bf4-a2c5-4a18-b58e-36413aff53a3",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_subnet.m2_public_subnet); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642142"
+  },
+  {
+    "finding_id": "d533c0c1-c22b-4716-81bf-b77bc332470b",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_security_group.m2_wide_open_sg); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642146"
+  },
+  {
+    "finding_id": "13eeda47-2047-4177-a6bc-e5dc2bc4ca92",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_security_group.m2_wide_open_sg); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642150"
+  },
+  {
+    "finding_id": "7fb0490c-548c-4d24-9238-c5d963c606ae",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_security_group.m2_wide_open_sg); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642154"
+  },
+  {
+    "finding_id": "2326fb5b-3233-479d-9ec4-80d3c9d3d41e",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_security_group.m2_wide_open_sg); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642158"
+  },
+  {
+    "finding_id": "69208959-d5d8-4abc-8e8c-4c7330c9a06d",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_security_group.m2_wide_open_sg); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642162"
+  },
+  {
+    "finding_id": "329642d8-2113-4da2-82a7-72765e4db2c4",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_security_group.m2_wide_open_sg); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642167"
+  },
+  {
+    "finding_id": "31256df3-a2d7-4364-b72c-eac6bbf9f4d5",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_instance.m2_exposed_instance); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642170"
+  },
+  {
+    "finding_id": "b1dac807-1104-4738-b4fb-d1c2daef5850",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_instance.m2_exposed_instance); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642175"
+  },
+  {
+    "finding_id": "47369f1c-ea7c-4255-a0c3-79fadb608e49",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_instance.m2_exposed_instance); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642178"
+  },
+  {
+    "finding_id": "9d88563a-9180-42a8-b7b6-86836de31c9f",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_instance.m2_exposed_instance); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642182"
+  },
+  {
+    "finding_id": "cbd89c19-79c6-413d-af14-ff1f999595ac",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_user.m3_overprivileged_user); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642186"
+  },
+  {
+    "finding_id": "4542ddb3-0c45-4bb3-9656-8d53be37d4ee",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_user_policy.m3_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642190"
+  },
+  {
+    "finding_id": "472437fd-d696-48a0-8309-15d364d87483",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_user_policy.m3_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642194"
+  },
+  {
+    "finding_id": "8d8ed3a4-c704-4fee-bc69-3befa4d8828c",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_user_policy.m3_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642198"
+  },
+  {
+    "finding_id": "57cc2a03-2954-4489-a325-9a723d850323",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_user_policy.m3_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642202"
+  },
+  {
+    "finding_id": "a4f2d17a-739d-43c8-8a29-e424b36c2c67",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_user_policy.m3_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642206"
+  },
+  {
+    "finding_id": "a25eed17-efa2-47f4-9bc2-6fc1f5abc54b",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_user_policy.m3_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642210"
+  },
+  {
+    "finding_id": "34fbef6f-67b9-4334-b3a3-56dc1c31e4a5",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_user_policy.m3_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642214"
+  },
+  {
+    "finding_id": "903fec37-5961-423e-baa1-7619c4496e72",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_user_policy.m3_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642218"
+  },
+  {
+    "finding_id": "d51291e9-09dc-42f0-83f7-c2e6f149025f",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_user_policy.m3_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642222"
+  },
+  {
+    "finding_id": "a164de03-ae8f-4475-bfb3-74c2ffb8f516",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_role.m3_overprivileged_role); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642226"
+  },
+  {
+    "finding_id": "225c757d-a06d-4a08-92fa-29a2008d186b",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_role_policy.m3_role_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642230"
+  },
+  {
+    "finding_id": "3f66a2c9-5cb5-4bbb-aa8c-7229a7d4eb7d",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_role_policy.m3_role_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642234"
+  },
+  {
+    "finding_id": "a0995558-86f5-4de4-b86d-76694653f4db",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_role_policy.m3_role_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642238"
+  },
+  {
+    "finding_id": "b9cc2576-1663-465b-9aeb-6e65c114ac8e",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_role_policy.m3_role_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642242"
+  },
+  {
+    "finding_id": "e760b328-a4b0-43c1-8585-3e13cd23bd7b",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_role_policy.m3_role_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642245"
+  },
+  {
+    "finding_id": "928ae18e-2f92-4a67-a186-7bf8db6d38f5",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_role_policy.m3_role_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642249"
+  },
+  {
+    "finding_id": "db721e25-32e4-41e7-a3b0-0d9bf20552dc",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_group_policy.m3_group_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642253"
+  },
+  {
+    "finding_id": "227ee9e0-1b86-41b2-afd4-3665a79e539b",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_group_policy.m3_group_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642258"
+  },
+  {
+    "finding_id": "7d84e6fa-a560-43c7-be2e-bc8230586e56",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_group_policy.m3_group_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642262"
+  },
+  {
+    "finding_id": "09b9f035-0777-4e19-83fc-a88cfc5fe34f",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_ebs_volume.m4_unencrypted_volume); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642266"
+  },
+  {
+    "finding_id": "dbe9a679-8220-4da0-abec-eefeec6f9785",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_ebs_volume.m4_unencrypted_volume); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642271"
+  },
+  {
+    "finding_id": "668d32e5-db0b-4b0e-b642-5931d77160bd",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_db_instance.m4_unencrypted_rds); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642275"
+  },
+  {
+    "finding_id": "14b23420-7527-4042-b58c-95480ad63e65",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_db_instance.m4_unencrypted_rds); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642278"
+  },
+  {
+    "finding_id": "22244141-14c8-4c75-9d37-b95b09568f4d",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_db_instance.m4_unencrypted_rds); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642282"
+  },
+  {
+    "finding_id": "1f973570-8988-43b6-8390-296ebb5ecb1f",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_db_instance.m4_unencrypted_rds); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642286"
+  },
+  {
+    "finding_id": "40dade5b-3dde-44e4-b16a-6499ac0d1f73",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_db_instance.m4_unencrypted_rds); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642290"
+  },
+  {
+    "finding_id": "49b9989e-1648-43b4-b1c8-540d97cf64bb",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_db_instance.m4_unencrypted_rds); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642294"
+  },
+  {
+    "finding_id": "3a547adb-afa4-459e-a150-93ebed3f84e9",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_db_instance.m4_unencrypted_rds); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642298"
+  },
+  {
+    "finding_id": "0c46f3d8-dc62-4fad-a983-3a9850b4247b",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_security_group.m5_intended_sg); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642302"
+  },
+  {
+    "finding_id": "82a5d88b-2739-48c7-88ec-16e36f427712",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_security_group.m5_intended_sg); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642305"
+  },
+  {
+    "finding_id": "5e821b26-a8ef-492a-a974-91da9a82cc9a",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_ecr_repository.m6_vulnerable_repo); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642309"
+  },
+  {
+    "finding_id": "d81a9d1e-69d7-4640-85b1-aa68de5b67ad",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_ecr_repository.m6_vulnerable_repo); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642313"
+  },
+  {
+    "finding_id": "38c7e670-1328-46fd-8a74-0610683404b9",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_ecr_repository.m6_vulnerable_repo); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642317"
+  },
+  {
+    "finding_id": "6d0d3405-274d-4d11-863d-27ee523d4a7e",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_ecr_repository_policy.m6_public_ecr_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642321"
+  },
+  {
+    "finding_id": "96f16db7-1b34-4f7b-bd9e-d4e3c9f5bf7d",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_ecs_cluster.m6_cluster); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642325"
+  },
+  {
+    "finding_id": "e6b52a9d-b662-43f1-9b3f-559ef166eacd",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_ecs_task_definition.m6_vulnerable_task); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642329"
+  },
+  {
+    "finding_id": "af00c2c3-f916-4acb-85e1-b388baf2bbab",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m1_public_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642333"
+  },
+  {
+    "finding_id": "bdb6bd50-1ff2-4bde-890a-9559053f13a3",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m1_policy_public_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642337"
+  },
+  {
+    "finding_id": "fbfc3483-22c5-4c9e-b5e0-237773c7b105",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m4_unencrypted_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642341"
+  },
+  {
+    "finding_id": "f536dff1-8b64-4b29-bfe9-e72a8f21d2ba",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m1_public_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642345"
+  },
+  {
+    "finding_id": "ea00766c-a96a-4f2a-a562-5d5b6fa6e2a1",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m1_public_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642349"
+  },
+  {
+    "finding_id": "b6a82a14-e1cb-40d3-a9b6-7c1e5a1352a1",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m1_policy_public_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642353"
+  },
+  {
+    "finding_id": "745549e9-f44f-4811-b40c-8a3002289af5",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m4_unencrypted_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642357"
+  },
+  {
+    "finding_id": "22b64573-61dc-4edc-8e79-7d68e6a16705",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_db_instance.m4_unencrypted_rds); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642360"
+  },
+  {
+    "finding_id": "ab9fab67-a48c-438a-abca-99c169d924bb",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_user_policy.m3_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642364"
+  },
+  {
+    "finding_id": "31ea8212-4cba-43f3-a1ad-89fec396e097",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_iam_role_policy.m3_role_wildcard_policy); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642368"
+  },
+  {
+    "finding_id": "3e4cca2a-07c9-48f6-9e5f-5c7307a29fd7",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_vpc.m2_vpc); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642372"
+  },
+  {
+    "finding_id": "a1f632d9-e981-485b-a28d-ab622baa992d",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m1_public_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642376"
+  },
+  {
+    "finding_id": "91b9cca5-f7dd-4e3c-86f1-9738ce639174",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m1_policy_public_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642380"
+  },
+  {
+    "finding_id": "d2b81511-97c0-4c3c-8cae-45ee9cc633f6",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m4_unencrypted_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642384"
+  },
+  {
+    "finding_id": "fc1db64b-0b1e-4ab3-a953-3571ee0809c2",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_security_group.m5_intended_sg); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642388"
+  },
+  {
+    "finding_id": "37c09a1a-ecbb-4bc3-a29b-172875b89654",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_instance.m2_exposed_instance); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642392"
+  },
+  {
+    "finding_id": "2e2add57-bcb9-4ca4-9441-99f1fad97f4a",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m1_public_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642396"
+  },
+  {
+    "finding_id": "0b0fa544-3c75-49e8-b64c-fdb46dcf116e",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m1_policy_public_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642400"
+  },
+  {
+    "finding_id": "fa97c94f-14df-4cea-9b2a-26c3d40daa22",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m4_unencrypted_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642404"
+  },
+  {
+    "finding_id": "7304d36e-e68b-4191-bb5b-70449700bf17",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m1_public_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642408"
+  },
+  {
+    "finding_id": "aee10d2e-ea88-4f71-b616-e2cbc4cc65d2",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m1_policy_public_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642412"
+  },
+  {
+    "finding_id": "8b8f773e-249d-4075-b3c4-f2874607d623",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m4_unencrypted_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642416"
+  },
+  {
+    "finding_id": "e710c4d1-5669-4df0-89b1-38b03c3fe6cb",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m1_public_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642420"
+  },
+  {
+    "finding_id": "c509c475-b907-4c90-a976-b71cdd78e6c4",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m1_policy_public_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642424"
+  },
+  {
+    "finding_id": "83fdf597-1776-4e12-ab3a-b6233e4765fb",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m4_unencrypted_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642428"
+  },
+  {
+    "finding_id": "61849193-71af-4df6-a8dc-e1c76d2491c5",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket_ownership_controls.m1_ownership); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642432"
+  },
+  {
+    "finding_id": "148e8cde-3dba-4f56-8141-f1066697a452",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m1_public_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642436"
+  },
+  {
+    "finding_id": "6607473c-535c-4a6f-b858-b3a49491c7a6",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m1_policy_public_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642440"
+  },
+  {
+    "finding_id": "892bf521-362e-4199-b77b-c31abe8ba346",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_s3_bucket.m4_unencrypted_bucket); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642444"
+  },
+  {
+    "finding_id": "d471972c-f50a-4026-adc4-f91545831de4",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: MEDIUM; Resource: terraform_resource (aws_vpc.m2_vpc); Scanner: checkov; Manual review recommended",
+    "metadata": {
+      "severity": "MEDIUM",
+      "resource_type": "terraform_resource",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:53:45.642448"
+  },
+  {
+    "finding_id": "66a0c03a-eadf-57be-bb1a-961c63c8be4a",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: HIGH; Resource: swift_container (threat-demo-m1-public-container); Scanner: openstack_custom; Manual review recommended",
+    "metadata": {
+      "severity": "HIGH",
+      "resource_type": "swift_container",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:59:46.077042"
+  },
+  {
+    "finding_id": "db2a6e33-a4e5-5267-8863-ca54c21b553b",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: HIGH; Resource: security_group (sg-123); Scanner: openstack_custom; Manual review recommended",
+    "metadata": {
+      "severity": "HIGH",
+      "resource_type": "security_group",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:59:46.077054"
+  },
+  {
+    "finding_id": "db2a6e33-a4e5-5267-8863-ca54c21b553b",
+    "recommendation": "manual_review",
+    "confidence_score": 0.8,
+    "reasoning": "Severity: HIGH; Resource: security_group (sg-123); Scanner: openstack_custom; Manual review recommended",
+    "metadata": {
+      "severity": "HIGH",
+      "resource_type": "security_group",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:59:46.077061"
+  },
+  {
+    "finding_id": "e1e68d8d-bded-5648-9c6a-22ab58c5531c",
+    "recommendation": "manual_review",
+    "confidence_score": 0.99,
+    "reasoning": "Severity: CRITICAL; Resource: role_assignment (threat-demo-m3-overpriv-project:threat-demo-m3-overpriv-user:admin); Scanner: openstack_custom; Critical finding requires manual review and approval",
+    "metadata": {
+      "severity": "CRITICAL",
+      "resource_type": "role_assignment",
+      "remediation_available": true
+    },
+    "created_at": "2026-05-10T14:59:46.077065"
+  }
+]

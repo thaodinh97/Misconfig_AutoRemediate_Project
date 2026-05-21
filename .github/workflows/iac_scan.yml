@@ -9,6 +9,7 @@ on:
   push:
     branches:
       - main
+      - feat/normalize
       - develop
     paths:
       - 'iac/terraform/**'
@@ -46,6 +47,11 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install Base Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
       - name: Install Checkov
         run: pip install checkov
 
@@ -61,6 +67,37 @@ jobs:
           name: checkov-report
           path: checkov-report.json
 
+      - name: Generate normalized findings
+        run: |
+          python -m src.scanners.runner \
+            --checkov \
+            --output-dir ./scan_results \
+            --terraform-dir ./iac/terraform
+
+      - name: Triage findings
+        run: |
+          python -m src.triage.engine \
+            --input ./scan_results/findings.json \
+            --output ./triage_results/decisions.json
+
+      - name: Prepare IaC remediation PR bundle
+        run: |
+          python -m src.remediation.iac_pr_prepare \
+            --findings ./scan_results/findings.json \
+            --decisions ./triage_results/decisions.json \
+            --terraform-dir ./iac/terraform \
+            --output-dir ./artifacts/iac_pr \
+            --run-label checkov_pr_bundle \
+            --pipeline-source github-actions-iac \
+            --branch "${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}" \
+            --commit-sha "${GITHUB_SHA}"
+
+      - name: Upload IaC remediation bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: iac-remediation-bundle
+          path: artifacts/iac_pr/checkov_pr_bundle
+
       - name: Comment PR with findings
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v6
@@ -68,14 +105,21 @@ jobs:
           script: |
             const fs = require('fs');
             const report = JSON.parse(fs.readFileSync('checkov-report.json', 'utf8'));
-            const failed = report.check_type.results.failed_checks || [];
+            const failed =
+              (report.results && report.results.failed_checks) ||
+              (report.check_type && report.check_type.results && report.check_type.results.failed_checks) ||
+              [];
+            const bundle = JSON.parse(fs.readFileSync('artifacts/iac_pr/checkov_pr_bundle/summary.json', 'utf8'));
             
-            if (failed.length > 0) {
+            if (failed.length > 0 || bundle.supported_findings_count > 0) {
               const comment = `## Checkov Findings\n\n` +
-                `**Failed Checks: ${failed.length}**\n\n` +
-                failed.slice(0, 10).map(c => 
+                `**Failed Checks: ${failed.length}**\n` +
+                `**Autofix-ready findings: ${bundle.supported_findings_count}**\n` +
+                `**Suggested branch: ${bundle.suggested_branch}**\n\n` +
+                failed.slice(0, 10).map(c =>
                   `- ${c.check_id}: ${c.check_name} (${c.resource})`
-                ).join('\n');
+                ).join('\n') +
+                `\n\nGenerated bundle artifact: \`iac-remediation-bundle\``;
               
               github.rest.issues.createComment({
                 issue_number: context.issue.number,
@@ -102,4 +146,3 @@ jobs:
         with:
           name: tfsec-report
           path: ./iac/terraform/tfsec-report.json
-

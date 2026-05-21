@@ -45,7 +45,40 @@ source ~/openrc
 PROJECT_PREFIX=threat-demo ./openstack/cleanup_misconfig_openstack.sh
 ```
 
-## 5) Notes
+## 5) Export Raw Evidence For Pipeline
+
+```bash
+chmod +x openstack/export_misconfig_openstack.sh
+source ~/openrc
+PROJECT_PREFIX=threat-demo ./openstack/export_misconfig_openstack.sh
+```
+
+Convert raw evidence thành normalized findings:
+
+```bash
+./.venv/bin/python -m src.openstack.findings \
+  --container-file reports/raw/openstack/live/container_public.json \
+  --sg-rules-file reports/raw/openstack/live/security_group_rules.json \
+  --role-assignments-file reports/raw/openstack/live/role_assignments.json \
+  --output ./scan_results/openstack_findings.json
+```
+
+Publish findings lên Elasticsearch:
+
+```bash
+./.venv/bin/python -m src.siem.publisher \
+  --findings ./scan_results/openstack_findings.json \
+  --pipeline-source openstack-lab \
+  --branch feat/normalize \
+  --commit-sha "$(git rev-parse --short HEAD)"
+```
+
+## 6) Notes
 
 - Chỉ chạy trong lab, không chạy trên môi trường production.
 - Nếu bạn đổi tên tài nguyên, set lại env vars: `PUBLIC_CONTAINER`, `WIDE_OPEN_SG`, `DEMO_PROJECT`, `DEMO_USER`, `DEMO_ROLE`.
+- Sau khi xong phần scan/triage/dashboard, dùng thêm [docs/REMEDIATION.md](./REMEDIATION.md) để:
+  - export 3 dashboard thành artifact `.ndjson`
+  - chạy runtime remediation demo có audit trail
+  - tạo Terraform PR-prep bundle
+  - build/publish remediation metrics vào Elasticsearch

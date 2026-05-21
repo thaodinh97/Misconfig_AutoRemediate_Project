@@ -1,0 +1,2731 @@
+[
+  {
+    "finding_id": "8daf7d63-8743-42b3-b1e9-18d5ff7a574c",
+    "finding_code": "CKV_AWS_54",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure S3 bucket has block public policy enabled",
+    "description": "Ensure S3 bucket has block public policy enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket_public_access_block.m1_public_access",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-20"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619634",
+    "last_seen_at": "2026-05-10T14:53:27.619638",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_54",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-20"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "84ed421c-2f07-42c6-9f90-ae1f4b8fe4ac",
+    "finding_code": "CKV_AWS_55",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure S3 bucket has ignore public ACLs enabled",
+    "description": "Ensure S3 bucket has ignore public ACLs enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket_public_access_block.m1_public_access",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-21"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619671",
+    "last_seen_at": "2026-05-10T14:53:27.619672",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_55",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-21"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "f154f21f-d1fc-4d1d-96c0-83797a0ce608",
+    "finding_code": "CKV_AWS_53",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure S3 bucket has block public ACLS enabled",
+    "description": "Ensure S3 bucket has block public ACLS enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket_public_access_block.m1_public_access",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-19"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619684",
+    "last_seen_at": "2026-05-10T14:53:27.619684",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_53",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-19"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "dc192e28-b69d-45ee-a934-ef75052ee9e2",
+    "finding_code": "CKV_AWS_56",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure S3 bucket has 'restrict_public_buckets' enabled",
+    "description": "Ensure S3 bucket has 'restrict_public_buckets' enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket_public_access_block.m1_public_access",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-22"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619693",
+    "last_seen_at": "2026-05-10T14:53:27.619694",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_56",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-22"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "265ce79b-f0a2-4833-80ac-170c1fcaf674",
+    "finding_code": "CKV_AWS_54",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure S3 bucket has block public policy enabled",
+    "description": "Ensure S3 bucket has block public policy enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket_public_access_block.m1_policy_public_access",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-20"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619702",
+    "last_seen_at": "2026-05-10T14:53:27.619703",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_54",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-20"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "3306ab11-dd3d-46fc-bddb-5f23e1f6b627",
+    "finding_code": "CKV_AWS_55",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure S3 bucket has ignore public ACLs enabled",
+    "description": "Ensure S3 bucket has ignore public ACLs enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket_public_access_block.m1_policy_public_access",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-21"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619710",
+    "last_seen_at": "2026-05-10T14:53:27.619711",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_55",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-21"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "df6f8b6a-c13e-4994-acdf-dbfd96aaf900",
+    "finding_code": "CKV_AWS_53",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure S3 bucket has block public ACLS enabled",
+    "description": "Ensure S3 bucket has block public ACLS enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket_public_access_block.m1_policy_public_access",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-19"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619719",
+    "last_seen_at": "2026-05-10T14:53:27.619719",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_53",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-19"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "4f83d9a6-3102-41b4-9e5d-428ba82c1586",
+    "finding_code": "CKV_AWS_56",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure S3 bucket has 'restrict_public_buckets' enabled",
+    "description": "Ensure S3 bucket has 'restrict_public_buckets' enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket_public_access_block.m1_policy_public_access",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-22"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619726",
+    "last_seen_at": "2026-05-10T14:53:27.619727",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_56",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-22"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "824a7a4e-8df9-4c82-9245-63b6fe880b31",
+    "finding_code": "CKV_AWS_70",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure S3 bucket does not allow an action with any Principal",
+    "description": "Ensure S3 bucket does not allow an action with any Principal",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket_policy.m1_public_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619735",
+    "last_seen_at": "2026-05-10T14:53:27.619735",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_70",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/bc-aws-s3-23"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "54632bf4-a2c5-4a18-b58e-36413aff53a3",
+    "finding_code": "CKV_AWS_130",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure VPC subnets do not assign public IP by default",
+    "description": "Ensure VPC subnets do not assign public IP by default",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_subnet.m2_public_subnet",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-vpc-subnets-do-not-assign-public-ip-by-default"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619742",
+    "last_seen_at": "2026-05-10T14:53:27.619743",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m2_wide_open_sg.tf",
+      "check_id": "CKV_AWS_130",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-vpc-subnets-do-not-assign-public-ip-by-default"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "d533c0c1-c22b-4716-81bf-b77bc332470b",
+    "finding_code": "CKV_AWS_277",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure no security groups allow ingress from 0.0.0.0:0 to port -1",
+    "description": "Ensure no security groups allow ingress from 0.0.0.0:0 to port -1",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_security_group.m2_wide_open_sg",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-group-does-not-allow-all-traffic-on-all-ports"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619751",
+    "last_seen_at": "2026-05-10T14:53:27.619751",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m2_wide_open_sg.tf",
+      "check_id": "CKV_AWS_277",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-group-does-not-allow-all-traffic-on-all-ports"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "13eeda47-2047-4177-a6bc-e5dc2bc4ca92",
+    "finding_code": "CKV_AWS_382",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1",
+    "description": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_security_group.m2_wide_open_sg",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/bc-aws-382"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619759",
+    "last_seen_at": "2026-05-10T14:53:27.619759",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m2_wide_open_sg.tf",
+      "check_id": "CKV_AWS_382",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/bc-aws-382"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "7fb0490c-548c-4d24-9238-c5d963c606ae",
+    "finding_code": "CKV_AWS_25",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389",
+    "description": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_security_group.m2_wide_open_sg",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-2"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619767",
+    "last_seen_at": "2026-05-10T14:53:27.619767",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m2_wide_open_sg.tf",
+      "check_id": "CKV_AWS_25",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-2"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "2326fb5b-3233-479d-9ec4-80d3c9d3d41e",
+    "finding_code": "CKV_AWS_24",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22",
+    "description": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_security_group.m2_wide_open_sg",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-1-port-security"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619775",
+    "last_seen_at": "2026-05-10T14:53:27.619775",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m2_wide_open_sg.tf",
+      "check_id": "CKV_AWS_24",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-1-port-security"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "69208959-d5d8-4abc-8e8c-4c7330c9a06d",
+    "finding_code": "CKV_AWS_260",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80",
+    "description": "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_security_group.m2_wide_open_sg",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-groups-do-not-allow-ingress-from-00000-to-port-80"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619782",
+    "last_seen_at": "2026-05-10T14:53:27.619783",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m2_wide_open_sg.tf",
+      "check_id": "CKV_AWS_260",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-groups-do-not-allow-ingress-from-00000-to-port-80"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "329642d8-2113-4da2-82a7-72765e4db2c4",
+    "finding_code": "CKV_AWS_23",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure every security group and rule has a description",
+    "description": "Ensure every security group and rule has a description",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_security_group.m2_wide_open_sg",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619790",
+    "last_seen_at": "2026-05-10T14:53:27.619790",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m2_wide_open_sg.tf",
+      "check_id": "CKV_AWS_23",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "31256df3-a2d7-4364-b72c-eac6bbf9f4d5",
+    "finding_code": "CKV_AWS_126",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that detailed monitoring is enabled for EC2 instances",
+    "description": "Ensure that detailed monitoring is enabled for EC2 instances",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_instance.m2_exposed_instance",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-detailed-monitoring-is-enabled-for-ec2-instances"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619797",
+    "last_seen_at": "2026-05-10T14:53:27.619798",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m2_wide_open_sg.tf",
+      "check_id": "CKV_AWS_126",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-detailed-monitoring-is-enabled-for-ec2-instances"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "b1dac807-1104-4738-b4fb-d1c2daef5850",
+    "finding_code": "CKV_AWS_79",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure Instance Metadata Service Version 1 is not enabled",
+    "description": "Ensure Instance Metadata Service Version 1 is not enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_instance.m2_exposed_instance",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-31"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619805",
+    "last_seen_at": "2026-05-10T14:53:27.619806",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m2_wide_open_sg.tf",
+      "check_id": "CKV_AWS_79",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-31"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "47369f1c-ea7c-4255-a0c3-79fadb608e49",
+    "finding_code": "CKV_AWS_8",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted",
+    "description": "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_instance.m2_exposed_instance",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-13"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619813",
+    "last_seen_at": "2026-05-10T14:53:27.619814",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m2_wide_open_sg.tf",
+      "check_id": "CKV_AWS_8",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-13"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "9d88563a-9180-42a8-b7b6-86836de31c9f",
+    "finding_code": "CKV_AWS_135",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that EC2 is EBS optimized",
+    "description": "Ensure that EC2 is EBS optimized",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_instance.m2_exposed_instance",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ec2-is-ebs-optimized"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619821",
+    "last_seen_at": "2026-05-10T14:53:27.619821",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m2_wide_open_sg.tf",
+      "check_id": "CKV_AWS_135",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ec2-is-ebs-optimized"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "cbd89c19-79c6-413d-af14-ff1f999595ac",
+    "finding_code": "CKV_AWS_273",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure access is controlled through SSO and not AWS IAM defined users",
+    "description": "Ensure access is controlled through SSO and not AWS IAM defined users",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_user.m3_overprivileged_user",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-273"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619828",
+    "last_seen_at": "2026-05-10T14:53:27.619829",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_273",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-273"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "4542ddb3-0c45-4bb3-9656-8d53be37d4ee",
+    "finding_code": "CKV_AWS_355",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+    "description": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_user_policy.m3_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-355"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619836",
+    "last_seen_at": "2026-05-10T14:53:27.619836",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_355",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-355"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "472437fd-d696-48a0-8309-15d364d87483",
+    "finding_code": "CKV_AWS_286",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure IAM policies does not allow privilege escalation",
+    "description": "Ensure IAM policies does not allow privilege escalation",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_user_policy.m3_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-286"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619843",
+    "last_seen_at": "2026-05-10T14:53:27.619844",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_286",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-286"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "8d8ed3a4-c704-4fee-bc69-3befa4d8828c",
+    "finding_code": "CKV_AWS_287",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure IAM policies does not allow credentials exposure",
+    "description": "Ensure IAM policies does not allow credentials exposure",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_user_policy.m3_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-287"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619851",
+    "last_seen_at": "2026-05-10T14:53:27.619851",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_287",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-287"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "57cc2a03-2954-4489-a325-9a723d850323",
+    "finding_code": "CKV_AWS_290",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure IAM policies does not allow write access without constraints",
+    "description": "Ensure IAM policies does not allow write access without constraints",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_user_policy.m3_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-290"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619858",
+    "last_seen_at": "2026-05-10T14:53:27.619863",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_290",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-290"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "a4f2d17a-739d-43c8-8a29-e424b36c2c67",
+    "finding_code": "CKV_AWS_40",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure IAM policies are attached only to groups or roles (Reducing access management complexity may in-turn reduce opportunity for a principal to inadvertently receive or retain excessive privileges.)",
+    "description": "Ensure IAM policies are attached only to groups or roles (Reducing access management complexity may in-turn reduce opportunity for a principal to inadvertently receive or retain excessive privileges.)",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_user_policy.m3_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-16-iam-policy-privileges-1"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619871",
+    "last_seen_at": "2026-05-10T14:53:27.619871",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_40",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-16-iam-policy-privileges-1"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "a25eed17-efa2-47f4-9bc2-6fc1f5abc54b",
+    "finding_code": "CKV_AWS_62",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure IAM policies that allow full \"*-*\" administrative privileges are not created",
+    "description": "Ensure IAM policies that allow full \"*-*\" administrative privileges are not created",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_user_policy.m3_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-iam-45"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619878",
+    "last_seen_at": "2026-05-10T14:53:27.619879",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_62",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-iam-45"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "34fbef6f-67b9-4334-b3a3-56dc1c31e4a5",
+    "finding_code": "CKV_AWS_288",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure IAM policies does not allow data exfiltration",
+    "description": "Ensure IAM policies does not allow data exfiltration",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_user_policy.m3_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-288"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619886",
+    "last_seen_at": "2026-05-10T14:53:27.619887",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_288",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-288"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "903fec37-5961-423e-baa1-7619c4496e72",
+    "finding_code": "CKV_AWS_289",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
+    "description": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_user_policy.m3_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-289"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619894",
+    "last_seen_at": "2026-05-10T14:53:27.619894",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_289",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-289"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "d51291e9-09dc-42f0-83f7-c2e6f149025f",
+    "finding_code": "CKV_AWS_63",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure no IAM policies documents allow \"*\" as a statement's actions",
+    "description": "Ensure no IAM policies documents allow \"*\" as a statement's actions",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_user_policy.m3_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-48"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619901",
+    "last_seen_at": "2026-05-10T14:53:27.619902",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_63",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-48"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "a164de03-ae8f-4475-bfb3-74c2ffb8f516",
+    "finding_code": "CKV_AWS_60",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure IAM role allows only specific services or principals to assume it",
+    "description": "Ensure IAM role allows only specific services or principals to assume it",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_role.m3_overprivileged_role",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-iam-44"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619909",
+    "last_seen_at": "2026-05-10T14:53:27.619909",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_60",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-iam-44"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "225c757d-a06d-4a08-92fa-29a2008d186b",
+    "finding_code": "CKV_AWS_355",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+    "description": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_role_policy.m3_role_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-355"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619916",
+    "last_seen_at": "2026-05-10T14:53:27.619916",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_355",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-355"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "3f66a2c9-5cb5-4bbb-aa8c-7229a7d4eb7d",
+    "finding_code": "CKV_AWS_286",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure IAM policies does not allow privilege escalation",
+    "description": "Ensure IAM policies does not allow privilege escalation",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_role_policy.m3_role_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-286"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619923",
+    "last_seen_at": "2026-05-10T14:53:27.619924",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_286",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-286"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "a0995558-86f5-4de4-b86d-76694653f4db",
+    "finding_code": "CKV_AWS_287",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure IAM policies does not allow credentials exposure",
+    "description": "Ensure IAM policies does not allow credentials exposure",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_role_policy.m3_role_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-287"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619931",
+    "last_seen_at": "2026-05-10T14:53:27.619932",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_287",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-287"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "b9cc2576-1663-465b-9aeb-6e65c114ac8e",
+    "finding_code": "CKV_AWS_290",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure IAM policies does not allow write access without constraints",
+    "description": "Ensure IAM policies does not allow write access without constraints",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_role_policy.m3_role_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-290"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619939",
+    "last_seen_at": "2026-05-10T14:53:27.619939",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_290",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-290"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "e760b328-a4b0-43c1-8585-3e13cd23bd7b",
+    "finding_code": "CKV_AWS_288",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure IAM policies does not allow data exfiltration",
+    "description": "Ensure IAM policies does not allow data exfiltration",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_role_policy.m3_role_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-288"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619946",
+    "last_seen_at": "2026-05-10T14:53:27.619946",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_288",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-288"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "928ae18e-2f92-4a67-a186-7bf8db6d38f5",
+    "finding_code": "CKV_AWS_289",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
+    "description": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_role_policy.m3_role_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-289"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619953",
+    "last_seen_at": "2026-05-10T14:53:27.619954",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_289",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-289"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "db721e25-32e4-41e7-a3b0-0d9bf20552dc",
+    "finding_code": "CKV_AWS_355",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+    "description": "Ensure no IAM policies documents allow \"*\" as a statement's resource for restrictable actions",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_group_policy.m3_group_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-355"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619961",
+    "last_seen_at": "2026-05-10T14:53:27.619962",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_355",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-355"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "227ee9e0-1b86-41b2-afd4-3665a79e539b",
+    "finding_code": "CKV_AWS_286",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure IAM policies does not allow privilege escalation",
+    "description": "Ensure IAM policies does not allow privilege escalation",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_group_policy.m3_group_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-286"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619968",
+    "last_seen_at": "2026-05-10T14:53:27.619969",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_286",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-286"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "7d84e6fa-a560-43c7-be2e-bc8230586e56",
+    "finding_code": "CKV_AWS_289",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
+    "description": "Ensure IAM policies does not allow permissions management / resource exposure without constraints",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_group_policy.m3_group_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-289"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619976",
+    "last_seen_at": "2026-05-10T14:53:27.619977",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV_AWS_289",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-289"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "09b9f035-0777-4e19-83fc-a88cfc5fe34f",
+    "finding_code": "CKV_AWS_3",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure all data stored in the EBS is securely encrypted",
+    "description": "Ensure all data stored in the EBS is securely encrypted",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_ebs_volume.m4_unencrypted_volume",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-3-encrypt-ebs-volume"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619984",
+    "last_seen_at": "2026-05-10T14:53:27.619985",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV_AWS_3",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-3-encrypt-ebs-volume"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "dbe9a679-8220-4da0-abec-eefeec6f9785",
+    "finding_code": "CKV_AWS_189",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure EBS Volume is encrypted by KMS using a customer managed Key (CMK)",
+    "description": "Ensure EBS Volume is encrypted by KMS using a customer managed Key (CMK)",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_ebs_volume.m4_unencrypted_volume",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-109"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.619992",
+    "last_seen_at": "2026-05-10T14:53:27.619993",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV_AWS_189",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-109"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "668d32e5-db0b-4b0e-b642-5931d77160bd",
+    "finding_code": "CKV_AWS_16",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure all data stored in the RDS is securely encrypted at rest",
+    "description": "Ensure all data stored in the RDS is securely encrypted at rest",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_db_instance.m4_unencrypted_rds",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-4"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620000",
+    "last_seen_at": "2026-05-10T14:53:27.620000",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV_AWS_16",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-4"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "14b23420-7527-4042-b58c-95480ad63e65",
+    "finding_code": "CKV_AWS_293",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that AWS database instances have deletion protection enabled",
+    "description": "Ensure that AWS database instances have deletion protection enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_db_instance.m4_unencrypted_rds",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-293"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620007",
+    "last_seen_at": "2026-05-10T14:53:27.620008",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV_AWS_293",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-293"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "22244141-14c8-4c75-9d37-b95b09568f4d",
+    "finding_code": "CKV_AWS_157",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that RDS instances have Multi-AZ enabled",
+    "description": "Ensure that RDS instances have Multi-AZ enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_db_instance.m4_unencrypted_rds",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-73"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620014",
+    "last_seen_at": "2026-05-10T14:53:27.620015",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV_AWS_157",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-73"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "1f973570-8988-43b6-8390-296ebb5ecb1f",
+    "finding_code": "CKV_AWS_161",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure RDS database has IAM authentication enabled",
+    "description": "Ensure RDS database has IAM authentication enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_db_instance.m4_unencrypted_rds",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-rds-database-has-iam-authentication-enabled"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620022",
+    "last_seen_at": "2026-05-10T14:53:27.620022",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV_AWS_161",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-rds-database-has-iam-authentication-enabled"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "40dade5b-3dde-44e4-b16a-6499ac0d1f73",
+    "finding_code": "CKV_AWS_118",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that enhanced monitoring is enabled for Amazon RDS instances",
+    "description": "Ensure that enhanced monitoring is enabled for Amazon RDS instances",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_db_instance.m4_unencrypted_rds",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-enhanced-monitoring-is-enabled-for-amazon-rds-instances"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620029",
+    "last_seen_at": "2026-05-10T14:53:27.620030",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV_AWS_118",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-enhanced-monitoring-is-enabled-for-amazon-rds-instances"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "49b9989e-1648-43b4-b1c8-540d97cf64bb",
+    "finding_code": "CKV_AWS_129",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that respective logs of Amazon Relational Database Service (Amazon RDS) are enabled",
+    "description": "Ensure that respective logs of Amazon Relational Database Service (Amazon RDS) are enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_db_instance.m4_unencrypted_rds",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-that-respective-logs-of-amazon-relational-database-service-amazon-rds-are-enabled"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620038",
+    "last_seen_at": "2026-05-10T14:53:27.620038",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV_AWS_129",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-that-respective-logs-of-amazon-relational-database-service-amazon-rds-are-enabled"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "3a547adb-afa4-459e-a150-93ebed3f84e9",
+    "finding_code": "CKV_AWS_226",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure DB instance gets all minor upgrades automatically",
+    "description": "Ensure DB instance gets all minor upgrades automatically",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_db_instance.m4_unencrypted_rds",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-aws-db-instance-gets-all-minor-upgrades-automatically"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620045",
+    "last_seen_at": "2026-05-10T14:53:27.620046",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV_AWS_226",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-aws-db-instance-gets-all-minor-upgrades-automatically"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "0c46f3d8-dc62-4fad-a983-3a9850b4247b",
+    "finding_code": "CKV_AWS_382",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1",
+    "description": "Ensure no security groups allow egress from 0.0.0.0:0 to port -1",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_security_group.m5_intended_sg",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/bc-aws-382"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620053",
+    "last_seen_at": "2026-05-10T14:53:27.620054",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m5_iac_drift.tf",
+      "check_id": "CKV_AWS_382",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/bc-aws-382"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "82a5d88b-2739-48c7-88ec-16e36f427712",
+    "finding_code": "CKV_AWS_23",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure every security group and rule has a description",
+    "description": "Ensure every security group and rule has a description",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_security_group.m5_intended_sg",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620061",
+    "last_seen_at": "2026-05-10T14:53:27.620061",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m5_iac_drift.tf",
+      "check_id": "CKV_AWS_23",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "5e821b26-a8ef-492a-a974-91da9a82cc9a",
+    "finding_code": "CKV_AWS_163",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure ECR image scanning on push is enabled",
+    "description": "Ensure ECR image scanning on push is enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_ecr_repository.m6_vulnerable_repo",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-8"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620068",
+    "last_seen_at": "2026-05-10T14:53:27.620068",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m6_container_secrets.tf",
+      "check_id": "CKV_AWS_163",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-8"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "d81a9d1e-69d7-4640-85b1-aa68de5b67ad",
+    "finding_code": "CKV_AWS_136",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that ECR repositories are encrypted using KMS",
+    "description": "Ensure that ECR repositories are encrypted using KMS",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_ecr_repository.m6_vulnerable_repo",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ecr-repositories-are-encrypted"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620075",
+    "last_seen_at": "2026-05-10T14:53:27.620076",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m6_container_secrets.tf",
+      "check_id": "CKV_AWS_136",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ecr-repositories-are-encrypted"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "38c7e670-1328-46fd-8a74-0610683404b9",
+    "finding_code": "CKV_AWS_51",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure ECR Image Tags are immutable",
+    "description": "Ensure ECR Image Tags are immutable",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_ecr_repository.m6_vulnerable_repo",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-24"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620092",
+    "last_seen_at": "2026-05-10T14:53:27.620092",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m6_container_secrets.tf",
+      "check_id": "CKV_AWS_51",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-24"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "6d0d3405-274d-4d11-863d-27ee523d4a7e",
+    "finding_code": "CKV_AWS_32",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure ECR policy is not set to public",
+    "description": "Ensure ECR policy is not set to public",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_ecr_repository_policy.m6_public_ecr_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/public-policies/public-1-ecr-repositories-not-public"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620099",
+    "last_seen_at": "2026-05-10T14:53:27.620100",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m6_container_secrets.tf",
+      "check_id": "CKV_AWS_32",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/public-policies/public-1-ecr-repositories-not-public"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "96f16db7-1b34-4f7b-bd9e-d4e3c9f5bf7d",
+    "finding_code": "CKV_AWS_65",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure container insights are enabled on ECS cluster",
+    "description": "Ensure container insights are enabled on ECS cluster",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_ecs_cluster.m6_cluster",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-logging-11"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620107",
+    "last_seen_at": "2026-05-10T14:53:27.620107",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m6_container_secrets.tf",
+      "check_id": "CKV_AWS_65",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-logging-11"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "e6b52a9d-b662-43f1-9b3f-559ef166eacd",
+    "finding_code": "CKV_AWS_336",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure ECS containers are limited to read-only access to root filesystems",
+    "description": "Ensure ECS containers are limited to read-only access to root filesystems",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_ecs_task_definition.m6_vulnerable_task",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-336"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620114",
+    "last_seen_at": "2026-05-10T14:53:27.620115",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m6_container_secrets.tf",
+      "check_id": "CKV_AWS_336",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-336"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "af00c2c3-f916-4acb-85e1-b388baf2bbab",
+    "finding_code": "CKV_AWS_144",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that S3 bucket has cross-region replication enabled",
+    "description": "Ensure that S3 bucket has cross-region replication enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m1_public_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-bucket-has-cross-region-replication-enabled"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620122",
+    "last_seen_at": "2026-05-10T14:53:27.620122",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_144",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-bucket-has-cross-region-replication-enabled"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "bdb6bd50-1ff2-4bde-890a-9559053f13a3",
+    "finding_code": "CKV_AWS_144",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that S3 bucket has cross-region replication enabled",
+    "description": "Ensure that S3 bucket has cross-region replication enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m1_policy_public_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-bucket-has-cross-region-replication-enabled"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620129",
+    "last_seen_at": "2026-05-10T14:53:27.620130",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_144",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-bucket-has-cross-region-replication-enabled"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "fbfc3483-22c5-4c9e-b5e0-237773c7b105",
+    "finding_code": "CKV_AWS_144",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that S3 bucket has cross-region replication enabled",
+    "description": "Ensure that S3 bucket has cross-region replication enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m4_unencrypted_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-bucket-has-cross-region-replication-enabled"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620136",
+    "last_seen_at": "2026-05-10T14:53:27.620137",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV_AWS_144",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-bucket-has-cross-region-replication-enabled"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "f536dff1-8b64-4b29-bfe9-e72a8f21d2ba",
+    "finding_code": "CKV_AWS_20",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "S3 Bucket has an ACL defined which allows public READ access.",
+    "description": "S3 Bucket has an ACL defined which allows public READ access.",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m1_public_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-1-acl-read-permissions-everyone"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620144",
+    "last_seen_at": "2026-05-10T14:53:27.620145",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_20",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-1-acl-read-permissions-everyone"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "ea00766c-a96a-4f2a-a562-5d5b6fa6e2a1",
+    "finding_code": "CKV2_AWS_62",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure S3 buckets should have event notifications enabled",
+    "description": "Ensure S3 buckets should have event notifications enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m1_public_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-2-62"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620152",
+    "last_seen_at": "2026-05-10T14:53:27.620152",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV2_AWS_62",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-2-62"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "b6a82a14-e1cb-40d3-a9b6-7c1e5a1352a1",
+    "finding_code": "CKV2_AWS_62",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure S3 buckets should have event notifications enabled",
+    "description": "Ensure S3 buckets should have event notifications enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m1_policy_public_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-2-62"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620159",
+    "last_seen_at": "2026-05-10T14:53:27.620159",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV2_AWS_62",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-2-62"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "745549e9-f44f-4811-b40c-8a3002289af5",
+    "finding_code": "CKV2_AWS_62",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure S3 buckets should have event notifications enabled",
+    "description": "Ensure S3 buckets should have event notifications enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m4_unencrypted_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-2-62"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620167",
+    "last_seen_at": "2026-05-10T14:53:27.620167",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV2_AWS_62",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-2-62"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "22b64573-61dc-4edc-8e79-7d68e6a16705",
+    "finding_code": "CKV2_AWS_60",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure RDS instance with copy tags to snapshots is enabled",
+    "description": "Ensure RDS instance with copy tags to snapshots is enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_db_instance.m4_unencrypted_rds",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-2-60"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620174",
+    "last_seen_at": "2026-05-10T14:53:27.620175",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV2_AWS_60",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-2-60"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "ab9fab67-a48c-438a-abca-99c169d924bb",
+    "finding_code": "CKV2_AWS_40",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure AWS IAM policy does not allow full IAM privileges",
+    "description": "Ensure AWS IAM policy does not allow full IAM privileges",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_user_policy.m3_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-2-40"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620182",
+    "last_seen_at": "2026-05-10T14:53:27.620182",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV2_AWS_40",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-2-40"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "31ea8212-4cba-43f3-a1ad-89fec396e097",
+    "finding_code": "CKV2_AWS_40",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure AWS IAM policy does not allow full IAM privileges",
+    "description": "Ensure AWS IAM policy does not allow full IAM privileges",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_iam_role_policy.m3_role_wildcard_policy",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-2-40"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620189",
+    "last_seen_at": "2026-05-10T14:53:27.620190",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m3_iam_wildcard.tf",
+      "check_id": "CKV2_AWS_40",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-2-40"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "3e4cca2a-07c9-48f6-9e5f-5c7307a29fd7",
+    "finding_code": "CKV2_AWS_11",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure VPC flow logging is enabled in all VPCs",
+    "description": "Ensure VPC flow logging is enabled in all VPCs",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_vpc.m2_vpc",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/logging-9-enable-vpc-flow-logging"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620196",
+    "last_seen_at": "2026-05-10T14:53:27.620197",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m2_wide_open_sg.tf",
+      "check_id": "CKV2_AWS_11",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/logging-9-enable-vpc-flow-logging"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "a1f632d9-e981-485b-a28d-ab622baa992d",
+    "finding_code": "CKV2_AWS_61",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that an S3 bucket has a lifecycle configuration",
+    "description": "Ensure that an S3 bucket has a lifecycle configuration",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m1_public_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-2-61"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620204",
+    "last_seen_at": "2026-05-10T14:53:27.620205",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV2_AWS_61",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-2-61"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "91b9cca5-f7dd-4e3c-86f1-9738ce639174",
+    "finding_code": "CKV2_AWS_61",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that an S3 bucket has a lifecycle configuration",
+    "description": "Ensure that an S3 bucket has a lifecycle configuration",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m1_policy_public_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-2-61"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620212",
+    "last_seen_at": "2026-05-10T14:53:27.620213",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV2_AWS_61",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-2-61"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "d2b81511-97c0-4c3c-8cae-45ee9cc633f6",
+    "finding_code": "CKV2_AWS_61",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that an S3 bucket has a lifecycle configuration",
+    "description": "Ensure that an S3 bucket has a lifecycle configuration",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m4_unencrypted_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-2-61"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620220",
+    "last_seen_at": "2026-05-10T14:53:27.620220",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV2_AWS_61",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/bc-aws-2-61"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "fc1db64b-0b1e-4ab3-a953-3571ee0809c2",
+    "finding_code": "CKV2_AWS_5",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that Security Groups are attached to another resource",
+    "description": "Ensure that Security Groups are attached to another resource",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_security_group.m5_intended_sg",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-that-security-groups-are-attached-to-ec2-instances-or-elastic-network-interfaces-enis"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620227",
+    "last_seen_at": "2026-05-10T14:53:27.620228",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m5_iac_drift.tf",
+      "check_id": "CKV2_AWS_5",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-that-security-groups-are-attached-to-ec2-instances-or-elastic-network-interfaces-enis"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "37c09a1a-ecbb-4bc3-a29b-172875b89654",
+    "finding_code": "CKV2_AWS_41",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure an IAM role is attached to EC2 instance",
+    "description": "Ensure an IAM role is attached to EC2 instance",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_instance.m2_exposed_instance",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-an-iam-role-is-attached-to-ec2-instance"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620235",
+    "last_seen_at": "2026-05-10T14:53:27.620235",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m2_wide_open_sg.tf",
+      "check_id": "CKV2_AWS_41",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-an-iam-role-is-attached-to-ec2-instance"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "2e2add57-bcb9-4ca4-9441-99f1fad97f4a",
+    "finding_code": "CKV_AWS_21",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure all data stored in the S3 bucket have versioning enabled",
+    "description": "Ensure all data stored in the S3 bucket have versioning enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m1_public_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-16-enable-versioning"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620242",
+    "last_seen_at": "2026-05-10T14:53:27.620243",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_21",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-16-enable-versioning"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "0b0fa544-3c75-49e8-b64c-fdb46dcf116e",
+    "finding_code": "CKV_AWS_21",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure all data stored in the S3 bucket have versioning enabled",
+    "description": "Ensure all data stored in the S3 bucket have versioning enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m1_policy_public_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-16-enable-versioning"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620250",
+    "last_seen_at": "2026-05-10T14:53:27.620250",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_21",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-16-enable-versioning"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "fa97c94f-14df-4cea-9b2a-26c3d40daa22",
+    "finding_code": "CKV_AWS_21",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure all data stored in the S3 bucket have versioning enabled",
+    "description": "Ensure all data stored in the S3 bucket have versioning enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m4_unencrypted_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-16-enable-versioning"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620257",
+    "last_seen_at": "2026-05-10T14:53:27.620258",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV_AWS_21",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-16-enable-versioning"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "7304d36e-e68b-4191-bb5b-70449700bf17",
+    "finding_code": "CKV_AWS_145",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that S3 buckets are encrypted with KMS by default",
+    "description": "Ensure that S3 buckets are encrypted with KMS by default",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m1_public_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-buckets-are-encrypted-with-kms-by-default"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620264",
+    "last_seen_at": "2026-05-10T14:53:27.620265",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_145",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-buckets-are-encrypted-with-kms-by-default"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "aee10d2e-ea88-4f71-b616-e2cbc4cc65d2",
+    "finding_code": "CKV_AWS_145",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that S3 buckets are encrypted with KMS by default",
+    "description": "Ensure that S3 buckets are encrypted with KMS by default",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m1_policy_public_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-buckets-are-encrypted-with-kms-by-default"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620272",
+    "last_seen_at": "2026-05-10T14:53:27.620273",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_145",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-buckets-are-encrypted-with-kms-by-default"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "8b8f773e-249d-4075-b3c4-f2874607d623",
+    "finding_code": "CKV_AWS_145",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that S3 buckets are encrypted with KMS by default",
+    "description": "Ensure that S3 buckets are encrypted with KMS by default",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m4_unencrypted_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-buckets-are-encrypted-with-kms-by-default"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620280",
+    "last_seen_at": "2026-05-10T14:53:27.620280",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV_AWS_145",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-s3-buckets-are-encrypted-with-kms-by-default"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "e710c4d1-5669-4df0-89b1-38b03c3fe6cb",
+    "finding_code": "CKV_AWS_18",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure the S3 bucket has access logging enabled",
+    "description": "Ensure the S3 bucket has access logging enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m1_public_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-13-enable-logging"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620287",
+    "last_seen_at": "2026-05-10T14:53:27.620287",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_18",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-13-enable-logging"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "c509c475-b907-4c90-a976-b71cdd78e6c4",
+    "finding_code": "CKV_AWS_18",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure the S3 bucket has access logging enabled",
+    "description": "Ensure the S3 bucket has access logging enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m1_policy_public_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-13-enable-logging"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620294",
+    "last_seen_at": "2026-05-10T14:53:27.620295",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV_AWS_18",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-13-enable-logging"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "83fdf597-1776-4e12-ab3a-b6233e4765fb",
+    "finding_code": "CKV_AWS_18",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure the S3 bucket has access logging enabled",
+    "description": "Ensure the S3 bucket has access logging enabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m4_unencrypted_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-13-enable-logging"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620301",
+    "last_seen_at": "2026-05-10T14:53:27.620302",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV_AWS_18",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/s3-policies/s3-13-enable-logging"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "61849193-71af-4df6-a8dc-e1c76d2491c5",
+    "finding_code": "CKV2_AWS_65",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure access control lists for S3 buckets are disabled",
+    "description": "Ensure access control lists for S3 buckets are disabled",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket_ownership_controls.m1_ownership",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-112"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620308",
+    "last_seen_at": "2026-05-10T14:53:27.620309",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV2_AWS_65",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-112"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "148e8cde-3dba-4f56-8141-f1066697a452",
+    "finding_code": "CKV2_AWS_6",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that S3 bucket has a Public Access block",
+    "description": "Ensure that S3 bucket has a Public Access block",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m1_public_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/s3-bucket-should-have-public-access-blocks-defaults-to-false-if-the-public-access-block-is-not-attached"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620316",
+    "last_seen_at": "2026-05-10T14:53:27.620317",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV2_AWS_6",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/s3-bucket-should-have-public-access-blocks-defaults-to-false-if-the-public-access-block-is-not-attached"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "6607473c-535c-4a6f-b858-b3a49491c7a6",
+    "finding_code": "CKV2_AWS_6",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that S3 bucket has a Public Access block",
+    "description": "Ensure that S3 bucket has a Public Access block",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m1_policy_public_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/s3-bucket-should-have-public-access-blocks-defaults-to-false-if-the-public-access-block-is-not-attached"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620324",
+    "last_seen_at": "2026-05-10T14:53:27.620324",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m1_public_s3.tf",
+      "check_id": "CKV2_AWS_6",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/s3-bucket-should-have-public-access-blocks-defaults-to-false-if-the-public-access-block-is-not-attached"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "892bf521-362e-4199-b77b-c31abe8ba346",
+    "finding_code": "CKV2_AWS_6",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure that S3 bucket has a Public Access block",
+    "description": "Ensure that S3 bucket has a Public Access block",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_s3_bucket.m4_unencrypted_bucket",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/s3-bucket-should-have-public-access-blocks-defaults-to-false-if-the-public-access-block-is-not-attached"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620331",
+    "last_seen_at": "2026-05-10T14:53:27.620332",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m4_unencrypted_storage.tf",
+      "check_id": "CKV2_AWS_6",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/s3-bucket-should-have-public-access-blocks-defaults-to-false-if-the-public-access-block-is-not-attached"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "d471972c-f50a-4026-adc4-f91545831de4",
+    "finding_code": "CKV2_AWS_12",
+    "scanner": "checkov",
+    "provider": "aws",
+    "severity": "MEDIUM",
+    "title": "Ensure the default security group of every VPC restricts all traffic",
+    "description": "Ensure the default security group of every VPC restricts all traffic",
+    "resource_type": "terraform_resource",
+    "resource_id": "aws_vpc.m2_vpc",
+    "resource_name": null,
+    "region": null,
+    "cis_controls": [
+      "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-4"
+    ],
+    "risk_category": null,
+    "remediation_available": true,
+    "remediation_type": "pr",
+    "detected_at": "2026-05-10T14:53:27.620338",
+    "last_seen_at": "2026-05-10T14:53:27.620339",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "file_path": "/m2_wide_open_sg.tf",
+      "check_id": "CKV2_AWS_12",
+      "guideline": "https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-4"
+    },
+    "tags": {}
+  },
+  {
+    "finding_id": "66a0c03a-eadf-57be-bb1a-961c63c8be4a",
+    "finding_code": "OPENSTACK_SWIFT_PUBLIC_READ",
+    "scanner": "openstack_custom",
+    "provider": "openstack",
+    "severity": "HIGH",
+    "title": "OpenStack Swift container allows public read",
+    "description": "Container threat-demo-m1-public-container exposes public read/listing ACLs via `.r:*,.rlistings`.",
+    "resource_type": "swift_container",
+    "resource_id": "threat-demo-m1-public-container",
+    "resource_name": "threat-demo-m1-public-container",
+    "region": null,
+    "cis_controls": [],
+    "risk_category": "misconfiguration",
+    "remediation_available": true,
+    "remediation_type": "ansible",
+    "detected_at": "2026-05-10T14:59:41.405811",
+    "last_seen_at": "2026-05-10T14:59:41.405811",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "read_acl": ".r:*,.rlistings"
+    },
+    "tags": {
+      "provider": "openstack"
+    }
+  },
+  {
+    "finding_id": "db2a6e33-a4e5-5267-8863-ca54c21b553b",
+    "finding_code": "OPENSTACK_SG_WIDE_OPEN",
+    "scanner": "openstack_custom",
+    "provider": "openstack",
+    "severity": "HIGH",
+    "title": "OpenStack security group allows inbound access from anywhere",
+    "description": "Security group threat-demo-m2-wide-open-sg exposes protocol `tcp` on `22:22` to `0.0.0.0/0`.",
+    "resource_type": "security_group",
+    "resource_id": "sg-123",
+    "resource_name": "threat-demo-m2-wide-open-sg",
+    "region": null,
+    "cis_controls": [],
+    "risk_category": "misconfiguration",
+    "remediation_available": true,
+    "remediation_type": "ansible",
+    "detected_at": "2026-05-10T14:59:41.406701",
+    "last_seen_at": "2026-05-10T14:59:41.406701",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "direction": "ingress",
+      "remote_ip": "0.0.0.0/0",
+      "protocol": "tcp",
+      "port_range": "22:22"
+    },
+    "tags": {
+      "provider": "openstack"
+    }
+  },
+  {
+    "finding_id": "db2a6e33-a4e5-5267-8863-ca54c21b553b",
+    "finding_code": "OPENSTACK_SG_WIDE_OPEN",
+    "scanner": "openstack_custom",
+    "provider": "openstack",
+    "severity": "HIGH",
+    "title": "OpenStack security group allows inbound access from anywhere",
+    "description": "Security group threat-demo-m2-wide-open-sg exposes protocol `any` on `any` to `0.0.0.0/0`.",
+    "resource_type": "security_group",
+    "resource_id": "sg-123",
+    "resource_name": "threat-demo-m2-wide-open-sg",
+    "region": null,
+    "cis_controls": [],
+    "risk_category": "misconfiguration",
+    "remediation_available": true,
+    "remediation_type": "ansible",
+    "detected_at": "2026-05-10T14:59:41.406730",
+    "last_seen_at": "2026-05-10T14:59:41.406730",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "direction": "ingress",
+      "remote_ip": "0.0.0.0/0",
+      "protocol": "any",
+      "port_range": "any"
+    },
+    "tags": {
+      "provider": "openstack"
+    }
+  },
+  {
+    "finding_id": "e1e68d8d-bded-5648-9c6a-22ab58c5531c",
+    "finding_code": "OPENSTACK_PROJECT_ADMIN_ASSIGNMENT",
+    "scanner": "openstack_custom",
+    "provider": "openstack",
+    "severity": "CRITICAL",
+    "title": "OpenStack user has admin role on project",
+    "description": "User threat-demo-m3-overpriv-user is assigned role `admin` on project threat-demo-m3-overpriv-project.",
+    "resource_type": "role_assignment",
+    "resource_id": "threat-demo-m3-overpriv-project:threat-demo-m3-overpriv-user:admin",
+    "resource_name": "threat-demo-m3-overpriv-user",
+    "region": null,
+    "cis_controls": [],
+    "risk_category": "misconfiguration",
+    "remediation_available": true,
+    "remediation_type": "ansible",
+    "detected_at": "2026-05-10T14:59:41.406768",
+    "last_seen_at": "2026-05-10T14:59:41.406768",
+    "remediated_at": null,
+    "status": "OPEN",
+    "remediation_status": null,
+    "metadata": {
+      "role": "admin",
+      "project": "threat-demo-m3-overpriv-project"
+    },
+    "tags": {
+      "provider": "openstack"
+    }
+  }
+]
