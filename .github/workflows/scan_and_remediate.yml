@@ -90,8 +90,9 @@ jobs:
           ELASTICSEARCH_SCHEME: http
           TERRAFORM_DIR: ./iac/terraform
         run: |
+          PYTHON_BIN="$(command -v python)"
           export PATH="/tmp/checkov-venv/bin:/tmp/scoutsuite-venv/bin:$PATH"
-          python -m src.scanners.runner \
+          "$PYTHON_BIN" -m src.scanners.runner \
             --scoutsuite \
             --checkov \
             --output-dir ./scan_results
