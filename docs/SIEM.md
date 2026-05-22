@@ -18,6 +18,18 @@ Repo này hiện hỗ trợ 4 loại document publish vào Elasticsearch:
 Cách nhanh nhất là dùng stack có sẵn trong repo:
 
 ```bash
+./scripts/bootstrap_siem.sh
+```
+
+Script này sẽ:
+
+- bật `Elasticsearch` và `Kibana`
+- import sẵn 3 dashboard capstone
+- tạo thêm data view `misconfig-remediation-*` và `misconfig-metrics-*`
+
+Nếu muốn làm thủ công từng bước, dùng compose trực tiếp:
+
+```bash
 docker compose -f docker-compose.siem.yml up -d
 ```
 
@@ -53,10 +65,20 @@ python3 -m venv .venv
 ./.venv/bin/pip install -r requirements.txt
 ```
 
-Để chạy bước 2 với Checkov local:
+Để chạy bộ unit test và scanner local:
 
 ```bash
+./.venv/bin/pip install -r requirements-dev.txt
 ./.venv/bin/pip install -r requirements-checkov.txt
+pytest tests
+```
+
+Để chạy full scanner set Terraform local:
+
+```bash
+curl -sSfL https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+sudo install -m 0755 ./bin/tfsec /usr/local/bin/tfsec
+curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
 ```
 
 Nếu cần ScoutSuite về sau, cài nó trong venv riêng:
@@ -72,18 +94,34 @@ Nếu cần remediation về sau:
 ./.venv/bin/pip install -r requirements-remediation.txt
 ```
 
-## 3) Chạy Checkov -> Triage
+## 3) Chạy Checkov + tfsec + Trivy -> Triage
 
 ```bash
 ./.venv/bin/python -m src.scanners.runner \
   --checkov \
+  --tfsec \
+  --trivy \
   --output-dir ./scan_results \
-  --terraform-dir ./iac/terraform
+  --terraform-dir ./iac/terraform \
+  --trivy-scan-ref ./iac/terraform
 
 ./.venv/bin/python -m src.triage.engine \
   --input ./scan_results/findings.json \
   --output ./triage_results/decisions.json
+
+./.venv/bin/python -m src.triage.notifications \
+  --findings ./scan_results/findings.json \
+  --decisions ./triage_results/decisions.json \
+  --output-dir ./artifacts/triage_notifications
 ```
+
+Workflow GitHub `scan_and_remediate` chạy bộ scanner rộng hơn:
+
+- `ScoutSuite`
+- `CloudSploit`
+- `Checkov`
+- `tfsec`
+- `Trivy`
 
 ## 4) Publish findings và triage vào Elasticsearch
 
@@ -207,3 +245,4 @@ Indices mới:
 
 - `misconfig-remediation-*` cho audit trail remediation runtime và IaC PR-prep
 - `misconfig-metrics-*` cho `remediation_rate`, `MTTR`, `open_findings_before/after`, và `iac_pr_prepared_count`
+- `artifacts/triage_notifications/` cho owner notification, JIRA payload, ServiceNow payload, và chat alert templates

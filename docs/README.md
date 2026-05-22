@@ -82,3 +82,5 @@ Publish findings lên Elasticsearch:
   - chạy runtime remediation demo có audit trail
   - tạo Terraform PR-prep bundle
   - build/publish remediation metrics vào Elasticsearch
+- Chạy [docs/TESTING.md](./TESTING.md) để verify scanner normalization, owner notifications, và container secret CI guard.
+- Dùng [docs/DELIVERABLES.md](./DELIVERABLES.md) để gom artifact nộp bài và demo evidence.

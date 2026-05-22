@@ -14,6 +14,8 @@ from typing import List, Dict, Any, Optional
 from .checkov_scanner import CheckovScanner
 from .scoutsuite_scanner import ScoutSuiteScanner
 from .cloudsploit_scanner import CloudsploitScanner
+from .tfsec_scanner import TfsecScanner
+from .trivy_scanner import TrivyScanner
 from ..models import NormalizedFinding, ScanResult
 from ..config import get_config
 
@@ -103,6 +105,48 @@ class ScannerRunner:
 
         except Exception as e:
             logger.error(f"CloudSploit scan failed: {str(e)}", exc_info=True)
+            return None
+
+    def run_tfsec(self, terraform_dir: str = "./iac/terraform") -> Optional[ScanResult]:
+        """Run tfsec IaC scanner"""
+        try:
+            logger.info("Starting tfsec scan...")
+
+            if not Path(terraform_dir).exists():
+                logger.warning(f"Terraform directory not found: {terraform_dir}, skipping tfsec")
+                return None
+
+            scanner = TfsecScanner(
+                terraform_dir=terraform_dir,
+                provider="aws",
+            )
+
+            result = scanner.execute()
+            logger.info(f"tfsec scan completed: {result.findings_count} findings")
+            return result
+        except Exception as e:
+            logger.error(f"tfsec scan failed: {str(e)}", exc_info=True)
+            return None
+
+    def run_trivy(self, scan_ref: str = "./iac/terraform") -> Optional[ScanResult]:
+        """Run Trivy config/secret scanner"""
+        try:
+            logger.info("Starting Trivy scan...")
+
+            if not Path(scan_ref).exists():
+                logger.warning(f"Scan reference not found: {scan_ref}, skipping Trivy")
+                return None
+
+            scanner = TrivyScanner(
+                provider="aws",
+                scan_ref=scan_ref,
+            )
+
+            result = scanner.execute()
+            logger.info(f"Trivy scan completed: {result.findings_count} findings")
+            return result
+        except Exception as e:
+            logger.error(f"Trivy scan failed: {str(e)}", exc_info=True)
             return None
 
     def aggregate_findings(self) -> None:
@@ -209,7 +253,10 @@ class ScannerRunner:
             enable_scoutsuite: bool = True,
             enable_checkov: bool = True,
             enable_cloudsploit: bool = True,
-            terraform_dir: str = "./iac/terraform"
+            enable_tfsec: bool = True,
+            enable_trivy: bool = True,
+            terraform_dir: str = "./iac/terraform",
+            trivy_scan_ref: str = "./iac/terraform",
     ) -> int:
         """
         Execute scanners based on flags
@@ -239,6 +286,16 @@ class ScannerRunner:
 
             if enable_cloudsploit:
                 result = self.run_cloudsploit()
+                if result:
+                    self.scan_results.append(result)
+
+            if enable_tfsec:
+                result = self.run_tfsec(terraform_dir)
+                if result:
+                    self.scan_results.append(result)
+
+            if enable_trivy:
+                result = self.run_trivy(trivy_scan_ref)
                 if result:
                     self.scan_results.append(result)
 
@@ -287,6 +344,16 @@ def main():
         help="Run CloudSploit scanner"
     )
     parser.add_argument(
+        "--tfsec",
+        action="store_true",
+        help="Run tfsec scanner"
+    )
+    parser.add_argument(
+        "--trivy",
+        action="store_true",
+        help="Run Trivy scanner"
+    )
+    parser.add_argument(
         "--output-dir",
         default="./scan_results",
         help="Output directory for scan results (default: ./scan_results)"
@@ -296,18 +363,26 @@ def main():
         default="./iac/terraform",
         help="Terraform directory for Checkov (default: ./iac/terraform)"
     )
+    parser.add_argument(
+        "--trivy-scan-ref",
+        default="./iac/terraform",
+        help="Path for Trivy filesystem scan (default: ./iac/terraform)"
+    )
 
     args = parser.parse_args()
 
     # If no scanners specified, enable all
-    enable_all = not (args.scoutsuite or args.checkov or args.cloudsploit)
+    enable_all = not (args.scoutsuite or args.checkov or args.cloudsploit or args.tfsec or args.trivy)
 
     runner = ScannerRunner(output_dir=args.output_dir)
     exit_code = runner.run(
         enable_scoutsuite=args.scoutsuite or enable_all,
         enable_checkov=args.checkov or enable_all,
         enable_cloudsploit=args.cloudsploit or enable_all,
-        terraform_dir=args.terraform_dir
+        enable_tfsec=args.tfsec or enable_all,
+        enable_trivy=args.trivy or enable_all,
+        terraform_dir=args.terraform_dir,
+        trivy_scan_ref=args.trivy_scan_ref,
     )
 
     sys.exit(exit_code)

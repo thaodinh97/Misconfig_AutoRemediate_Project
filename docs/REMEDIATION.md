@@ -97,6 +97,22 @@ Artifacts:
 - `artifacts/tickets/iam_wildcard_review/SECURITY_REVIEW_TICKET.md`
 - `artifacts/tickets/iam_wildcard_review/review_events.json`
 
+### Generic owner / ticket notification artifacts
+
+```bash
+./.venv/bin/python -m src.triage.notifications \
+  --findings ./scan_results/findings.json \
+  --decisions ./triage_results/decisions.json \
+  --output-dir ./artifacts/triage_notifications
+```
+
+Artifacts:
+
+- `artifacts/triage_notifications/owner_notifications.json`
+- `artifacts/triage_notifications/jira_tickets.json`
+- `artifacts/triage_notifications/servicenow_incidents.json`
+- `artifacts/triage_notifications/chat_notifications.json`
+
 ## 3) IaC fix / PR-prep flow
 
 Generator:

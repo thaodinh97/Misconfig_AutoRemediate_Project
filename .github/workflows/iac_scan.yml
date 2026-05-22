@@ -146,18 +146,35 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
+          python -m pip install -r requirements-dev.txt
 
       - name: Verify Python runtime dependencies
         run: |
           python -c "import dotenv, pydantic; print('base runtime ok')"
 
+      - name: Run unit tests
+        run: |
+          python -m pytest tests
+
       - name: Install Checkov
-        run: pip install checkov
+        run: |
+          python -m venv /tmp/checkov-venv
+          /tmp/checkov-venv/bin/pip install --upgrade pip
+          /tmp/checkov-venv/bin/pip install -r requirements-checkov.txt
+
+      - name: Install tfsec
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+          sudo install -m 0755 ./bin/tfsec /usr/local/bin/tfsec
+
+      - name: Install Trivy
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
 
       - name: Run Checkov
         id: checkov
         run: |
-          checkov -d ./iac/terraform --output json --output-file checkov-report.json \
+          /tmp/checkov-venv/bin/checkov -d ./iac/terraform --output json --output-file checkov-report.json \
           --skip-framework dockerfile || true
 
       - name: Upload Checkov report
@@ -168,16 +185,28 @@ jobs:
 
       - name: Generate normalized findings
         run: |
-          python -m src.scanners.runner \
+          PYTHON_BIN="$(command -v python)"
+          export PATH="/tmp/checkov-venv/bin:$PATH"
+          "$PYTHON_BIN" -m src.scanners.runner \
             --checkov \
+            --tfsec \
+            --trivy \
             --output-dir ./scan_results \
-            --terraform-dir ./iac/terraform
+            --terraform-dir ./iac/terraform \
+            --trivy-scan-ref ./iac/terraform
 
       - name: Triage findings
         run: |
           python -m src.triage.engine \
             --input ./scan_results/findings.json \
             --output ./triage_results/decisions.json
+
+      - name: Generate manual review notifications
+        run: |
+          python -m src.triage.notifications \
+            --findings ./scan_results/findings.json \
+            --decisions ./triage_results/decisions.json \
+            --output-dir ./artifacts/triage_notifications
 
       - name: Install OPA
         run: |
@@ -205,6 +234,15 @@ jobs:
         with:
           name: iam-wildcard-review
           path: artifacts/tickets/iam_wildcard_review
+
+      - name: Upload normalized IaC pipeline artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: normalized-iac-pipeline
+          path: |
+            scan_results/
+            triage_results/
+            artifacts/triage_notifications
 
       - name: Prepare IaC remediation PR bundle
         run: |
