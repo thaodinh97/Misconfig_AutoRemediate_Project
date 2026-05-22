@@ -1,0 +1,17 @@
+{
+  "terraform_fmt": {
+    "available": true,
+    "returncode": 0,
+    "stdout": "m1_public_s3.tf\nm3_iam_wildcard.tf\nm4_unencrypted_storage.tf\noutputs.tf\n",
+    "stderr": ""
+  },
+  "checkov": {
+    "available": true,
+    "returncode": 1,
+    "stdout_summary": {
+      "failed_checks": 68,
+      "passed_checks": 76
+    },
+    "stderr": ""
+  }
+}

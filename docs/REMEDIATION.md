@@ -48,6 +48,55 @@ Ghi chú:
   - `OPENSTACK_SG_WIDE_OPEN`
   - `OPENSTACK_PROJECT_ADMIN_ASSIGNMENT`
 
+### AWS runtime remediation
+
+Executor:
+
+```bash
+./.venv/bin/python -m src.remediation.aws_runtime_executor \
+  --findings ./scan_results/findings.json \
+  --decisions ./triage_results/decisions.json \
+  --region ap-southeast-1 \
+  --project-prefix threat-demo \
+  --approve-all-manual \
+  --simulate-success \
+  --pipeline-source aws-runtime-demo \
+  --branch feat/normalize \
+  --commit-sha "$(git rev-parse --short HEAD)"
+```
+
+Flow này triển khai 3 nhánh:
+
+- `M1 Public S3` qua Cloud Custodian policy runtime
+- `M2 Wide-open SG` qua Ansible playbook `ansible/remediate_open_sg.yml`
+- `M4 Unencrypted storage` qua AWS API orchestration trong `src/remediation/aws_runtime_executor.py`
+
+Artifacts:
+
+- `artifacts/remediation/aws_runtime_events.json`
+- `artifacts/remediation/aws_findings_after_runtime.json`
+- `artifacts/remediation/custodian/`
+- `artifacts/remediation/ansible/`
+
+### IAM wildcard manual review ticket
+
+```bash
+./.venv/bin/python -m src.remediation.opa_ticket \
+  --findings ./scan_results/findings.json \
+  --decisions ./triage_results/decisions.json \
+  --output-dir ./artifacts/tickets/iam_wildcard_review \
+  --pipeline-source opa-iam-review \
+  --branch feat/normalize \
+  --commit-sha "$(git rev-parse --short HEAD)"
+```
+
+Artifacts:
+
+- `artifacts/tickets/iam_wildcard_review/input.json`
+- `artifacts/tickets/iam_wildcard_review/opa_result.json`
+- `artifacts/tickets/iam_wildcard_review/SECURITY_REVIEW_TICKET.md`
+- `artifacts/tickets/iam_wildcard_review/review_events.json`
+
 ## 3) IaC fix / PR-prep flow
 
 Generator:
@@ -81,6 +130,17 @@ Flow này hiện auto-generate patch cho:
 Unsupported findings vẫn được liệt kê ở:
 
 - `artifacts/iac_pr/checkov_pr_bundle/unsupported_findings.json`
+
+Để mở PR thật từ bundle:
+
+```bash
+./.venv/bin/python -m src.remediation.open_fix_pr \
+  --bundle-dir ./artifacts/iac_pr/checkov_pr_bundle \
+  --repo-root . \
+  --repo "${GITHUB_REPOSITORY}" \
+  --token "${GITHUB_TOKEN}" \
+  --base-branch main
+```
 
 ## 4) Metrics và audit publish vào Elasticsearch
 
@@ -140,4 +200,4 @@ Khi nộp bài, phần remediation/reporting giờ có thể lấy trực tiếp
 
 - `MTTR` hiện phản ánh timestamp demo giữa `detected_at` và thời điểm chạy remediation, chưa phải production MTTR.
 - `Compliance score` hiện là proxy qua `cis_findings_before/after`, chưa phải benchmark score đầy đủ.
-- IaC flow hiện là `PR-prep artifact`, chưa tự push branch hay mở PR trên GitHub API.
+- RDS encryption runtime flow tạo encrypted replacement instance nhưng vẫn cần cutover thủ công để tránh tự động phá dịch vụ.

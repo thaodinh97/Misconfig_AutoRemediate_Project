@@ -54,8 +54,8 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "m4_bucket_sse" {
 
 # Upload file nhạy cảm mà không chỉ định encryption
 resource "aws_s3_object" "m4_unencrypted_object" {
-  bucket  = aws_s3_bucket.m4_unencrypted_bucket.id
-  key     = "secrets/database_credentials.json"
+  bucket = aws_s3_bucket.m4_unencrypted_bucket.id
+  key    = "secrets/database_credentials.json"
   content = jsonencode({
     host     = "prod-db.internal.example.com"
     port     = 5432

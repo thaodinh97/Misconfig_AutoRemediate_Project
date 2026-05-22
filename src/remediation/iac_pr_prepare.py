@@ -6,7 +6,8 @@ from __future__ import annotations
 import argparse
 import json
 import shutil
-from copy import deepcopy
+import subprocess
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
@@ -73,13 +74,33 @@ variable "admin_cidr_blocks" {
     return text.rstrip() + "\n\n" + addition.lstrip()
 
 
+def run_optional_command(command: List[str], cwd: Path) -> Tuple[int, str, str]:
+    result = subprocess.run(
+        command,
+        cwd=str(cwd),
+        check=False,
+        text=True,
+        capture_output=True,
+    )
+    return result.returncode, result.stdout, result.stderr
+
+
+def resolve_tool(binary: str) -> str | None:
+    local_candidate = Path(sys.executable).with_name(binary)
+    if local_candidate.exists():
+        return str(local_candidate)
+    return shutil.which(binary)
+
+
 def fix_m1_public_s3(text: str) -> str:
     fixed = text
+    fixed = fixed.replace('object_ownership = "BucketOwnerPreferred"', 'object_ownership = "BucketOwnerEnforced"')
     fixed = fixed.replace("block_public_acls       = false", "block_public_acls       = true")
     fixed = fixed.replace("block_public_policy     = false", "block_public_policy     = true")
     fixed = fixed.replace("ignore_public_acls      = false", "ignore_public_acls      = true")
     fixed = fixed.replace("restrict_public_buckets = false", "restrict_public_buckets = true")
     fixed = fixed.replace('acl    = "public-read"', 'acl    = "private"')
+    fixed = remove_resource_block(fixed, "aws_s3_bucket_acl", "m1_public_acl")
     fixed = remove_resource_block(fixed, "aws_s3_bucket_policy", "m1_public_policy")
     return fixed
 
@@ -187,6 +208,71 @@ SUPPORTED_FIXERS = {
     "m2_wide_open_sg.tf": fix_m2_wide_open_sg,
     "m4_unencrypted_storage.tf": fix_m4_unencrypted_storage,
 }
+
+TARGETED_FINDING_CODES = {
+    "m1_public_s3.tf": {
+        "CKV_AWS_20",
+        "CKV_AWS_53",
+        "CKV_AWS_54",
+        "CKV_AWS_55",
+        "CKV_AWS_56",
+        "CKV_AWS_70",
+        "CKV2_AWS_65",
+    },
+    "m2_wide_open_sg.tf": {
+        "CKV_AWS_24",
+        "CKV_AWS_25",
+        "CKV_AWS_260",
+        "CKV_AWS_277",
+    },
+    "m4_unencrypted_storage.tf": {
+        "CKV_AWS_3",
+        "CKV_AWS_16",
+    },
+}
+
+
+def post_validation(terraform_dir: Path) -> Dict[str, Any]:
+    summary: Dict[str, Any] = {}
+
+    terraform = resolve_tool("terraform")
+    if terraform:
+        code, stdout, stderr = run_optional_command([terraform, "fmt", "-recursive"], terraform_dir)
+        summary["terraform_fmt"] = {
+            "available": True,
+            "returncode": code,
+            "stdout": stdout,
+            "stderr": stderr,
+        }
+    else:
+        summary["terraform_fmt"] = {"available": False}
+
+    checkov = resolve_tool("checkov")
+    if checkov:
+        code, stdout, stderr = run_optional_command(
+            [checkov, "-d", ".", "--framework", "terraform", "-o", "json"],
+            terraform_dir,
+        )
+        payload: Dict[str, Any] = {}
+        if stdout.strip():
+            try:
+                parsed = json.loads(stdout)
+                payload = {
+                    "failed_checks": len(parsed.get("results", {}).get("failed_checks", [])),
+                    "passed_checks": len(parsed.get("results", {}).get("passed_checks", [])),
+                }
+            except json.JSONDecodeError:
+                payload = {"raw_stdout": stdout}
+        summary["checkov"] = {
+            "available": True,
+            "returncode": code,
+            "stdout_summary": payload,
+            "stderr": stderr,
+        }
+    else:
+        summary["checkov"] = {"available": False}
+
+    return summary
 
 
 def generate_events(
@@ -304,6 +390,8 @@ def main() -> int:
     output_root = Path(args.output_dir)
     run_label = args.run_label or utc_now().strftime("%Y%m%dT%H%M%SZ")
     run_dir = output_root / run_label
+    if run_dir.exists():
+        shutil.rmtree(run_dir)
     fixed_dir = run_dir / "fixed_tree" / "iac" / "terraform"
     shutil.copytree(terraform_dir, fixed_dir)
 
@@ -347,11 +435,23 @@ def main() -> int:
                 unsupported_findings.append({**finding, "reason": "unsupported_file"})
             continue
 
+        targeted_codes = TARGETED_FINDING_CODES.get(Path(relative_path).name, set())
+        targeted_findings = [
+            finding for finding in file_findings if str(finding.get("finding_code") or "") in targeted_codes
+        ]
+        untargeted_findings = [
+            finding for finding in file_findings if str(finding.get("finding_code") or "") not in targeted_codes
+        ]
+        for finding in untargeted_findings:
+            unsupported_findings.append({**finding, "reason": "untargeted_check"})
+        if not targeted_findings:
+            continue
+
         target_path = fixed_dir / Path(relative_path).name
         before = target_path.read_text(encoding="utf-8")
         after = fixer(before)
         if after == before:
-            for finding in file_findings:
+            for finding in targeted_findings:
                 unsupported_findings.append({**finding, "reason": "no_change_generated"})
             continue
 
@@ -367,12 +467,14 @@ def main() -> int:
                 )
             )
         )
-        for finding in file_findings:
+        for finding in targeted_findings:
             supported_findings.append(finding)
             addressed_ids.add(str(finding.get("finding_id") or ""))
 
     patch_path = run_dir / "terraform_fix.patch"
     save_text(patch_path, "".join(diffs))
+    validation = post_validation(fixed_dir)
+    save_json(run_dir / "validation.json", validation)
 
     branch_name = f"autofix/{utc_now().strftime('%Y%m%d-%H%M%S')}"
     pr_body = build_pr_body(
@@ -395,6 +497,8 @@ def main() -> int:
         "supported_finding_ids": sorted(addressed_ids),
         "patch_file": str(patch_path),
         "pr_body_file": str(pr_body_path),
+        "validation_file": str(run_dir / "validation.json"),
+        "validation": validation,
     }
     summary_path = run_dir / "summary.json"
     save_json(summary_path, summary)

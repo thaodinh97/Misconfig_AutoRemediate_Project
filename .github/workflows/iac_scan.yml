@@ -13,8 +13,99 @@ on:
       - develop
     paths:
       - 'iac/terraform/**'
+  workflow_dispatch:
+    inputs:
+      auto_open_fix_pr:
+        description: "Open an automated remediation PR from the generated bundle"
+        required: false
+        default: 'false'
 
 jobs:
+  container-secret-guard:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Run container secret guard
+        id: container_secret_guard
+        run: |
+          set +e
+          python scripts/scan_container_secrets.py \
+            --paths ./iac/terraform/m6_container_secrets.tf ./iac/terraform/docker \
+            --output ./artifacts/security/container_secret_report.json
+          echo "exit_code=$?" >> $GITHUB_OUTPUT
+          exit 0
+
+      - name: Upload container secret report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: container-secret-report
+          path: ./artifacts/security/container_secret_report.json
+
+      - name: Alert Security team on pull request
+        if: steps.container_secret_guard.outputs.exit_code != '0' && github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('./artifacts/security/container_secret_report.json', 'utf8'));
+            const findings = report.findings || [];
+            const body = [
+              '## Security Alert: container secrets detected',
+              '',
+              `Detected findings: **${findings.length}**`,
+              '',
+              ...findings.slice(0, 10).map(f => `- ${f.rule_id} in \`${f.file_path}:${f.line}\``),
+              '',
+              'Deployment is blocked until these secrets are removed.'
+            ].join('\n');
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body
+            });
+
+      - name: Alert Security team with issue
+        if: steps.container_secret_guard.outputs.exit_code != '0' && github.event_name != 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const report = JSON.parse(fs.readFileSync('./artifacts/security/container_secret_report.json', 'utf8'));
+            const findings = report.findings || [];
+            const body = [
+              'Container secret guard blocked the pipeline.',
+              '',
+              `Detected findings: **${findings.length}**`,
+              '',
+              ...findings.slice(0, 10).map(f => `- ${f.rule_id} in \`${f.file_path}:${f.line}\``),
+              '',
+              'Security team review is required before deployment resumes.'
+            ].join('\n');
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Security alert: embedded container secrets detected',
+              labels: ['security'],
+              body
+            });
+
+      - name: Block pipeline
+        if: steps.container_secret_guard.outputs.exit_code != '0'
+        run: |
+          echo "Embedded container secrets detected. Blocking pipeline." >&2
+          exit 1
+
   tf-validate:
     runs-on: ubuntu-latest
     defaults:
@@ -40,6 +131,10 @@ jobs:
 
   checkov-scan:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -80,6 +175,33 @@ jobs:
             --input ./scan_results/findings.json \
             --output ./triage_results/decisions.json
 
+      - name: Install OPA
+        run: |
+          curl -L -o /usr/local/bin/opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64_static
+          chmod +x /usr/local/bin/opa
+
+      - name: Generate IAM wildcard review ticket
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python -m src.remediation.opa_ticket \
+            --findings ./scan_results/findings.json \
+            --decisions ./triage_results/decisions.json \
+            --output-dir ./artifacts/tickets/iam_wildcard_review \
+            --pipeline-source github-actions-iac \
+            --branch "${GITHUB_HEAD_REF:-$GITHUB_REF_NAME}" \
+            --commit-sha "${GITHUB_SHA}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --token "${GITHUB_TOKEN}" \
+            --create-github-issue
+
+      - name: Upload IAM review ticket artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: iam-wildcard-review
+          path: artifacts/tickets/iam_wildcard_review
+
       - name: Prepare IaC remediation PR bundle
         run: |
           python -m src.remediation.iac_pr_prepare \
@@ -97,6 +219,19 @@ jobs:
         with:
           name: iac-remediation-bundle
           path: artifacts/iac_pr/checkov_pr_bundle
+
+      - name: Open automated remediation PR
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.auto_open_fix_pr == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python -m src.remediation.open_fix_pr \
+            --bundle-dir ./artifacts/iac_pr/checkov_pr_bundle \
+            --repo-root . \
+            --repo "${GITHUB_REPOSITORY}" \
+            --token "${GITHUB_TOKEN}" \
+            --base-branch main
 
       - name: Comment PR with findings
         if: github.event_name == 'pull_request'

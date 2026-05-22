@@ -21,6 +21,8 @@ jobs:
     permissions:
       id-token: write
       contents: read
+      issues: write
+      pull-requests: write
     services:
       elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
@@ -136,4 +138,84 @@ jobs:
           for severity, count in summary['by_severity'].items():
               print(f'- {severity}: {count}')
           " >> $GITHUB_STEP_SUMMARY
+
+      - name: Install remediation toolchain
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.enable_remediation == 'true'
+        run: |
+          python -m venv /tmp/remediation-venv
+          /tmp/remediation-venv/bin/pip install --upgrade pip
+          /tmp/remediation-venv/bin/pip install -r requirements-remediation.txt
+          curl -L -o /usr/local/bin/opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64_static
+          chmod +x /usr/local/bin/opa
+
+      - name: Execute AWS runtime remediation
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.enable_remediation == 'true'
+        env:
+          AWS_REGION: us-east-1
+        run: |
+          export PATH="/tmp/remediation-venv/bin:$PATH"
+          python -m src.remediation.aws_runtime_executor \
+            --findings ./scan_results/findings.json \
+            --decisions ./triage_results/decisions.json \
+            --region "${AWS_REGION}" \
+            --project-prefix threat-demo \
+            --approve-all-manual \
+            --execute \
+            --pipeline-source github-actions-runtime \
+            --branch "${GITHUB_REF_NAME}" \
+            --commit-sha "${GITHUB_SHA}"
+
+      - name: Generate IAM wildcard review ticket
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.enable_remediation == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python -m src.remediation.opa_ticket \
+            --findings ./scan_results/findings.json \
+            --decisions ./triage_results/decisions.json \
+            --output-dir ./artifacts/tickets/iam_wildcard_review \
+            --pipeline-source github-actions-runtime \
+            --branch "${GITHUB_REF_NAME}" \
+            --commit-sha "${GITHUB_SHA}" \
+            --repo "${GITHUB_REPOSITORY}" \
+            --token "${GITHUB_TOKEN}" \
+            --create-github-issue
+
+      - name: Build remediation metrics
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.enable_remediation == 'true'
+        run: |
+          python -m src.remediation.metrics \
+            --findings ./scan_results/findings.json \
+            --decisions ./triage_results/decisions.json \
+            --remediation-events ./artifacts/remediation/aws_runtime_events.json \
+            --remediation-events ./artifacts/tickets/iam_wildcard_review/review_events.json \
+            --pipeline-source github-actions-runtime \
+            --branch "${GITHUB_REF_NAME}" \
+            --commit-sha "${GITHUB_SHA}" \
+            --output ./artifacts/remediation/remediation_metrics.json
+
+      - name: Publish remediation events and metrics
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.enable_remediation == 'true'
+        env:
+          ELASTICSEARCH_HOST: localhost
+          ELASTICSEARCH_PORT: 9200
+          ELASTICSEARCH_SCHEME: http
+        run: |
+          python -m src.siem.publisher \
+            --remediation-events ./artifacts/remediation/aws_runtime_events.json \
+            --remediation-events ./artifacts/tickets/iam_wildcard_review/review_events.json \
+            --metrics ./artifacts/remediation/remediation_metrics.json \
+            --pipeline-source github-actions-runtime \
+            --branch "${GITHUB_REF_NAME}" \
+            --commit-sha "${GITHUB_SHA}"
+
+      - name: Upload remediation artifacts
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.enable_remediation == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: remediation-artifacts
+          path: |
+            artifacts/remediation/
+            artifacts/tickets/
           

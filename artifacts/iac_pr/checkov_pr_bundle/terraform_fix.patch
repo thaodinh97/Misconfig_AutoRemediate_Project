@@ -12,7 +12,16 @@
 +}
 --- a/iac/terraform/m1_public_s3.tf
 +++ b/iac/terraform/m1_public_s3.tf
-@@ -26,10 +26,10 @@
+@@ -18,7 +18,7 @@
+ resource "aws_s3_bucket_ownership_controls" "m1_ownership" {
+   bucket = aws_s3_bucket.m1_public_bucket.id
+   rule {
+-    object_ownership = "BucketOwnerPreferred"
++    object_ownership = "BucketOwnerEnforced"
+   }
+ }
+ 
+@@ -26,20 +26,10 @@
  resource "aws_s3_bucket_public_access_block" "m1_public_access" {
    bucket = aws_s3_bucket.m1_public_bucket.id
  
@@ -20,23 +29,24 @@
 -  block_public_policy     = false   #  Không chặn public policy
 -  ignore_public_acls      = false   #  Không bỏ qua public ACL
 -  restrict_public_buckets = false   #  Không giới hạn public bucket
+-}
+-
+-resource "aws_s3_bucket_acl" "m1_public_acl" {
+-  depends_on = [
+-    aws_s3_bucket_ownership_controls.m1_ownership,
+-    aws_s3_bucket_public_access_block.m1_public_access,
+-  ]
+-
+-  bucket = aws_s3_bucket.m1_public_bucket.id
+-  acl    = "public-read" #  Ai cũng có thể đọc
 +  block_public_acls       = true   #  Không chặn public ACL
 +  block_public_policy     = true   #  Không chặn public policy
 +  ignore_public_acls      = true   #  Không bỏ qua public ACL
 +  restrict_public_buckets = true   #  Không giới hạn public bucket
  }
  
- resource "aws_s3_bucket_acl" "m1_public_acl" {
-@@ -39,7 +39,7 @@
-   ]
- 
-   bucket = aws_s3_bucket.m1_public_bucket.id
--  acl    = "public-read" #  Ai cũng có thể đọc
-+  acl    = "private" #  Ai cũng có thể đọc
- }
- 
  # --- 1b. S3 Bucket với Bucket Policy cho phép truy cập ẩn danh ---
-@@ -56,30 +56,13 @@
+@@ -56,30 +46,13 @@
  resource "aws_s3_bucket_public_access_block" "m1_policy_public_access" {
    bucket = aws_s3_bucket.m1_policy_public_bucket.id
  

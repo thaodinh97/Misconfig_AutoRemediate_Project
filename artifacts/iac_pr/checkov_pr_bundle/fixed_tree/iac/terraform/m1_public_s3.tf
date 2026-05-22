@@ -18,7 +18,7 @@ resource "aws_s3_bucket" "m1_public_bucket" {
 resource "aws_s3_bucket_ownership_controls" "m1_ownership" {
   bucket = aws_s3_bucket.m1_public_bucket.id
   rule {
-    object_ownership = "BucketOwnerPreferred"
+    object_ownership = "BucketOwnerEnforced"
   }
 }
 
@@ -26,20 +26,10 @@ resource "aws_s3_bucket_ownership_controls" "m1_ownership" {
 resource "aws_s3_bucket_public_access_block" "m1_public_access" {
   bucket = aws_s3_bucket.m1_public_bucket.id
 
-  block_public_acls       = true   #  Không chặn public ACL
-  block_public_policy     = true   #  Không chặn public policy
-  ignore_public_acls      = true   #  Không bỏ qua public ACL
-  restrict_public_buckets = true   #  Không giới hạn public bucket
-}
-
-resource "aws_s3_bucket_acl" "m1_public_acl" {
-  depends_on = [
-    aws_s3_bucket_ownership_controls.m1_ownership,
-    aws_s3_bucket_public_access_block.m1_public_access,
-  ]
-
-  bucket = aws_s3_bucket.m1_public_bucket.id
-  acl    = "private" #  Ai cũng có thể đọc
+  block_public_acls       = true #  Không chặn public ACL
+  block_public_policy     = true #  Không chặn public policy
+  ignore_public_acls      = true #  Không bỏ qua public ACL
+  restrict_public_buckets = true #  Không giới hạn public bucket
 }
 
 # --- 1b. S3 Bucket với Bucket Policy cho phép truy cập ẩn danh ---
