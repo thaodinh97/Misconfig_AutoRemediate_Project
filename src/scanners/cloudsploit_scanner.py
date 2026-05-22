@@ -135,27 +135,40 @@ class CloudsploitScanner(BaseScanner):
             try:
                 result = raw.get('result', {})
                 plugin = raw.get('plugin', 'unknown')
+                region = raw.get('region', self.region)
                 
+                # Only process failed checks
                 if result.get('status') != 'FAIL':
                     continue
                 
+                # Extract resource info
+                resource_id = result.get('resource', result.get('resource_id', 'unknown'))
+                message = result.get('message', 'No message provided')
+                
+                # Map severity
+                severity_str = str(result.get('severity', 'medium')).lower()
+                severity = self.map_severity(severity_str)
+                
                 finding = NormalizedFinding(
                     finding_id=str(uuid4()),
-                    finding_code=f"CS-{plugin.upper()}",
+                    finding_code=f"CS-{plugin.upper().replace('-', '_')}",
                     scanner="cloudsploit",
                     provider="aws",
-                    severity=self.map_severity(result.get('severity', 'medium')),
-                    title=f"{plugin}: {result.get('message', 'No message')}",
-                    description=result.get('message', ''),
-                    resource_type=plugin,
-                    resource_id=result.get('resource_id', 'unknown'),
-                    region=raw.get('region', self.region),
+                    severity=severity,
+                    title=f"{plugin}: {message[:100]}",
+                    description=message,
+                    resource_type=plugin.split('_')[0] if '_' in plugin else plugin,
+                    resource_id=str(resource_id),
+                    region=region,
                     remediation_available=True,
-                    remediation_type="cloud_custodian",
+                    remediation_type="terraform",
+                    cis_controls=[],
                     metadata={
                         'plugin': plugin,
-                        'region': raw.get('region'),
+                        'region': region,
                         'status': result.get('status'),
+                        'severity': severity_str,
+                        'full_message': message,
                     }
                 )
                 normalized.append(finding)

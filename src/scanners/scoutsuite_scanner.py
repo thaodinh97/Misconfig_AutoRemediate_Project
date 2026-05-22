@@ -134,21 +134,48 @@ class ScoutSuiteScanner(BaseScanner):
         
         for raw in raw_findings:
             try:
+                issue = raw.get('issue', {})
+                service = raw.get('service', 'unknown')
+                finding_type = raw.get('finding_type', 'unknown')
+                
+                # Map ScoutSuite severity levels
+                issue_level = issue.get('level', 3)  # 1=danger, 2=warning, 3=info
+                severity_map = {
+                    1: SeverityLevel.CRITICAL,
+                    'danger': SeverityLevel.CRITICAL,
+                    2: SeverityLevel.HIGH,
+                    'warning': SeverityLevel.HIGH,
+                    3: SeverityLevel.MEDIUM,
+                    'info': SeverityLevel.MEDIUM,
+                }
+                severity = severity_map.get(issue_level, SeverityLevel.MEDIUM)
+                
+                # Build description from issue data
+                description = issue.get('description', '')
+                if not description and issue.get('item'):
+                    description = str(issue.get('item'))
+                
                 finding = NormalizedFinding(
                     finding_id=str(uuid4()),
-                    finding_code=f"SCOUT-{raw.get('service', 'unknown').upper()}",
+                    finding_code=f"SCOUT-{service.upper()}-{finding_type.upper()}",
                     scanner="scoutsuite",
                     provider=self.provider,
-                    severity=self._get_severity(raw),
-                    title=raw.get('issue', {}).get('description', 'Unknown finding'),
-                    description=raw.get('issue', {}).get('description', ''),
-                    resource_type=raw.get('service', 'unknown'),
-                    resource_id=str(raw.get('issue', {}).get('resource_id', 'unknown')),
+                    severity=severity,
+                    title=f"{service.upper()}: {finding_type.upper()}",
+                    description=description,
+                    resource_type=service,
+                    resource_id=str(issue.get('item', 'unknown')),
+                    resource_name=issue.get('resource_name'),
                     region=self.region,
                     remediation_available=True,
-                    remediation_type="cloud_custodian",
+                    remediation_type="terraform",
+                    cis_controls=issue.get('cis_controls', []) or [],
                     metadata={
-                        'raw_issue': raw.get('issue', {}).get('level', 3),
+                        'service': service,
+                        'finding_type': finding_type,
+                        'level': issue_level,
+                        'description': description,
+                        'compliance': issue.get('compliance', []),
                     }
                 )
                 normalized.append(finding)
@@ -156,15 +183,3 @@ class ScoutSuiteScanner(BaseScanner):
                 logger.warning(f"Failed to normalize ScoutSuite finding: {str(e)}")
         
         return normalized
-    
-    @staticmethod
-    def _get_severity(raw_finding: Dict) -> SeverityLevel:
-        """Map ScoutSuite severity to normalized level"""
-        issue = raw_finding.get('issue', {})
-        issue_level = issue.get('level', 'warning')
-        level_map = {
-            'danger': SeverityLevel.CRITICAL,
-            'warning': SeverityLevel.HIGH,
-            'info': SeverityLevel.MEDIUM,
-        }
-        return level_map.get(issue_level, SeverityLevel.MEDIUM)
