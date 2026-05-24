@@ -1,0 +1,25 @@
+policies:
+  - name: aws-s3-close-public-access
+    resource: aws.s3
+    filters:
+      - type: public-block
+        match: false
+    actions:
+      - type: delete-global-grants
+      - type: set-public-block
+        block_public_acls: true
+        ignore_public_acls: true
+        block_public_policy: true
+        restrict_public_buckets: true
+
+  - name: aws-security-group-revoke-wide-open-ingress
+    resource: aws.security-group
+    filters:
+      - type: ingress
+        Cidr:
+          - 0.0.0.0/0
+          - ::/0
+        IpProtocol: -1
+    actions:
+      - type: remove-rule
+        ingress: matched

@@ -1,0 +1,49 @@
+---
+- name: Remediate OpenStack Swift public-read container
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    container_name: "{{ container_name | default('') }}"
+    log_file: "{{ log_file | default('artifacts/remediation/ansible/openstack_swift_remediation.json') }}"
+  tasks:
+    - name: Require container_name
+      ansible.builtin.assert:
+        that:
+          - container_name is defined
+          - container_name | length > 0
+        fail_msg: "container_name must be provided"
+
+    - name: Set container ACL to private
+      ansible.builtin.command:
+        argv:
+          - openstack
+          - container
+          - set
+          - "--read-acl"
+          - ""
+          - "{{ container_name }}"
+      register: remediation_result
+      changed_when: true
+
+    - name: Ensure remediation log directory exists
+      ansible.builtin.file:
+        path: "{{ log_file | dirname }}"
+        state: directory
+        mode: "0755"
+
+    - name: Persist remediation change log
+      ansible.builtin.copy:
+        dest: "{{ log_file }}"
+        mode: "0644"
+        content: |-
+          {{
+            {
+              "container_name": container_name,
+              "timestamp": ansible_date_time.iso8601,
+              "command": remediation_result.cmd,
+              "returncode": remediation_result.rc,
+              "stdout": remediation_result.stdout,
+              "stderr": remediation_result.stderr,
+            } | to_nice_json
+          }}

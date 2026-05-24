@@ -7,6 +7,14 @@ Tài liệu này chốt 4 phần còn lại của capstone sau khi scan, triage,
 3. IaC fix / PR-prep flow
 4. remediation metrics + audit publish vào Elasticsearch
 
+### Chạy toàn bộ remediation từ một entrypoint
+
+```bash
+./.venv/bin/python -m src.remediation.runner --flow openstack-runtime -- --findings ./scan_results/openstack_findings.json --decisions ./triage_results/openstack_decisions.json --approve-all-manual --simulate-success
+```
+
+`src/remediation/runner.py` cung cấp một CLI giúp điều phối các flow remediation hiện có.
+
 ## 1) Export dashboard artifacts
 
 ```bash
@@ -68,8 +76,18 @@ Executor:
 Flow này triển khai 3 nhánh:
 
 - `M1 Public S3` qua Cloud Custodian policy runtime
-- `M2 Wide-open SG` qua Ansible playbook `ansible/remediate_open_sg.yml`
+- `M2 Wide-open SG` qua Cloud Custodian policy runtime (fallback sang Ansible nếu Custodian không có sẵn)
 - `M4 Unencrypted storage` qua AWS API orchestration trong `src/remediation/aws_runtime_executor.py`
+
+Cloud Custodian policies được quản lý tại:
+
+- `custodian/policies/aws_runtime_policies.yml`
+
+OpenStack runtime remediation hiện sử dụng Ansible playbooks tại:
+
+- `ansible/remediate_openstack_swift.yml`
+- `ansible/remediate_openstack_project_admin.yml`
+- `ansible/remediate_openstack_sg.yml`
 
 Artifacts:
 

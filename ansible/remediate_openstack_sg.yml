@@ -1,0 +1,65 @@
+---
+- name: Remediate OpenStack wide-open security group rule
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    rule_id: "{{ rule_id | default('') }}"
+    log_file: "{{ log_file | default('artifacts/remediation/ansible/openstack_sg_remediation.json') }}"
+  tasks:
+    - name: Require rule_id
+      ansible.builtin.assert:
+        that:
+          - rule_id is defined
+          - rule_id | length > 0
+        fail_msg: "rule_id must be provided"
+
+    - name: Describe security group rule
+      ansible.builtin.command:
+        argv:
+          - openstack
+          - security
+          - group
+          - rule
+          - show
+          - "{{ rule_id }}"
+          - "-f"
+          - json
+      register: show_result
+      failed_when: false
+      changed_when: false
+
+    - name: Delete security group rule
+      ansible.builtin.command:
+        argv:
+          - openstack
+          - security
+          - group
+          - rule
+          - delete
+          - "{{ rule_id }}"
+      register: remediation_result
+      changed_when: true
+
+    - name: Ensure remediation log directory exists
+      ansible.builtin.file:
+        path: "{{ log_file | dirname }}"
+        state: directory
+        mode: "0755"
+
+    - name: Persist remediation change log
+      ansible.builtin.copy:
+        dest: "{{ log_file }}"
+        mode: "0644"
+        content: |-
+          {{
+            {
+              "rule_id": rule_id,
+              "timestamp": ansible_date_time.iso8601,
+              "command": remediation_result.cmd,
+              "returncode": remediation_result.rc,
+              "stdout": remediation_result.stdout,
+              "stderr": remediation_result.stderr,
+              "rule_details": show_result.stdout | from_json | default({}),
+            } | to_nice_json
+          }}

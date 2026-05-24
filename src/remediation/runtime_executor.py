@@ -69,6 +69,26 @@ def openstack_available() -> bool:
     return shutil.which("openstack") is not None
 
 
+def ansible_available() -> bool:
+    return shutil.which("ansible-playbook") is not None
+
+
+def openstack_playbook_for_code(code: str) -> Optional[Path]:
+    mapping = {
+        "OPENSTACK_SWIFT_PUBLIC_READ": Path(__file__).resolve().parents[2] / "ansible" / "remediate_openstack_swift.yml",
+        "OPENSTACK_PROJECT_ADMIN_ASSIGNMENT": Path(__file__).resolve().parents[2] / "ansible" / "remediate_openstack_project_admin.yml",
+        "OPENSTACK_SG_WIDE_OPEN": Path(__file__).resolve().parents[2] / "ansible" / "remediate_openstack_sg.yml",
+    }
+    return mapping.get(code)
+
+
+def run_ansible_playbook(playbook: Path, extra_vars: Dict[str, Any]) -> subprocess.CompletedProcess[str]:
+    command = ["ansible-playbook", "-i", "localhost,", "-c", "local", str(playbook)]
+    for key, value in extra_vars.items():
+        command.extend(["-e", f"{key}={value}"])
+    return run_command(command)
+
+
 def strip_openstack_name_scope(value: str) -> str:
     return str(value or "").split("@", 1)[0]
 
@@ -267,10 +287,13 @@ def execute_openstack_plan(
     execute: bool,
     simulate_success: bool,
 ) -> Tuple[RemediationStatus, str, List[List[str]], Dict[str, Any]]:
+    code = str(finding.get("finding_code") or "")
     commands, metadata = remediation_plan_for_openstack(finding)
+    playbook = openstack_playbook_for_code(code)
+    log_path = Path(__file__).resolve().parents[2] / "artifacts" / "remediation" / "ansible" / f"openstack_{code.lower()}_remediation.json"
 
     if simulate_success:
-        if str(finding.get("finding_code")) == "OPENSTACK_SG_WIDE_OPEN":
+        if code == "OPENSTACK_SG_WIDE_OPEN":
             commands = [["openstack", "security", "group", "rule", "delete", str(finding.get("resource_id") or "<wide-open-rule-id>")]]
         return (
             RemediationStatus.SUCCESS,
@@ -287,35 +310,64 @@ def execute_openstack_plan(
             metadata,
         )
 
-    if not openstack_available():
-        return (
-            RemediationStatus.FAILED,
-            "openstack CLI is not available on this machine.",
-            commands,
-            metadata,
-        )
-
-    executed: List[str] = []
-    for command in commands:
-        result = run_command(command)
-        executed.append(" ".join(command))
+    if ansible_available() and playbook is not None:
+        extra_vars: Dict[str, Any] = {}
+        if code == "OPENSTACK_SWIFT_PUBLIC_READ":
+            extra_vars["container_name"] = str(finding.get("resource_name") or finding.get("resource_id") or "")
+        elif code == "OPENSTACK_PROJECT_ADMIN_ASSIGNMENT":
+            extra_vars["project_name"] = str(metadata.get("project") or "")
+            extra_vars["user_name"] = str(finding.get("resource_name") or "")
+            extra_vars["role_name"] = str(metadata.get("role") or "admin")
+        elif code == "OPENSTACK_SG_WIDE_OPEN":
+            extra_vars["rule_id"] = str(finding.get("resource_id") or "")
+        extra_vars["log_file"] = str(log_path)
+        result = run_ansible_playbook(playbook, extra_vars)
+        metadata["playbook"] = str(playbook)
+        metadata["log_file"] = str(log_path)
         metadata.setdefault("command_results", []).append(
             {
-                "command": command,
+                "command": result.args,
                 "returncode": result.returncode,
                 "stdout": result.stdout,
                 "stderr": result.stderr,
             }
         )
+        commands = [result.args]
         if result.returncode != 0:
             return (
                 RemediationStatus.FAILED,
-                result.stderr.strip() or f"Command failed: {' '.join(command)}",
+                result.stderr.strip() or f"Playbook failed: {' '.join(result.args)}",
                 commands,
                 metadata,
             )
+    else:
+        if not openstack_available():
+            return (
+                RemediationStatus.FAILED,
+                "openstack CLI is not available on this machine.",
+                commands,
+                metadata,
+            )
+        executed: List[str] = []
+        for command in commands:
+            result = run_command(command)
+            executed.append(" ".join(command))
+            metadata.setdefault("command_results", []).append(
+                {
+                    "command": command,
+                    "returncode": result.returncode,
+                    "stdout": result.stdout,
+                    "stderr": result.stderr,
+                }
+            )
+            if result.returncode != 0:
+                return (
+                    RemediationStatus.FAILED,
+                    result.stderr.strip() or f"Command failed: {' '.join(command)}",
+                    commands,
+                    metadata,
+                )
 
-    code = str(finding.get("finding_code") or "")
     if code == "OPENSTACK_PROJECT_ADMIN_ASSIGNMENT":
         verified, note = verify_openstack_role_removed(metadata)
         if not verified:

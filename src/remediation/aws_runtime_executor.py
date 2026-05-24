@@ -333,6 +333,51 @@ def build_public_s3_policy(bucket_names: List[str], region: str, finding_id: str
     return policy_path, policy_name
 
 
+def build_open_sg_policy(sg_ids: List[str], region: str, finding_id: str) -> Tuple[Path, str]:
+    policy_name = f"remove-wide-open-sg-{finding_id[:8]}"
+    policy_dir = REPO_ROOT / "artifacts" / "remediation" / "custodian"
+    policy_dir.mkdir(parents=True, exist_ok=True)
+    policy_path = policy_dir / f"{policy_name}.yml"
+
+    if len(sg_ids) == 1:
+        filter_block = [
+            "      - type: value",
+            "        key: GroupId",
+            f"        value: {sg_ids[0]}",
+        ]
+    else:
+        filter_block = [
+            "      - type: value",
+            "        key: GroupId",
+            "        op: in",
+            "        value:",
+        ]
+        for sg_id in sg_ids:
+            filter_block.append(f"          - {sg_id}")
+
+    policy_text = "\n".join(
+        [
+            "policies:",
+            f"  - name: {policy_name}",
+            "    resource: aws.security-group",
+            f"    region: {region}",
+            "    filters:",
+            *filter_block,
+            "      - type: ingress",
+            "        Cidr:",
+            "          - 0.0.0.0/0",
+            "          - ::/0",
+            "        IpProtocol: -1",
+            "    actions:",
+            "      - type: remove-rule",
+            "        ingress: matched",
+            "",
+        ]
+    )
+    policy_path.write_text(policy_text, encoding="utf-8")
+    return policy_path, policy_name
+
+
 def execute_public_s3_flow(
     finding: Dict[str, Any],
     *,
@@ -390,6 +435,28 @@ def execute_open_sg_flow(
     if not sg_ids:
         return RemediationStatus.PENDING, "No deployed security groups matched the wide-open scenario.", [], {}
 
+    policy_path, _ = build_open_sg_policy(sg_ids, region, str(finding.get("finding_id") or "finding"))
+    output_dir = policy_path.parent / policy_path.stem
+    custodian_command = ["custodian", "run", "-s", str(output_dir), str(policy_path)]
+    metadata = {
+        "security_group_ids": sg_ids,
+        "policy_file": str(policy_path),
+        "output_dir": str(output_dir),
+    }
+
+    if simulate_success:
+        return RemediationStatus.SUCCESS, "Simulated Cloud Custodian remediation for wide-open security group rules.", [custodian_command], metadata
+    if not execute:
+        return RemediationStatus.PENDING, "Dry-run only. Cloud Custodian policy generated but not executed.", [custodian_command], metadata
+
+    if custodian_available():
+        result = run_command(custodian_command)
+        metadata["stdout"] = result.stdout
+        metadata["stderr"] = result.stderr
+        if result.returncode != 0:
+            return RemediationStatus.FAILED, result.stderr.strip() or "Cloud Custodian execution failed.", [custodian_command], metadata
+        return RemediationStatus.SUCCESS, "Cloud Custodian removed wide-open security group rules.", [custodian_command], metadata
+
     playbook = REPO_ROOT / "ansible" / "remediate_open_sg.yml"
     commands: List[List[str]] = []
     log_files: List[str] = []
@@ -413,13 +480,9 @@ def execute_open_sg_flow(
         )
         log_files.append(str(log_path))
 
-    metadata = {"security_group_ids": sg_ids, "playbook": str(playbook), "log_files": log_files}
-    if simulate_success:
-        return RemediationStatus.SUCCESS, "Simulated Ansible remediation for wide-open security group rules.", commands, metadata
-    if not execute:
-        return RemediationStatus.PENDING, "Dry-run only. Ansible playbook prepared but not executed.", commands, metadata
+    metadata.update({"fallback_playbook": str(playbook), "log_files": log_files})
     if not ansible_available():
-        return RemediationStatus.FAILED, "ansible-playbook is not available on this machine.", commands, metadata
+        return RemediationStatus.FAILED, "Neither Cloud Custodian nor Ansible are available to remediate AWS SG rules.", [custodian_command], metadata
 
     metadata["command_results"] = []
     for command in commands:

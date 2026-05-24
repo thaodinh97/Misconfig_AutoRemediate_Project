@@ -1,0 +1,77 @@
+---
+- name: Remediate OpenStack project admin assignment
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    project_name: "{{ project_name | default('') }}"
+    user_name: "{{ user_name | default('') }}"
+    role_name: "{{ role_name | default('admin') }}"
+    log_file: "{{ log_file | default('artifacts/remediation/ansible/openstack_project_admin_remediation.json') }}"
+  tasks:
+    - name: Require project_name, user_name, and role_name
+      ansible.builtin.assert:
+        that:
+          - project_name is defined
+          - project_name | length > 0
+          - user_name is defined
+          - user_name | length > 0
+          - role_name is defined
+          - role_name | length > 0
+        fail_msg: "project_name, user_name, and role_name must be provided"
+
+    - name: Remove admin role assignment from user
+      ansible.builtin.command:
+        argv:
+          - openstack
+          - role
+          - remove
+          - "--project"
+          - "{{ project_name }}"
+          - "--user"
+          - "{{ user_name }}"
+          - "{{ role_name }}"
+      register: remediation_result
+      changed_when: true
+
+    - name: Query remaining role assignments
+      ansible.builtin.command:
+        argv:
+          - openstack
+          - role
+          - assignment
+          - list
+          - "--project"
+          - "{{ project_name }}"
+          - "--user"
+          - "{{ user_name }}"
+          - "-f"
+          - json
+      register: verification_result
+      changed_when: false
+      failed_when: false
+
+    - name: Ensure remediation log directory exists
+      ansible.builtin.file:
+        path: "{{ log_file | dirname }}"
+        state: directory
+        mode: "0755"
+
+    - name: Persist remediation change log
+      ansible.builtin.copy:
+        dest: "{{ log_file }}"
+        mode: "0644"
+        content: |-
+          {{
+            {
+              "project_name": project_name,
+              "user_name": user_name,
+              "role_name": role_name,
+              "timestamp": ansible_date_time.iso8601,
+              "command": remediation_result.cmd,
+              "returncode": remediation_result.rc,
+              "stdout": remediation_result.stdout,
+              "stderr": remediation_result.stderr,
+              "verification": verification_result.stdout | from_json | default([]),
+            } | to_nice_json
+          }}
