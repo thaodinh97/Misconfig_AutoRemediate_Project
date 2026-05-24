@@ -115,6 +115,17 @@ Nếu cần remediation về sau:
   --output-dir ./artifacts/triage_notifications
 ```
 
+Nếu muốn dispatch thật tới JIRA / ServiceNow / Slack / Teams thay vì chỉ build artifact:
+
+```bash
+./.venv/bin/python -m src.triage.notifications \
+  --findings ./scan_results/findings.json \
+  --decisions ./triage_results/decisions.json \
+  --output-dir ./artifacts/triage_notifications \
+  --dispatch-live \
+  --fail-on-dispatch-error
+```
+
 Workflow GitHub `scan_and_remediate` chạy bộ scanner rộng hơn:
 
 - `ScoutSuite`
@@ -246,3 +257,4 @@ Indices mới:
 - `misconfig-remediation-*` cho audit trail remediation runtime và IaC PR-prep
 - `misconfig-metrics-*` cho `remediation_rate`, `MTTR`, `open_findings_before/after`, và `iac_pr_prepared_count`
 - `artifacts/triage_notifications/` cho owner notification, JIRA payload, ServiceNow payload, và chat alert templates
+- `artifacts/drift/m5/` cho M5 drift detection / reconcile / verification evidence

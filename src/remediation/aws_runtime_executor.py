@@ -40,6 +40,17 @@ def save_json(path: str | Path, payload: Any) -> None:
     target.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
+def compact_timestamp() -> str:
+    return utc_now().strftime("%Y%m%d%H%M%S")
+
+
+def make_db_identifier(base: str, suffix: str, max_length: int = 63) -> str:
+    clean_base = "".join(char if char.isalnum() or char == "-" else "-" for char in base).strip("-").lower()
+    reserved = len(suffix) + 1
+    trimmed = clean_base[: max_length - reserved].rstrip("-")
+    return f"{trimmed}-{suffix}"
+
+
 def run_command(command: List[str]) -> subprocess.CompletedProcess[str]:
     return subprocess.run(
         command,
@@ -247,16 +258,34 @@ def discover_storage_targets(prefix: str, region: str) -> Dict[str, List[Dict[st
             "Snapshots[].{SnapshotId:SnapshotId,Encrypted:Encrypted,VolumeId:VolumeId,Tags:Tags,Description:Description}",
         ]
     )
-    db_instances = run_aws_json(
+    db_payload = run_aws_json(
         [
             "rds",
             "describe-db-instances",
             "--region",
             region,
-            "--query",
-            f"DBInstances[?starts_with(DBInstanceIdentifier, '{prefix}-m4-')].{{DBInstanceIdentifier:DBInstanceIdentifier,StorageEncrypted:StorageEncrypted,DBSubnetGroupName:DBSubnetGroup.DBSubnetGroupName,VpcSecurityGroupIds:VpcSecurityGroups[].VpcSecurityGroupId,DBInstanceClass:DBInstanceClass}}",
         ]
     )
+    db_instances = [
+        {
+            "DBInstanceIdentifier": item.get("DBInstanceIdentifier"),
+            "StorageEncrypted": item.get("StorageEncrypted"),
+            "DBSubnetGroupName": ((item.get("DBSubnetGroup") or {}).get("DBSubnetGroupName")),
+            "VpcSecurityGroupIds": [
+                sg.get("VpcSecurityGroupId")
+                for sg in item.get("VpcSecurityGroups", [])
+                if sg.get("VpcSecurityGroupId")
+            ],
+            "DBInstanceClass": item.get("DBInstanceClass"),
+            "DBInstanceStatus": item.get("DBInstanceStatus"),
+            "DeletionProtection": item.get("DeletionProtection"),
+            "MultiAZ": item.get("MultiAZ"),
+            "Engine": item.get("Engine"),
+            "ReadReplicaDBInstanceIdentifiers": item.get("ReadReplicaDBInstanceIdentifiers", []),
+        }
+        for item in (db_payload.get("DBInstances", []) if isinstance(db_payload, dict) else [])
+        if str(item.get("DBInstanceIdentifier") or "").startswith(f"{prefix}-m4-")
+    ]
     return {
         "buckets": [{"Name": name} for name in buckets],
         "volumes": volumes or [],
@@ -593,15 +622,55 @@ def remediate_unencrypted_snapshots(region: str, snapshots: List[Dict[str, Any]]
     return results
 
 
-def remediate_unencrypted_rds(region: str, db_instances: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def wait_for_rds_instance(region: str, identifier: str) -> None:
+    run_checked(["aws", "rds", "wait", "db-instance-available", "--region", region, "--db-instance-identifier", identifier])
+
+
+def rename_rds_instance(region: str, current_identifier: str, new_identifier: str) -> None:
+    run_checked(
+        [
+            "aws",
+            "rds",
+            "modify-db-instance",
+            "--region",
+            region,
+            "--db-instance-identifier",
+            current_identifier,
+            "--new-db-instance-identifier",
+            new_identifier,
+            "--apply-immediately",
+        ]
+    )
+    wait_for_rds_instance(region, new_identifier)
+
+
+def remediate_unencrypted_rds(
+    region: str,
+    db_instances: List[Dict[str, Any]],
+    *,
+    force_cutover: bool = False,
+    delete_archived_instance: bool = False,
+) -> List[Dict[str, Any]]:
     results: List[Dict[str, Any]] = []
     for db in db_instances:
         identifier = str(db.get("DBInstanceIdentifier") or "")
         if not identifier or db.get("StorageEncrypted") is True:
             continue
-        snapshot_id = f"{identifier}-enc-source"
-        encrypted_snapshot_id = f"{identifier}-enc-copy"
-        replacement_identifier = f"{identifier}-encrypted"
+        if db.get("ReadReplicaDBInstanceIdentifiers"):
+            results.append(
+                {
+                    "source_db_instance": identifier,
+                    "status": "manual",
+                    "reason": "DB instance has read replicas; coordinated cutover is still required.",
+                }
+            )
+            continue
+
+        suffix = compact_timestamp()
+        snapshot_id = make_db_identifier(f"{identifier}-enc-source", suffix)
+        encrypted_snapshot_id = make_db_identifier(f"{identifier}-enc-copy", suffix)
+        archived_identifier = make_db_identifier(f"{identifier}-preenc", suffix)
+        replacement_identifier = identifier if force_cutover else make_db_identifier(f"{identifier}-encrypted", suffix)
         run_checked(["aws", "rds", "create-db-snapshot", "--region", region, "--db-instance-identifier", identifier, "--db-snapshot-identifier", snapshot_id])
         run_checked(["aws", "rds", "wait", "db-snapshot-available", "--region", region, "--db-snapshot-identifier", snapshot_id])
         run_checked(
@@ -632,6 +701,9 @@ def remediate_unencrypted_rds(region: str, db_instances: List[Dict[str, Any]]) -
                 encrypted_snapshot_id,
             ]
         )
+        if force_cutover:
+            rename_rds_instance(region, identifier, archived_identifier)
+
         restore_command = [
             "aws",
             "rds",
@@ -642,21 +714,64 @@ def remediate_unencrypted_rds(region: str, db_instances: List[Dict[str, Any]]) -
             replacement_identifier,
             "--db-snapshot-identifier",
             encrypted_snapshot_id,
-            "--db-subnet-group-name",
-            str(db.get("DBSubnetGroupName") or ""),
         ]
+        if db.get("DBInstanceClass"):
+            restore_command.extend(["--db-instance-class", str(db.get("DBInstanceClass"))])
+        if db.get("DBSubnetGroupName"):
+            restore_command.extend(["--db-subnet-group-name", str(db.get("DBSubnetGroupName"))])
         security_groups = db.get("VpcSecurityGroupIds") or []
         if security_groups:
             restore_command.extend(["--vpc-security-group-ids", *security_groups])
+        if db.get("MultiAZ") is True:
+            restore_command.append("--multi-az")
         run_checked(restore_command)
-        results.append(
-            {
-                "source_db_instance": identifier,
-                "encrypted_snapshot_id": encrypted_snapshot_id,
-                "replacement_db_instance": replacement_identifier,
-                "status": "pending-cutover",
-            }
-        )
+        wait_for_rds_instance(region, replacement_identifier)
+
+        payload: Dict[str, Any] = {
+            "source_db_instance": identifier,
+            "encrypted_snapshot_id": encrypted_snapshot_id,
+            "replacement_db_instance": replacement_identifier,
+        }
+        if force_cutover:
+            payload.update(
+                {
+                    "archived_db_instance": archived_identifier,
+                    "status": "success-cutover",
+                }
+            )
+            if delete_archived_instance:
+                if db.get("DeletionProtection") is True:
+                    run_checked(
+                        [
+                            "aws",
+                            "rds",
+                            "modify-db-instance",
+                            "--region",
+                            region,
+                            "--db-instance-identifier",
+                            archived_identifier,
+                            "--no-deletion-protection",
+                            "--apply-immediately",
+                        ]
+                    )
+                    wait_for_rds_instance(region, archived_identifier)
+                run_checked(
+                    [
+                        "aws",
+                        "rds",
+                        "delete-db-instance",
+                        "--region",
+                        region,
+                        "--db-instance-identifier",
+                        archived_identifier,
+                        "--skip-final-snapshot",
+                        "--delete-automated-backups",
+                    ]
+                )
+                payload["archived_db_deleted"] = True
+        else:
+            payload["status"] = "pending-cutover"
+        results.append(payload)
     return results
 
 
@@ -667,6 +782,8 @@ def execute_storage_flow(
     project_prefix: str,
     execute: bool,
     simulate_success: bool,
+    force_rds_cutover: bool,
+    delete_archived_rds: bool,
     known_targets: Optional[Dict[str, List[Dict[str, Any]]]] = None,
 ) -> Tuple[RemediationStatus, str, List[List[str]], Dict[str, Any]]:
     targets = known_targets
@@ -681,6 +798,34 @@ def execute_storage_flow(
         commands.append(["aws", "ec2", "copy-snapshot", "--region", region, "--source-region", region, "--source-snapshot-id", str(snapshot.get("SnapshotId") or ""), "--encrypted"])
     for db in targets["db_instances"]:
         commands.append(["aws", "rds", "create-db-snapshot", "--region", region, "--db-instance-identifier", str(db.get("DBInstanceIdentifier") or "")])
+        if force_rds_cutover:
+            commands.append(
+                [
+                    "aws",
+                    "rds",
+                    "modify-db-instance",
+                    "--region",
+                    region,
+                    "--db-instance-identifier",
+                    str(db.get("DBInstanceIdentifier") or ""),
+                    "--new-db-instance-identifier",
+                    "<archived-id>",
+                    "--apply-immediately",
+                ]
+            )
+            commands.append(
+                [
+                    "aws",
+                    "rds",
+                    "restore-db-instance-from-db-snapshot",
+                    "--region",
+                    region,
+                    "--db-instance-identifier",
+                    str(db.get("DBInstanceIdentifier") or ""),
+                    "--db-snapshot-identifier",
+                    "<encrypted-snapshot>",
+                ]
+            )
 
     metadata: Dict[str, Any] = {"targets": targets}
     if not any(targets.values()):
@@ -696,13 +841,28 @@ def execute_storage_flow(
         metadata["bucket_results"] = [encrypt_bucket_objects(region, bucket["Name"]) for bucket in targets["buckets"]]
         metadata["volume_results"] = remediate_unencrypted_volumes(region, targets["volumes"])
         metadata["snapshot_results"] = remediate_unencrypted_snapshots(region, targets["snapshots"])
-        metadata["rds_results"] = remediate_unencrypted_rds(region, targets["db_instances"])
+        metadata["rds_results"] = remediate_unencrypted_rds(
+            region,
+            targets["db_instances"],
+            force_cutover=force_rds_cutover,
+            delete_archived_instance=delete_archived_rds,
+        )
     except RuntimeError as exc:
         return RemediationStatus.FAILED, str(exc), commands, metadata
 
-    pending_rds = [item for item in metadata.get("rds_results", []) if item.get("status") == "pending-cutover"]
+    pending_rds = [
+        item for item in metadata.get("rds_results", [])
+        if item.get("status") in {"pending-cutover", "manual"}
+    ]
     if pending_rds:
-        return RemediationStatus.PENDING, "Encrypted replacement DB instances created; manual cutover is still required.", commands, metadata
+        pending_cutover = [item for item in pending_rds if item.get("status") == "pending-cutover"]
+        manual_items = [item for item in pending_rds if item.get("status") == "manual"]
+        notes: List[str] = []
+        if pending_cutover:
+            notes.append("Encrypted replacement DB instances were created, but cutover is still pending.")
+        if manual_items:
+            notes.append("Some RDS targets still require manual handling, such as instances with read replicas.")
+        return RemediationStatus.PENDING, " ".join(notes), commands, metadata
     return RemediationStatus.SUCCESS, "Encryption-at-rest remediation completed through AWS APIs.", commands, metadata
 
 
@@ -726,6 +886,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--approve-all-manual", action="store_true")
     parser.add_argument("--execute", action="store_true")
     parser.add_argument("--simulate-success", action="store_true")
+    parser.add_argument("--force-rds-cutover", action="store_true", help="Rename the original RDS instance and restore the encrypted replacement back to the original DB identifier")
+    parser.add_argument("--delete-archived-rds", action="store_true", help="Delete the archived pre-cutover RDS instance after a forced cutover")
     parser.add_argument("--pipeline-source", default="aws-runtime-remediation")
     parser.add_argument("--branch", default="")
     parser.add_argument("--commit-sha", default="")
@@ -743,6 +905,7 @@ def main() -> int:
     findings_after = copy.deepcopy(findings)
     by_id = {str(item.get("finding_id") or ""): item for item in findings_after}
     discovery_cache: Dict[str, Any] = {}
+    flow_result_cache: Dict[str, Tuple[RemediationStatus, str, List[List[str]], Dict[str, Any]]] = {}
 
     for finding in findings:
         flow = classify_runtime_flow(finding)
@@ -782,41 +945,47 @@ def main() -> int:
             )
             continue
 
-        if flow == "public_s3":
-            if flow not in discovery_cache:
-                discovery_cache[flow] = discover_buckets(
-                    args.project_prefix,
-                    {"M1-PublicS3", "M1-PublicS3Policy"},
-                )
-            status, notes, commands, metadata = execute_public_s3_flow(
-                finding,
-                region=args.region,
-                project_prefix=args.project_prefix,
-                execute=args.execute,
-                simulate_success=args.simulate_success,
-                known_buckets=discovery_cache[flow],
-            )
-        elif flow == "open_security_group":
-            if flow not in discovery_cache:
-                discovery_cache[flow] = discover_security_groups(args.region)
-            status, notes, commands, metadata = execute_open_sg_flow(
-                finding,
-                region=args.region,
-                execute=args.execute,
-                simulate_success=args.simulate_success,
-                known_sg_ids=discovery_cache[flow],
-            )
+        if flow in flow_result_cache:
+            status, notes, commands, metadata = copy.deepcopy(flow_result_cache[flow])
         else:
-            if flow not in discovery_cache:
-                discovery_cache[flow] = discover_storage_targets(args.project_prefix, args.region)
-            status, notes, commands, metadata = execute_storage_flow(
-                finding,
-                region=args.region,
-                project_prefix=args.project_prefix,
-                execute=args.execute,
-                simulate_success=args.simulate_success,
-                known_targets=discovery_cache[flow],
-            )
+            if flow == "public_s3":
+                if flow not in discovery_cache:
+                    discovery_cache[flow] = discover_buckets(
+                        args.project_prefix,
+                        {"M1-PublicS3", "M1-PublicS3Policy"},
+                    )
+                status, notes, commands, metadata = execute_public_s3_flow(
+                    finding,
+                    region=args.region,
+                    project_prefix=args.project_prefix,
+                    execute=args.execute,
+                    simulate_success=args.simulate_success,
+                    known_buckets=discovery_cache[flow],
+                )
+            elif flow == "open_security_group":
+                if flow not in discovery_cache:
+                    discovery_cache[flow] = discover_security_groups(args.region)
+                status, notes, commands, metadata = execute_open_sg_flow(
+                    finding,
+                    region=args.region,
+                    execute=args.execute,
+                    simulate_success=args.simulate_success,
+                    known_sg_ids=discovery_cache[flow],
+                )
+            else:
+                if flow not in discovery_cache:
+                    discovery_cache[flow] = discover_storage_targets(args.project_prefix, args.region)
+                status, notes, commands, metadata = execute_storage_flow(
+                    finding,
+                    region=args.region,
+                    project_prefix=args.project_prefix,
+                    execute=args.execute,
+                    simulate_success=args.simulate_success,
+                    force_rds_cutover=args.force_rds_cutover,
+                    delete_archived_rds=args.delete_archived_rds,
+                    known_targets=discovery_cache[flow],
+                )
+            flow_result_cache[flow] = copy.deepcopy((status, notes, commands, metadata))
 
         completed_at = utc_now() if status != RemediationStatus.PENDING else None
         events.append(

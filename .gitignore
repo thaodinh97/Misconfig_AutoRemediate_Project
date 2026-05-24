@@ -12,8 +12,11 @@ __pycache__/
 
 scan_results/
 triage_results/
+artifacts/
+reports/raw/
 
 venv/
 .venv/
+.pytest_cache/
 
 .idea/

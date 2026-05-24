@@ -14,6 +14,26 @@ on:
         description: "Enable auto-remediation"
         required: false
         default: 'false'
+      dispatch_live_integrations:
+        description: "Send triage notifications to Jira/ServiceNow/Slack/Teams"
+        required: false
+        default: 'false'
+      reconcile_m5_drift:
+        description: "Run the M5 drift detection/reconcile flow"
+        required: false
+        default: 'false'
+      simulate_m5_drift:
+        description: "Create the M5 drift before reconciliation"
+        required: false
+        default: 'false'
+      force_rds_cutover:
+        description: "Force the M4 RDS encrypted replacement cutover"
+        required: false
+        default: 'false'
+      delete_archived_rds:
+        description: "Delete the archived pre-cutover RDS instance after force cutover"
+        required: false
+        default: 'false'
 jobs:
   scan:
     runs-on: ubuntu-latest
@@ -90,7 +110,8 @@ jobs:
       - name: Install tfsec
         run: |
           curl -sSfL https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
-          sudo install -m 0755 ./bin/tfsec /usr/local/bin/tfsec
+          command -v tfsec
+          tfsec --version
 
       - name: Install Trivy
         run: |
@@ -123,11 +144,34 @@ jobs:
             --output ./triage_results/decisions.json
 
       - name: Generate manual review notifications
+        env:
+          JIRA_URL: ${{ secrets.JIRA_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
+          JIRA_PROJECT_KEY: ${{ secrets.JIRA_PROJECT_KEY }}
+          JIRA_ISSUE_TYPE: ${{ secrets.JIRA_ISSUE_TYPE }}
+          SERVICENOW_URL: ${{ secrets.SERVICENOW_URL }}
+          SERVICENOW_USER: ${{ secrets.SERVICENOW_USER }}
+          SERVICENOW_PASSWORD: ${{ secrets.SERVICENOW_PASSWORD }}
+          SERVICENOW_TABLE: ${{ secrets.SERVICENOW_TABLE }}
+          SERVICENOW_CATEGORY: ${{ secrets.SERVICENOW_CATEGORY }}
+          SERVICENOW_SUBCATEGORY: ${{ secrets.SERVICENOW_SUBCATEGORY }}
+          SERVICENOW_ASSIGNMENT_GROUP_SYS_ID: ${{ secrets.SERVICENOW_ASSIGNMENT_GROUP_SYS_ID }}
+          SERVICENOW_CALLER_SYS_ID: ${{ secrets.SERVICENOW_CALLER_SYS_ID }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
         run: |
+          NOTIFICATION_ARGS=()
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.dispatch_live_integrations }}" == "true" ]]; then
+            NOTIFICATION_ARGS+=(--dispatch-live --fail-on-dispatch-error)
+          fi
           python -m src.triage.notifications \
             --findings ./scan_results/findings.json \
             --decisions ./triage_results/decisions.json \
-            --output-dir ./artifacts/triage_notifications
+            --output-dir ./artifacts/triage_notifications \
+            "${NOTIFICATION_ARGS[@]}"
 
       - name: Publish findings and triage to Elasticsearch
         env:
@@ -185,12 +229,25 @@ jobs:
           curl -L -o /usr/local/bin/opa https://openpolicyagent.org/downloads/latest/opa_linux_amd64_static
           chmod +x /usr/local/bin/opa
 
+      - name: Set up Terraform CLI for drift reconcile
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.enable_remediation == 'true' && github.event.inputs.reconcile_m5_drift == 'true'
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
       - name: Execute AWS runtime remediation
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.enable_remediation == 'true'
         env:
           AWS_REGION: us-east-1
         run: |
           export PATH="/tmp/remediation-venv/bin:$PATH"
+          RDS_ARGS=()
+          if [[ "${{ github.event.inputs.force_rds_cutover }}" == "true" ]]; then
+            RDS_ARGS+=(--force-rds-cutover)
+          fi
+          if [[ "${{ github.event.inputs.delete_archived_rds }}" == "true" ]]; then
+            RDS_ARGS+=(--delete-archived-rds)
+          fi
           python -m src.remediation.aws_runtime_executor \
             --findings ./scan_results/findings.json \
             --decisions ./triage_results/decisions.json \
@@ -200,7 +257,28 @@ jobs:
             --execute \
             --pipeline-source github-actions-runtime \
             --branch "${GITHUB_REF_NAME}" \
-            --commit-sha "${GITHUB_SHA}"
+            --commit-sha "${GITHUB_SHA}" \
+            "${RDS_ARGS[@]}"
+
+      - name: Reconcile M5 drift
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.enable_remediation == 'true' && github.event.inputs.reconcile_m5_drift == 'true'
+        env:
+          AWS_REGION: us-east-1
+        run: |
+          DRIFT_ARGS=()
+          if [[ "${{ github.event.inputs.simulate_m5_drift }}" == "true" ]]; then
+            DRIFT_ARGS+=(--simulate-drift)
+          fi
+          python -m src.remediation.drift_reconcile \
+            --terraform-dir ./iac/terraform \
+            --region "${AWS_REGION}" \
+            --project-prefix threat-demo \
+            --execute \
+            --pipeline-source github-actions-m5-drift \
+            --branch "${GITHUB_REF_NAME}" \
+            --commit-sha "${GITHUB_SHA}" \
+            --output-dir ./artifacts/drift/m5 \
+            "${DRIFT_ARGS[@]}"
 
       - name: Generate IAM wildcard review ticket
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.enable_remediation == 'true'
@@ -222,6 +300,10 @@ jobs:
       - name: Build remediation metrics
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.enable_remediation == 'true'
         run: |
+          EXTRA_REMEDIATION_ARGS=()
+          if [[ -f ./artifacts/drift/m5/reconcile_events.json ]]; then
+            EXTRA_REMEDIATION_ARGS+=(--remediation-events ./artifacts/drift/m5/reconcile_events.json)
+          fi
           python -m src.remediation.metrics \
             --findings ./scan_results/findings.json \
             --decisions ./triage_results/decisions.json \
@@ -230,7 +312,8 @@ jobs:
             --pipeline-source github-actions-runtime \
             --branch "${GITHUB_REF_NAME}" \
             --commit-sha "${GITHUB_SHA}" \
-            --output ./artifacts/remediation/remediation_metrics.json
+            --output ./artifacts/remediation/remediation_metrics.json \
+            "${EXTRA_REMEDIATION_ARGS[@]}"
 
       - name: Publish remediation events and metrics
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.enable_remediation == 'true'
@@ -239,13 +322,18 @@ jobs:
           ELASTICSEARCH_PORT: 9200
           ELASTICSEARCH_SCHEME: http
         run: |
+          EXTRA_PUBLISH_ARGS=()
+          if [[ -f ./artifacts/drift/m5/reconcile_events.json ]]; then
+            EXTRA_PUBLISH_ARGS+=(--remediation-events ./artifacts/drift/m5/reconcile_events.json)
+          fi
           python -m src.siem.publisher \
             --remediation-events ./artifacts/remediation/aws_runtime_events.json \
             --remediation-events ./artifacts/tickets/iam_wildcard_review/review_events.json \
             --metrics ./artifacts/remediation/remediation_metrics.json \
             --pipeline-source github-actions-runtime \
             --branch "${GITHUB_REF_NAME}" \
-            --commit-sha "${GITHUB_SHA}"
+            --commit-sha "${GITHUB_SHA}" \
+            "${EXTRA_PUBLISH_ARGS[@]}"
 
       - name: Upload remediation artifacts
         if: github.event_name == 'workflow_dispatch' && github.event.inputs.enable_remediation == 'true'
@@ -255,4 +343,5 @@ jobs:
           path: |
             artifacts/remediation/
             artifacts/tickets/
+            artifacts/drift/
           

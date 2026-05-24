@@ -78,6 +78,30 @@ Artifacts:
 - `artifacts/remediation/custodian/`
 - `artifacts/remediation/ansible/`
 
+#### M4 RDS cutover modes
+
+Mặc định, `M4` sẽ tạo encrypted replacement cho RDS và dừng ở trạng thái `pending-cutover` để tránh tự động đập dịch vụ đang chạy. Nếu bạn chấp nhận cutover thật, bật thêm:
+
+```bash
+./.venv/bin/python -m src.remediation.aws_runtime_executor \
+  --findings ./scan_results/findings.json \
+  --decisions ./triage_results/decisions.json \
+  --region ap-southeast-1 \
+  --project-prefix threat-demo \
+  --approve-all-manual \
+  --execute \
+  --force-rds-cutover \
+  --delete-archived-rds
+```
+
+Khi đó flow sẽ:
+
+1. snapshot DB gốc
+2. copy snapshot sang encrypted snapshot
+3. rename DB gốc sang archived identifier
+4. restore DB encrypted mới về lại identifier ban đầu
+5. tùy chọn xóa archived DB nếu có `--delete-archived-rds`
+
 ### IAM wildcard manual review ticket
 
 ```bash
@@ -106,12 +130,58 @@ Artifacts:
   --output-dir ./artifacts/triage_notifications
 ```
 
+Để dispatch thật tới JIRA / ServiceNow / Slack / Teams:
+
+```bash
+export JIRA_URL="https://your-domain.atlassian.net"
+export JIRA_EMAIL="security-bot@example.com"
+export JIRA_API_TOKEN="..."
+export SERVICENOW_URL="https://instance.service-now.com"
+export SERVICENOW_USER="security_bot"
+export SERVICENOW_PASSWORD="..."
+export SLACK_WEBHOOK_URL="https://hooks.slack.com/services/..."
+export TEAMS_WEBHOOK_URL="https://..."
+
+./.venv/bin/python -m src.triage.notifications \
+  --findings ./scan_results/findings.json \
+  --decisions ./triage_results/decisions.json \
+  --output-dir ./artifacts/triage_notifications \
+  --dispatch-live \
+  --fail-on-dispatch-error
+```
+
 Artifacts:
 
 - `artifacts/triage_notifications/owner_notifications.json`
 - `artifacts/triage_notifications/jira_tickets.json`
 - `artifacts/triage_notifications/servicenow_incidents.json`
 - `artifacts/triage_notifications/chat_notifications.json`
+- `artifacts/triage_notifications/dispatch_results.json`
+
+### M5 drift reconcile end-to-end
+
+Flow này làm rõ kịch bản `runtime drift -> detect -> reconcile -> verify` cho `M5`:
+
+```bash
+./.venv/bin/python -m src.remediation.drift_reconcile \
+  --terraform-dir ./iac/terraform \
+  --region ap-southeast-1 \
+  --project-prefix threat-demo \
+  --simulate-drift \
+  --execute \
+  --pipeline-source local-m5-drift \
+  --branch feat/normalize \
+  --commit-sha "$(git rev-parse --short HEAD)" \
+  --output-dir ./artifacts/drift/m5
+```
+
+Artifacts:
+
+- `artifacts/drift/m5/simulate_drift.json`
+- `artifacts/drift/m5/plan.json`
+- `artifacts/drift/m5/summary.json`
+- `artifacts/drift/m5/post_apply_verification.json`
+- `artifacts/drift/m5/reconcile_events.json`
 
 ## 3) IaC fix / PR-prep flow
 
@@ -193,6 +263,7 @@ Publish remediation events và metrics:
 ./.venv/bin/python -m src.siem.publisher \
   --remediation-events ./artifacts/remediation/runtime_events.json \
   --remediation-events ./artifacts/iac_pr/checkov_pr_bundle/iac_pr_events.json \
+  --remediation-events ./artifacts/drift/m5/reconcile_events.json \
   --metrics ./artifacts/remediation/remediation_metrics.json \
   --pipeline-source capstone-demo \
   --branch feat/normalize \
@@ -216,4 +287,5 @@ Khi nộp bài, phần remediation/reporting giờ có thể lấy trực tiếp
 
 - `MTTR` hiện phản ánh timestamp demo giữa `detected_at` và thời điểm chạy remediation, chưa phải production MTTR.
 - `Compliance score` hiện là proxy qua `cis_findings_before/after`, chưa phải benchmark score đầy đủ.
-- RDS encryption runtime flow tạo encrypted replacement instance nhưng vẫn cần cutover thủ công để tránh tự động phá dịch vụ.
+- `M4` RDS mặc định vẫn chạy ở safe mode `pending-cutover`; full cutover chỉ xảy ra khi bật `--force-rds-cutover`.
+- Live integrations yêu cầu bạn tự cấp secret hợp lệ cho JIRA / ServiceNow / Slack / Teams.

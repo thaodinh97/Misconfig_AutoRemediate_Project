@@ -5,7 +5,9 @@ Repo này đã có test suite tối thiểu cho các phần bị trừ điểm t
 - `tfsec` normalization
 - `Trivy` misconfiguration + secret normalization
 - triage owner/ticket notification artifacts
+- live notification dispatch fan-out
 - container secret CI guard
+- M5 drift plan summarization
 
 ## 1) Cài test dependencies
 
@@ -26,6 +28,7 @@ python3 -m venv .venv
 - `tests/test_tfsec_scanner.py`
 - `tests/test_trivy_scanner.py`
 - `tests/test_notifications.py`
+- `tests/test_drift_reconcile.py`
 - `tests/test_scan_container_secrets.py`
 
 ## 4) CI coverage
@@ -39,4 +42,6 @@ Hai workflow chính đều chạy `pytest` trước scanner/remediation:
 
 - schema normalize của scanner mới bị lệch
 - triage notification artifacts đổi format
+- live integration payload routing bị regression
+- drift reconciliation summary bị lệch khỏi Terraform plan
 - rule block container secret bị regression

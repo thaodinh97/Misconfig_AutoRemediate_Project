@@ -7,6 +7,7 @@ Mục tiêu hiện tại: triển khai Cloud B (OpenStack) với 3 misconfigurat
 - Ubuntu control plane đã cài `python-openstackclient`.
 - Có file `openrc` từ OpenStack all-in-one.
 - Đã đăng nhập OpenStack API thành công.
+- Nếu muốn GitHub tự scan OpenStack/private lab, xem thêm [docs/SELF_HOSTED_RUNNER.md](./SELF_HOSTED_RUNNER.md).
 
 ```bash
 source ~/openrc
@@ -77,6 +78,7 @@ Publish findings lên Elasticsearch:
 
 - Chỉ chạy trong lab, không chạy trên môi trường production.
 - Nếu bạn đổi tên tài nguyên, set lại env vars: `PUBLIC_CONTAINER`, `WIDE_OPEN_SG`, `DEMO_PROJECT`, `DEMO_USER`, `DEMO_ROLE`.
+- Xem thêm [docs/HYBRID_SCENARIO_MAPPING.md](./HYBRID_SCENARIO_MAPPING.md) để map 6 kịch bản `AWS -> OpenStack` cho report/demo.
 - Sau khi xong phần scan/triage/dashboard, dùng thêm [docs/REMEDIATION.md](./REMEDIATION.md) để:
   - export 3 dashboard thành artifact `.ndjson`
   - chạy runtime remediation demo có audit trail

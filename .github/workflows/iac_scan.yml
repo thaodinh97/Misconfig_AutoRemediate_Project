@@ -19,6 +19,10 @@ on:
         description: "Open an automated remediation PR from the generated bundle"
         required: false
         default: 'false'
+      dispatch_live_integrations:
+        description: "Send triage notifications to Jira/ServiceNow/Slack/Teams"
+        required: false
+        default: 'false'
 
 jobs:
   container-secret-guard:
@@ -165,7 +169,8 @@ jobs:
       - name: Install tfsec
         run: |
           curl -sSfL https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
-          sudo install -m 0755 ./bin/tfsec /usr/local/bin/tfsec
+          command -v tfsec
+          tfsec --version
 
       - name: Install Trivy
         run: |
@@ -202,11 +207,34 @@ jobs:
             --output ./triage_results/decisions.json
 
       - name: Generate manual review notifications
+        env:
+          JIRA_URL: ${{ secrets.JIRA_URL }}
+          JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+          JIRA_USERNAME: ${{ secrets.JIRA_USERNAME }}
+          JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+          JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
+          JIRA_PROJECT_KEY: ${{ secrets.JIRA_PROJECT_KEY }}
+          JIRA_ISSUE_TYPE: ${{ secrets.JIRA_ISSUE_TYPE }}
+          SERVICENOW_URL: ${{ secrets.SERVICENOW_URL }}
+          SERVICENOW_USER: ${{ secrets.SERVICENOW_USER }}
+          SERVICENOW_PASSWORD: ${{ secrets.SERVICENOW_PASSWORD }}
+          SERVICENOW_TABLE: ${{ secrets.SERVICENOW_TABLE }}
+          SERVICENOW_CATEGORY: ${{ secrets.SERVICENOW_CATEGORY }}
+          SERVICENOW_SUBCATEGORY: ${{ secrets.SERVICENOW_SUBCATEGORY }}
+          SERVICENOW_ASSIGNMENT_GROUP_SYS_ID: ${{ secrets.SERVICENOW_ASSIGNMENT_GROUP_SYS_ID }}
+          SERVICENOW_CALLER_SYS_ID: ${{ secrets.SERVICENOW_CALLER_SYS_ID }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
         run: |
+          NOTIFICATION_ARGS=()
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.event.inputs.dispatch_live_integrations }}" == "true" ]]; then
+            NOTIFICATION_ARGS+=(--dispatch-live --fail-on-dispatch-error)
+          fi
           python -m src.triage.notifications \
             --findings ./scan_results/findings.json \
             --decisions ./triage_results/decisions.json \
-            --output-dir ./artifacts/triage_notifications
+            --output-dir ./artifacts/triage_notifications \
+            "${NOTIFICATION_ARGS[@]}"
 
       - name: Install OPA
         run: |

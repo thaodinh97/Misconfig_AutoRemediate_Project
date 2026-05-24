@@ -22,6 +22,7 @@ Checklist này gom các artifact đã có trong repo để chốt phần `testin
 - `artifacts/triage_notifications/jira_tickets.json`
 - `artifacts/triage_notifications/servicenow_incidents.json`
 - `artifacts/triage_notifications/chat_notifications.json`
+- `artifacts/triage_notifications/dispatch_results.json`
 - `artifacts/tickets/iam_wildcard_review/`
 
 ## 4) Test evidence
@@ -49,3 +50,9 @@ Phần này repo chỉ chuẩn bị outline và artifact kỹ thuật, bạn v�
 5. Automated remediation and IaC PR flow
 6. SIEM dashboards and metrics
 7. Limitations and future work
+
+## 7) Extra capstone evidence sau phần hardening
+
+- `artifacts/drift/m5/summary.json`
+- `artifacts/drift/m5/post_apply_verification.json`
+- `artifacts/drift/m5/reconcile_events.json`
