@@ -407,12 +407,20 @@ class CloudTrailDriftDetector:
     @staticmethod
     def _rule_to_key(rule: Dict[str, Any]) -> str:
         """Convert a security group rule to a comparable key"""
-        from_port = rule.get('FromPort', -1)
-        to_port = rule.get('ToPort', -1)
-        protocol = rule.get('IpProtocol', '')
+        from_port = rule.get('FromPort', rule.get('from_port', -1))
+        to_port = rule.get('ToPort', rule.get('to_port', -1))
+        protocol = rule.get('IpProtocol', rule.get('protocol', ''))
         
-        cidrs = [r['CidrIp'] for r in rule.get('IpRanges', [])]
-        cidrs += [r['CidrIpv6'] for r in rule.get('Ipv6Ranges', [])]
+        cidrs = []
+        if 'IpRanges' in rule:  
+            cidrs += [r['CidrIp'] for r in rule.get('IpRanges', [])]
+        elif 'cidr_blocks' in rule:
+            cidrs += rule.get('cidr_blocks', [])
+            
+        if 'Ipv6Ranges' in rule:
+            cidrs += [r['CidrIpv6'] for r in rule.get('Ipv6Ranges', [])]
+        elif 'ipv6_cidr_blocks' in rule:
+            cidrs += rule.get('ipv6_cidr_blocks', [])
         
         return f"{protocol}:{from_port}:{to_port}:{','.join(sorted(cidrs))}"
     
