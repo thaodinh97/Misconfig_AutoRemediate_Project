@@ -1,20 +1,23 @@
-###############################################################################
-# Variables
-###############################################################################
-
 variable "aws_region" {
-  description = "AWS region to deploy resources"
+  description = "Region triển khai hạ tầng"
   type        = string
-  default     = "ap-southeast-1" # Singapore
+  default     = "us-east-1"
 }
 
-variable "project_prefix" {
-  description = "Prefix for all resource names"
+variable "project_name" {
+  description = "Tên tiền tố cho các tài nguyên"
   type        = string
-  default     = "threat-demo"
+  default     = "demo-app"
 }
 
-# Random suffix để tránh trùng tên global resources (S3, etc.)
-resource "random_id" "suffix" {
-  byte_length = 4
+variable "vpc_cidr" {
+  description = "Dải IP cho VPC"
+  type        = string
+  default     = "10.0.0.0/16"
+}
+
+variable "instance_type" {
+  description = "Loại máy chủ EC2"
+  type        = string
+  default     = "t2.micro"
 }

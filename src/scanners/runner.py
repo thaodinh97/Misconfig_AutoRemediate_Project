@@ -16,6 +16,8 @@ from .scoutsuite_scanner import ScoutSuiteScanner
 from .cloudsploit_scanner import CloudsploitScanner
 from .tfsec_scanner import TfsecScanner
 from .trivy_scanner import TrivyScanner
+from .openstack_scanner import OpenStackScanner
+from .cloudtrail_scanner import CloudTrailScanner
 from ..models import NormalizedFinding, ScanResult
 from ..config import get_config
 
@@ -149,6 +151,32 @@ class ScannerRunner:
             logger.error(f"Trivy scan failed: {str(e)}", exc_info=True)
             return None
 
+    def run_cloudtrail(self, region: str = "us-east-1") -> Optional[ScanResult]:
+        """Run CloudTrail configuration change detector"""
+        try:
+            logger.info("Starting CloudTrail scan...")
+
+            scanner = CloudTrailScanner(region=region)
+            result = scanner.execute()
+            logger.info(f"CloudTrail scan completed: {result.findings_count} findings")
+            return result
+        except Exception as e:
+            logger.error(f"CloudTrail scan failed: {str(e)}", exc_info=True)
+            return None
+
+    def run_openstack(self, project_prefix: str = "threat-demo") -> Optional[ScanResult]:
+        """Run OpenStack live infrastructure scanner"""
+        try:
+            logger.info("Starting OpenStack live scan...")
+
+            scanner = OpenStackScanner(project_prefix=project_prefix)
+            result = scanner.execute()
+            logger.info(f"OpenStack scan completed: {result.findings_count} findings")
+            return result
+        except Exception as e:
+            logger.error(f"OpenStack scan failed: {str(e)}", exc_info=True)
+            return None
+
     def aggregate_findings(self) -> None:
         """Aggregate all findings from scanners"""
         for result in self.scan_results:
@@ -255,8 +283,12 @@ class ScannerRunner:
             enable_cloudsploit: bool = True,
             enable_tfsec: bool = True,
             enable_trivy: bool = True,
+            enable_cloudtrail: bool = False,
+            enable_openstack: bool = False,
             terraform_dir: str = "./iac/terraform",
             trivy_scan_ref: str = "./iac/terraform",
+            region: str = "us-east-1",
+            openstack_project_prefix: str = "threat-demo",
     ) -> int:
         """
         Execute scanners based on flags
@@ -265,7 +297,14 @@ class ScannerRunner:
             enable_scoutsuite: Run ScoutSuite scanner
             enable_checkov: Run Checkov scanner
             enable_cloudsploit: Run CloudSploit scanner
+            enable_tfsec: Run tfsec scanner
+            enable_trivy: Run Trivy scanner
+            enable_cloudtrail: Run CloudTrail configuration change detector
+            enable_openstack: Run OpenStack live scanner
             terraform_dir: Directory containing Terraform files
+            trivy_scan_ref: Path for Trivy filesystem scan
+            region: AWS region for CloudTrail
+            openstack_project_prefix: OpenStack project prefix (e.g., threat-demo)
 
         Returns:
             Exit code (0 for success, 1 for failure)
@@ -296,6 +335,16 @@ class ScannerRunner:
 
             if enable_trivy:
                 result = self.run_trivy(trivy_scan_ref)
+                if result:
+                    self.scan_results.append(result)
+
+            if enable_cloudtrail:
+                result = self.run_cloudtrail(region)
+                if result:
+                    self.scan_results.append(result)
+
+            if enable_openstack:
+                result = self.run_openstack(openstack_project_prefix)
                 if result:
                     self.scan_results.append(result)
 
@@ -354,6 +403,21 @@ def main():
         help="Run Trivy scanner"
     )
     parser.add_argument(
+        "--cloudtrail",
+        action="store_true",
+        help="Run CloudTrail configuration change detector"
+    )
+    parser.add_argument(
+        "--openstack",
+        action="store_true",
+        help="Run OpenStack live infrastructure scanner"
+    )
+    parser.add_argument(
+        "--region",
+        default="us-east-1",
+        help="AWS region for CloudTrail (default: us-east-1)"
+    )
+    parser.add_argument(
         "--output-dir",
         default="./scan_results",
         help="Output directory for scan results (default: ./scan_results)"
@@ -368,11 +432,16 @@ def main():
         default="./iac/terraform",
         help="Path for Trivy filesystem scan (default: ./iac/terraform)"
     )
+    parser.add_argument(
+        "--openstack-project-prefix",
+        default="threat-demo",
+        help="OpenStack project prefix for live scan (default: threat-demo)"
+    )
 
     args = parser.parse_args()
 
-    # If no scanners specified, enable all
-    enable_all = not (args.scoutsuite or args.checkov or args.cloudsploit or args.tfsec or args.trivy)
+    # If no scanners specified, enable all except cloudtrail and openstack (requires explicit opt-in)
+    enable_all = not (args.scoutsuite or args.checkov or args.cloudsploit or args.tfsec or args.trivy or args.cloudtrail or args.openstack)
 
     runner = ScannerRunner(output_dir=args.output_dir)
     exit_code = runner.run(
@@ -381,8 +450,12 @@ def main():
         enable_cloudsploit=args.cloudsploit or enable_all,
         enable_tfsec=args.tfsec or enable_all,
         enable_trivy=args.trivy or enable_all,
+        enable_cloudtrail=args.cloudtrail,
+        enable_openstack=args.openstack,
         terraform_dir=args.terraform_dir,
         trivy_scan_ref=args.trivy_scan_ref,
+        region=args.region,
+        openstack_project_prefix=args.openstack_project_prefix,
     )
 
     sys.exit(exit_code)

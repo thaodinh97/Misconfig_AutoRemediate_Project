@@ -7,6 +7,7 @@ Normalize scanner findings into the canonical schema from 05_Misconfig_AutoRemed
 from __future__ import annotations
 
 import argparse
+import glob
 import hashlib
 import json
 import sys
@@ -251,8 +252,19 @@ def detect_scanner(data: Any, file_path: Path) -> str:
         return "cloudsploit"
     if "scoutsuite" in name or "scout_suite" in name:
         return "scoutsuite"
+    if "cloudtrail" in name or "trail" in name:
+        return "cloudtrail"
 
     if isinstance(data, dict):
+        # Check for CloudTrail format
+        if "Events" in data or "Records" in data:
+            # Verify it looks like CloudTrail
+            events = data.get("Events") or data.get("Records") or []
+            if isinstance(events, list) and events:
+                first = events[0]
+                if isinstance(first, dict) and any(k in first for k in ("EventName", "EventTime", "CloudTrailEvent")):
+                    return "cloudtrail"
+        
         if "check_type" in data and "results" in data:
             return "checkov"
         if "Results" in data:
@@ -573,6 +585,101 @@ def parse_scoutsuite(data: Dict[str, Any], include_passed: bool) -> List[Dict[st
     return findings
 
 
+def parse_cloudtrail(data: Dict[str, Any], include_passed: bool) -> List[Dict[str, Any]]:
+    """
+    Parse CloudTrail events or findings generated from CloudTrail scanning.
+    CloudTrail findings can come from:
+    1. CloudTrail API events with drift detection
+    2. Normalized findings from cloudtrail_scanner.py
+    """
+    findings: List[Dict[str, Any]] = []
+    
+    # Handle both wrapped format {findings: [...]} and direct format [...]
+    events = data
+    if isinstance(data, dict):
+        if 'findings' in data:
+            events = data['findings']
+        elif 'Records' in data:
+            events = data['Records']  # EventBridge format
+        elif 'Events' in data:
+            events = data['Events']  # CloudTrail ListEvents format
+    
+    if not isinstance(events, list):
+        return findings
+    
+    for event in events:
+        if not isinstance(event, dict):
+            continue
+        
+        # Skip if already in normalized format (from cloudtrail_scanner.py)
+        if 'scanner' in event and event['scanner'] == 'cloudtrail':
+            # Already normalized, just convert to canonical format
+            findings.append(
+                build_record(
+                    scanner="cloudtrail",
+                    provider=event.get('provider', 'AWS'),
+                    resource_type=event.get('resource_type'),
+                    resource_id=event.get('resource_id'),
+                    finding_code=event.get('finding_code'),
+                    severity=event.get('severity'),
+                    details=event.get('description') or event.get('title'),
+                    region=event.get('region'),
+                    timestamp=event.get('detected_at') or event.get('EventTime'),
+                )
+            )
+            continue
+        
+        # Handle raw CloudTrail events
+        event_name = event.get('EventName', '')
+        event_time = event.get('EventTime')
+        username = event.get('Username', 'unknown')
+        event_source = event.get('EventSource', '')
+        resources = event.get('Resources', [])
+        ct_event = event.get('CloudTrailEvent', {})
+        
+        if isinstance(ct_event, str):
+            try:
+                ct_event = json.loads(ct_event)
+            except:
+                ct_event = {}
+        
+        # Extract resource information
+        resource_id = resources[0].get('ARN') if resources else event_source
+        if not resource_id:
+            resource_id = ct_event.get('requestParameters', {}).get('bucketName') or \
+                         ct_event.get('requestParameters', {}).get('groupId') or \
+                         ct_event.get('requestParameters', {}).get('roleName') or \
+                         'unknown'
+        
+        # Determine severity based on event type and changes
+        severity = 'MEDIUM'
+        if any(x in event_name for x in ['Public', 'Admin', 'Root', 'WideOpen', 'Unencrypted']):
+            severity = 'HIGH'
+        if any(x in event_name for x in ['Critical', 'Security', 'Delete', 'Revoke']):
+            severity = 'HIGH'
+        
+        # Build finding
+        findings.append(
+            build_record(
+                scanner="cloudtrail",
+                provider="AWS",
+                resource_type=extract_first(resources[0], 'resourceType') if resources else 'unknown',
+                resource_id=resource_id,
+                finding_code=f"CLOUDTRAIL_{event_name.upper()}",
+                severity=severity,
+                details=compact_details([
+                    f"Event: {event_name}",
+                    f"User: {username}",
+                    f"Service: {event_source}",
+                ]),
+                region=ct_event.get('awsRegion'),
+                timestamp=event_time,
+            )
+        )
+    
+    return findings
+
+
 def parse_generic(data: Dict[str, Any], include_passed: bool) -> List[Dict[str, Any]]:
     findings: List[Dict[str, Any]] = []
     for item, path in walk_dicts(data):
@@ -625,6 +732,8 @@ def normalize_document(data: Dict[str, Any], scanner: str, include_passed: bool)
         return parse_cloudsploit(data, include_passed)
     if scanner == "scoutsuite":
         return parse_scoutsuite(data, include_passed)
+    if scanner == "cloudtrail":
+        return parse_cloudtrail(data, include_passed)
     return parse_generic(data, include_passed)
 
 
@@ -661,9 +770,10 @@ def resolve_inputs(raw_inputs: Sequence[str]) -> List[Path]:
             resolved.extend(sorted(path.rglob("*.json")))
             continue
         # Treat as glob pattern.
-        for glob_match in sorted(Path(".").glob(item)):
-            if glob_match.is_file():
-                resolved.append(glob_match)
+        for glob_match in sorted(glob.glob(item)):
+            match_path = Path(glob_match)
+            if match_path.is_file():
+                resolved.append(match_path)
     deduped = sorted(set(p.resolve() for p in resolved))
     return deduped
 
@@ -693,7 +803,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--scanner",
         default="auto",
-        choices=("auto", "checkov", "tfsec", "trivy", "cloudsploit", "scoutsuite", "generic"),
+        choices=("auto", "checkov", "tfsec", "trivy", "cloudsploit", "scoutsuite", "cloudtrail", "generic"),
         help="Scanner type. Use 'auto' to detect per file.",
     )
     parser.add_argument(

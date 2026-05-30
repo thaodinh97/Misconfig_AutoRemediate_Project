@@ -354,6 +354,118 @@ def dispatch_live_integrations(bundle: Dict[str, List[Dict[str, Any]]]) -> Dict[
     return results
 
 
+def notify_from_findings(
+    findings: List[Any],
+    decisions: List[Dict[str, Any]],
+    dispatch: bool = True,
+    output_dir: str = "artifacts/triage_notifications"
+) -> Dict[str, Any]:
+    """
+    Build and optionally dispatch notifications from findings and decisions.
+    
+    This is the programmatic API for triggering notifications from EventBridge/Lambda.
+    
+    Args:
+        findings: List of NormalizedFinding objects
+        decisions: List of triage decisions
+        dispatch: Whether to send live notifications (Slack, JIRA, ServiceNow, Teams)
+        output_dir: Directory to save notification artifacts
+        
+    Returns:
+        Dict with notification summary and dispatch results if applicable
+    """
+    logger.info(f"Building notifications for {len(findings)} findings and {len(decisions)} decisions")
+    
+    bundle = build_notifications(findings, decisions)
+    
+    output_path = Path(output_dir)
+    for filename, payload in (
+        ("owner_notifications.json", bundle["owner_notifications"]),
+        ("jira_tickets.json", bundle["jira_tickets"]),
+        ("servicenow_incidents.json", bundle["servicenow_incidents"]),
+        ("chat_notifications.json", bundle["chat_notifications"]),
+    ):
+        save_json(output_path / filename, payload)
+    
+    logger.info(
+        "Generated %s owner notifications, %s JIRA payloads, %s ServiceNow payloads, and %s chat notifications",
+        len(bundle["owner_notifications"]),
+        len(bundle["jira_tickets"]),
+        len(bundle["servicenow_incidents"]),
+        len(bundle["chat_notifications"]),
+    )
+    
+    result = {
+        "status": "success",
+        "notifications_generated": {
+            "owner_notifications": len(bundle["owner_notifications"]),
+            "jira_tickets": len(bundle["jira_tickets"]),
+            "servicenow_incidents": len(bundle["servicenow_incidents"]),
+            "chat_notifications": len(bundle["chat_notifications"]),
+        },
+        "artifacts_dir": str(output_path),
+    }
+    
+    if dispatch:
+        logger.info("Dispatching live notifications...")
+        dispatch_results = dispatch_live_integrations(bundle)
+        save_json(output_path / "dispatch_results.json", dispatch_results)
+        
+        result["dispatch_results"] = {
+            "jira": len(dispatch_results["jira"]),
+            "servicenow": len(dispatch_results["servicenow"]),
+            "slack": len(dispatch_results["slack"]),
+            "teams": len(dispatch_results["teams"]),
+            "errors": len(dispatch_results["errors"]),
+        }
+        
+        if dispatch_results["errors"]:
+            logger.warning(f"Dispatch errors: {dispatch_results['errors']}")
+            result["errors"] = dispatch_results["errors"]
+    
+    return result
+
+
+def dispatch_live_integrations(bundle: Dict[str, List[Dict[str, Any]]]) -> Dict[str, List[Dict[str, Any]]]:
+    results: Dict[str, List[Dict[str, Any]]] = {
+        "jira": [],
+        "servicenow": [],
+        "slack": [],
+        "teams": [],
+        "errors": [],
+    }
+
+    for ticket in bundle["jira_tickets"]:
+        try:
+            results["jira"].append({"summary": ticket["summary"], **create_jira_issue(ticket)})
+        except Exception as exc:
+            results["errors"].append({"channel": "jira", "summary": ticket["summary"], "error": str(exc)})
+
+    for incident in bundle["servicenow_incidents"]:
+        try:
+            results["servicenow"].append(
+                {"short_description": incident["short_description"], **create_servicenow_incident(incident)}
+            )
+        except Exception as exc:
+            results["errors"].append(
+                {"channel": "servicenow", "short_description": incident["short_description"], "error": str(exc)}
+            )
+
+    for notification in bundle["chat_notifications"]:
+        if os.getenv("SLACK_WEBHOOK_URL"):
+            try:
+                results["slack"].append({"finding_id": notification["finding_id"], **send_slack_message(notification)})
+            except Exception as exc:
+                results["errors"].append({"channel": "slack", "finding_id": notification["finding_id"], "error": str(exc)})
+        if os.getenv("TEAMS_WEBHOOK_URL"):
+            try:
+                results["teams"].append({"finding_id": notification["finding_id"], **send_teams_message(notification)})
+            except Exception as exc:
+                results["errors"].append({"channel": "teams", "finding_id": notification["finding_id"], "error": str(exc)})
+
+    return results
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build triage notification artifacts")
     parser.add_argument("--findings", required=True)

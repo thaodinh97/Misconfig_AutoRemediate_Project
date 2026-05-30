@@ -9,6 +9,7 @@ from typing import List
 FLOW_MODULES = {
     "openstack-runtime": "src.remediation.runtime_executor",
     "aws-runtime": "src.remediation.aws_runtime_executor",
+    "hybrid-dispatch": "src.remediation.hybrid_dispatch",
     "iac-pr": "src.remediation.iac_pr_prepare",
     "open-pr": "src.remediation.open_fix_pr",
     "opa-ticket": "src.remediation.opa_ticket",
